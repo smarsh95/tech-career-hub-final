@@ -5,7 +5,7 @@
             <v-col xs="12" sm="8" md="8" lg="6" class="text-center">
             <v-card class="pa-4">
                 <v-card-title class="headline blue-grey--text justify-center">Signup</v-card-title>
-                <v-form @submit.prevent="signup" class="px-6 py-3">
+                <v-form class="px-6 py-3">
                 <v-text-field label="Email:" v-model="email" type="email" name="email"></v-text-field>
                 <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
                 <v-text-field label="Alias:" v-model="alias" type="text" name="alias"></v-text-field>
@@ -25,7 +25,7 @@
 import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
-import functions from 'firebase/functions'
+//import functions from 'firebase/functions'
 
 export default {
     name: 'Signup',
