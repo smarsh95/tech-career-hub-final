@@ -25,6 +25,7 @@
 import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
+import functions from 'firebase/functions'
 
 export default {
     name: 'Signup',
@@ -46,6 +47,7 @@ export default {
                     remove: /[$*_+~.()#'!"\-:@]/g,
                     lower: true
                 })
+                console.log("Signup clicked 2")
                 let checkAlias = firebase.functions().httpsCallable('checkAlias')
                 checkAlias({ slug: this.slug }).then(result => {
                     console.log(result)
