@@ -3,15 +3,22 @@
     <v-app-bar flat app>
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase grey--text">
-        <span class="font-weight-light">Tech Career Hub</span>
+        <span class="font-weight-light">Tech Wizard</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text color="grey">
+      <v-btn v-if="!user" :to="{ name: 'SignupCandidate' }" text color="grey">
         <span class="font-weight-regular">Sign Up</span>
       </v-btn>
-      <v-btn text color="grey">
+      <v-btn v-if="!user" :to="{ name: 'Login' }" text color="grey">
         <span class="font-weight-regular">Login</span>
       </v-btn>
+      <v-btn v-if="user">
+        <a>{{ user.email }}</a>
+      </v-btn>
+      <v-btn v-if="user">
+        <a @click="logout">Logout</a>
+      </v-btn>
+
     </v-app-bar>
 
     <v-navigation-drawer temporary v-model="drawer" app color="primary">
@@ -37,9 +44,11 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   data() {
     return {
+      user: null,
       drawer: false,
       links: [
         { text: "Explore Tech Careers", route: "/" },
@@ -48,6 +57,22 @@ export default {
         { text: "View Candidates", route: "/team" }
       ]
     };
+  }, 
+  methods: {
+    logout() {
+      firebase.auth().signOut.then(() => {
+        this.$router.push({ name: 'Login'})
+      })
+    }
+  }, 
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user) {
+        this.user = user
+      } else {
+        this.user = null
+      }
+    })
   }
 };
 </script>

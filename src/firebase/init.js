@@ -1,6 +1,6 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-
+import firebase from 'firebase'
+//import firestore from 'firebase/firestore'
+ 
  // Your web app's Firebase configuration
  var firebaseConfig = {
     apiKey: "AIzaSyB_htbzZ9R5InPTMF8JQxE2w0QP6uYjAmU",
@@ -12,10 +12,10 @@ import 'firebase/firestore'
     appId: "1:1092039076642:web:3588a90617196395fa537b",
     measurementId: "G-3D1J2VF8CG"
   };
-  
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  const firebaseApp = firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
 
-  const db = firebase.firestore(); 
+  export default firebaseApp.firestore()
 
-  export default db; 
+ 
