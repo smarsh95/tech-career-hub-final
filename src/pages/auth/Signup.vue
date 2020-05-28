@@ -14,6 +14,7 @@
                     <v-btn class="block rounded blue-grey lighten-1 white--text" @click="signup">Signup</v-btn>
                 </div>
                 </v-form>
+                <p class="subtitle-1">Already have an account?&nbsp;<router-link :to="{ name: 'Login' }">Login</router-link></p>
             </v-card>
             </v-col>
         </v-row>

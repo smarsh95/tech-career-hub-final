@@ -6,10 +6,10 @@
         <span class="font-weight-light">Tech Wizard</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text v-if="!user" :to="{ name: 'SignupCandidate' }" text color="grey">
+      <v-btn text v-if="!user" :to="{ name: 'SignupCandidate' }" color="grey">
         <span class="font-weight-regular">Sign Up</span>
       </v-btn>
-      <v-btn text v-if="!user" :to="{ name: 'Login' }" text color="grey">
+      <v-btn text v-if="!user" :to="{ name: 'Login' }" color="grey">
         <span class="font-weight-regular">Login</span>
       </v-btn>
       <v-btn text v-if="user">
@@ -18,7 +18,6 @@
       <v-btn text v-if="user">
         <a @click="logout">Logout</a>
       </v-btn>
-
     </v-app-bar>
 
     <v-navigation-drawer temporary v-model="drawer" app color="primary">
@@ -33,7 +32,7 @@
               class="ml-2"
             >
               <v-list-item-content class="white--text mt-0 ml-6 left display-3">
-                <v-list-item-title class="">{{ link.text }}</v-list-item-title>
+                <v-list-item-title>{{ link.text }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -44,47 +43,50 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from "firebase";
 export default {
-    name: 'Navbar', 
-    data(){
-        return {
-            user: null, 
-            drawer: false,
-            links: [
-              { text: "Explore Tech Careers", route: "/" },
-              { text: "View Jobs", route: "/projects" },
-              { text: "View Employers", route: "/team" },
-              { text: "View Candidates", route: "/team" }
-            ]
-        }
-    }, 
-    methods: {
-        logout(){
-            firebase.auth().signOut().then(() => {
-                this.$router.push({ name: 'Login' })
-            })
-        }
-    }, 
-    created(){
-        //let user = firebase.auth().currentUser
-        firebase.auth().onAuthStateChanged((user) => {
-            if(user){
-                this.user = user
-            } else {
-                this.user = null
-            }
-        })
+  name: "Navbar",
+  data() {
+    return {
+      user: null,
+      drawer: false,
+      links: [
+        { text: "Explore Tech Careers", route: "/" },
+        { text: "View Jobs", route: "/projects" },
+        { text: "View Employers", route: "/team" },
+        { text: "View Candidates", route: "/team" }
+      ]
+    };
+  },
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.push({ name: "Login" });
+        });
     }
-}
+  },
+  created() {
+    //let user = firebase.auth().currentUser
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user;
+      } else {
+        this.user = null;
+      }
+    });
+  }
+};
 </script>
 
 
 
 <style>
-  .navDrawer{
-    padding: 0px 0!important;
-  }
+.navDrawer {
+  padding: 0px 0 !important;
+}
 </style>
 
 

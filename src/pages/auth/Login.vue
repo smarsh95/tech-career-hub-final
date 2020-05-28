@@ -8,7 +8,7 @@
             <v-form class="px-6 py-3">
               <v-text-field label="Email:" v-model="email" type="email" name="email"></v-text-field>
               <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
-              <p v-if="feedback" class="red--text text-center">{{ feedback }}</p>
+              <p v-if="feedback" class="orange--text text--darken-2 text-center">{{ feedback }}</p>
               <div class="my-4">
                 <v-btn class="block rounded blue-grey lighten-1 white--text" @click="login">Login</v-btn>
               </div>
