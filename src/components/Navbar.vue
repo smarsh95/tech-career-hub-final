@@ -6,10 +6,10 @@
         <span class="font-weight-light">Tech Wizard</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text v-if="!user" :to="{ name: 'SignupCandidate' }" color="grey">
+      <v-btn text v-if="!user" :to="{ name: 'SignupStudent' }">
         <span class="font-weight-regular">Sign Up</span>
       </v-btn>
-      <v-btn text v-if="!user" :to="{ name: 'Login' }" color="grey">
+      <v-btn text v-if="!user" :to="{ name: 'Login' }">
         <span class="font-weight-regular">Login</span>
       </v-btn>
       <v-btn text v-if="user">

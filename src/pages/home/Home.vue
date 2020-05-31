@@ -1,6 +1,7 @@
 
 <template>
   <div class="cards">
+    <Navbar />
     <v-container class="my-2" fluid>
       <v-row>
         <v-col>
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import Navbar from '@/components/Navbar'
 export default {
   data: () => ({
     cards: [
@@ -42,7 +44,10 @@ export default {
       "space-between"
     ],
     justify: "center"
-  })
+  }), 
+  components: {
+    Navbar
+  }
 };
 </script>
 

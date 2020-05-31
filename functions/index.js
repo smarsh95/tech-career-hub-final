@@ -12,3 +12,25 @@ exports.checkAlias = functions.https.onCall((data, context) => {
     });
 });
 
+//adding user based authentication
+exports.AddUserRole = functions.auth.user().onCreate(async (authUser) => {
+
+  if (authUser.email) {
+    const customClaims = {
+      customer: true,
+    };
+    try {
+      var _ = await admin.auth().setCustomUserClaims(authUser.uid, customClaims)
+
+      return db.collection("roles").doc(authUser.uid).set({
+        email: authUser.email,
+        role: customClaims
+      })
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+});

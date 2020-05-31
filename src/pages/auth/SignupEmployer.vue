@@ -1,15 +1,15 @@
 <template>
-    <div class="signup">
+    <div class="signupEmployer">
         <v-container class="mx-auto mt-6">
         <v-row justify="center">
             <v-col xs="12" sm="8" md="8" lg="6" class="text-center">
             <v-card class="pa-4">
-                <v-card-title class="headline blue-grey--text justify-center">Signup</v-card-title>
-                <v-form class="px-6 py-3">
-                <v-text-field label="Email:" v-model="email" type="email" name="email"></v-text-field>
+                <v-card-title class="headline blue-grey--text justify-center">Signup for Employers</v-card-title>
+                <v-form class="px-6 py-3 admin-actions">
+                <v-text-field label="Email:" v-model="email" type="email" name="email" id="admin-email" required></v-text-field>
                 <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
                 <v-text-field label="Alias:" v-model="alias" type="text" name="alias"></v-text-field>
-                <p v-if="feedback" class="red--text text-center">{{ feedback }}</p>
+                <p v-if="feedback" class="orange--text text--darken-2 text-center">{{ feedback }}</p>
                 <div class="my-4">
                     <v-btn class="block rounded blue-grey lighten-1 white--text" @click="signup">Signup</v-btn>
                 </div>
@@ -28,8 +28,10 @@ import db from '@/firebase/init'
 import firebase from 'firebase'
 //import functions from 'firebase/functions'
 
+
+
 export default {
-    name: 'Signup',
+    name: 'SignupStudent',
     data(){
         return{
             email: null, 
@@ -41,14 +43,12 @@ export default {
     }, 
     methods: {
         signup(){
-            console.log("Signup clicked")
             if(this.alias && this.email && this.password){
                 this.slug = slugify(this.alias, {
                     replacement: '-', 
                     remove: /[$*_+~.()#'!"\-:@]/g,
                     lower: true
                 })
-                console.log("Signup clicked 2")
                 let checkAlias = firebase.functions().httpsCallable('checkAlias')
                 checkAlias({ slug: this.slug }).then(result => {
                     console.log(result)

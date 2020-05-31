@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from "firebase";
 export default {
   name: "Login",
   data() {
@@ -31,21 +31,36 @@ export default {
       feedback: null
     };
   },
+  created() {
+        firebase.auth().onAuthStateChanged(userAuth => {
+            if (userAuth) {
+                firebase
+                    .auth()
+                    .currentUser.getIdTokenResult()
+                    .then(tokenResult => {
+                        console.log(tokenResult.claims);
+                    });
+            }
+        });
+    },
   methods: {
     login() {
       if (this.email && this.password) {
-          firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
           .then(cred => {
-              console.log(cred.user)
-              this.$router.push({ name: 'Home'})
-          }).catch(err => {
-              this.feedback = err.message
+            console.log(cred.user);
+            this.$router.push({ name: "Home" });
           })
+          .catch(err => {
+            this.feedback = err.message;
+          });
         this.feedback = null;
       } else {
         this.feedback = "Please fill in both fields";
       }
-    }
+    },
   }
 };
 </script>

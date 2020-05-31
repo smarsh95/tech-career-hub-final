@@ -4,7 +4,8 @@ import Home from '../pages/home/Home.vue'
 import Login from '@/pages/auth/Login.vue'
 import Student from '@/pages/student-profile/Student.vue'
 import StudentSignUpForm from '@/pages/student-profile/StudentSignUpForm.vue'
-import Signup from '@/pages/auth/Signup.vue'
+import SignupStudent from '@/pages/auth/SignupStudent.vue'
+import SignupEmployer from '@/pages/auth/SignupEmployer.vue'
 import Employer from '@/pages/employer-profile/Employer.vue'
 import firebase from 'firebase'
 
@@ -29,7 +30,10 @@ const router = new VueRouter({
     {
       path: '/Login',
       name: 'Login',
-      component: Login
+      component: Login, 
+      meta: {
+        guest: true
+      }
     },
     {
       path: '/Student',
@@ -45,9 +49,12 @@ const router = new VueRouter({
       component: StudentSignUpForm
     },
     {
-      path: '/Signup',
-      name: 'Signup',
-      component: Signup
+      path: '/SignupStudent',
+      name: 'SignupStudent',
+      component: SignupStudent, 
+      meta: {
+        guest: true
+      }
     },
     {
       path: '/Employer',
@@ -56,6 +63,11 @@ const router = new VueRouter({
       meta: {
         auth: true
       }
+    }, 
+    {
+      path: '/SignupEmployer', 
+      name: 'SignupEmployer', 
+      component: SignupEmployer
     }
   ]
 })
