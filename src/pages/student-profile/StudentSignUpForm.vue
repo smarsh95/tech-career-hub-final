@@ -9,7 +9,7 @@
         <v-row>
           <v-col cols="12" sm="6">
             <v-text-field
-              v-model="firstName"
+              v-model="form.first"
               :rules="rules.name"
               color="orange darken-2"
               label="First name"
@@ -18,7 +18,7 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
-              v-model="lastName"
+              v-model="form.last"
               :rules="rules.name"
               color="orange darken-2"
               label="Last name"
@@ -26,7 +26,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-textarea v-model="bio" color="teal">
+            <v-textarea v-model="form.bio" color="teal">
               <template v-slot:label>
                 <div>
                   Bio
@@ -36,11 +36,11 @@
             </v-textarea>
           </v-col>
           <v-col cols="12">
-            <v-text-field v-model="topSkills" label="Top Skills" color="orange"></v-text-field>
+            <v-text-field v-model="form.topSkills" label="Top Skills" color="orange"></v-text-field>
           </v-col>
           <v-col cols="12" sm="6">
             <v-slider
-              v-model="age"
+              v-model="form.age"
               :rules="rules.age"
               color="orange"
               label="Age"
@@ -69,7 +69,7 @@
       <v-card-actions>
         <v-btn text @click="resetForm">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn :disabled="!formIsValid" text color="primary" type="submit" @click="submit">Complete Profile</v-btn>
+        <v-btn :disabled="!formIsValid" text color="primary" type="submit">Complete Profile</v-btn>
       </v-card-actions>
     </v-form>
     <v-dialog v-model="terms" width="70%">
@@ -94,14 +94,12 @@
     </v-dialog>
   </v-card>
 </template>
-
 <script>
-//import firebaseApp from '@/firebase/init.js'
 export default {
   data() {
     const defaultForm = Object.freeze({
-      firstName: "",
-      lastName: "",
+      first: "",
+      last: "",
       topSkills: "",
       bio: "",
       age: null,
