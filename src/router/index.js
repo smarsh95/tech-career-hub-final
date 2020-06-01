@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../pages/home/Home.vue'
 import Login from '@/pages/auth/Login.vue'
 import Student from '@/pages/student-profile/Student.vue'
-import StudentSignUpForm from '@/pages/student-profile/StudentSignUpForm.vue'
+import StudentProfileForm from '@/pages/student-profile/StudentProfileForm.vue'
 import SignupStudent from '@/pages/auth/SignupStudent.vue'
 import SignupEmployer from '@/pages/auth/SignupEmployer.vue'
 import Employer from '@/pages/employer-profile/Employer.vue'
@@ -44,9 +44,9 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/StudentSignUpForm',
-      name: 'StudentSignUpForm',
-      component: StudentSignUpForm
+      path: '/StudentProfileForm',
+      name: 'StudentProfileForm',
+      component: StudentProfileForm
     },
     {
       path: '/SignupStudent',
