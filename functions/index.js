@@ -13,24 +13,40 @@ exports.checkAlias = functions.https.onCall((data, context) => {
 });
 
 //adding user based authentication
-exports.AddUserRole = functions.auth.user().onCreate(async (authUser) => {
 
-  if (authUser.email) {
-    const customClaims = {
-      customer: true,
-    };
-    try {
-      var _ = await admin.auth().setCustomUserClaims(authUser.uid, customClaims)
-
-      return db.collection("roles").doc(authUser.uid).set({
-        email: authUser.email,
-        role: customClaims
-      })
-
-    } catch (error) {
-      console.log(error)
+exports.AddEmployerRole = functions.https.onCall((data, context) => {
+  // get user and add custom claim (employer)
+  return admin.auth().getUserByEmail(data.email).then(user => {
+    return admin.auth().setCustomUserClaims(user.uid, {
+      employer: true
+    })
+  }).then(() => {
+    return {
+      message: `Success! ${data.email} has been made an employer`
     }
+  }).catch(err => {
+    return err; 
+  })
+})
 
-  }
+exports.AddCandidateRole = functions.https.onCall((data, context) => {
+  // get user and add custom claim (candidate)
+  return admin.auth().getUserByEmail(data.email).then(user => {
+    return admin.auth().setCustomUserClaims(user.uid, {
+      candidate: true
+    })
+  }).then(() => {
+    return {
+      message: `Success! ${data.email} has been made a candidate`
+    }
+  }).catch(err => {
+    return err; 
+  })
+})
 
-});
+
+
+  
+  
+
+

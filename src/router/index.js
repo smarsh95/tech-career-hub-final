@@ -31,37 +31,34 @@ const router = new VueRouter({
       path: '/Login',
       name: 'Login',
       component: Login, 
-      meta: {
-        guest: true
-      }
     },
     {
       path: '/Student',
       name: 'Student',
       component: Student,
       meta: {
-        auth: true
+        requiresAuth: true
       }
     },
     {
       path: '/StudentProfileForm',
       name: 'StudentProfileForm',
-      component: StudentProfileForm
+      component: StudentProfileForm, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/SignupStudent',
       name: 'SignupStudent',
       component: SignupStudent, 
-      meta: {
-        guest: true
-      }
     },
     {
       path: '/Employer',
       name: 'Employer',
       component: Employer,
       meta: {
-        auth: true
+        requiresAuth: true
       }
     }, 
     {
