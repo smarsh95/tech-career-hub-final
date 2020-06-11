@@ -62,7 +62,7 @@ export default {
                 jobTitle: this.jobTitle, 
                 companyName: this.companyName, 
                 due: format(parseISO(this.due), 'do MMM yyyy'), 
-                status: 'open'
+                status: 'view'
             }
             db.collection('jobs').add(job).then(() => {
                 this.loading = false;

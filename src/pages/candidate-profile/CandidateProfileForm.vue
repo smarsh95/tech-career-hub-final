@@ -76,7 +76,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        const studentProfile = {
+        const candidateProfile = {
           firstName: this.firstName,
           lastName: this.lastName,
           bio: this.bio,
@@ -84,8 +84,8 @@ export default {
           age: this.age
         };
         firebaseApp
-          .collection("studentProfiles")
-          .add(studentProfile)
+          .collection("candidateProfiles")
+          .add(candidateProfile)
           .then(() => {
             this.loading = false;
             this.$emit("profileAdded");

@@ -8,14 +8,16 @@
     <v-app-bar flat app>
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase grey--text">
-        <span class="font-weight-light">Tech Wizard</span>
+        <router-link class="routerLink" :to="{name: 'Home'}">
+          <span class="font-weight-light grey--text">Tech Wizard</span>
+        </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text v-if="!user" :to="{ name: 'SignupStudent' }">
-        <span class="font-weight-regular">Sign Up</span>
+      <v-btn text v-if="!user" :to="{ name: 'SignupCandidate' }">
+        <span class="font-weight-regular grey--text text--darken-2">Sign Up</span>
       </v-btn>
       <v-btn text v-if="!user" :to="{ name: 'Login' }">
-        <span class="font-weight-regular">Login</span>
+        <span class="font-weight-regular grey--text text--darken-2">Login</span>
       </v-btn>
       <v-btn text v-if="user">
         <a>{{ user.email }}</a>
@@ -36,7 +38,7 @@
               :to="link.route"
               class="ml-2"
             >
-              <v-list-item-content class="white--text mt-0 ml-6 left display-3">
+              <v-list-item-content class="white--text mt-0 ml-6 left display-2">
                 <v-list-item-title>{{ link.text }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -57,7 +59,7 @@ export default {
       drawer: false,
       links: [
         { text: "Explore Tech Careers", route: "/" },
-        { text: "View Jobs", route: "/projects" },
+        { text: "View Jobs", route: "/jobs" },
         { text: "View Employers", route: "/team" },
         { text: "View Candidates", route: "/team" }
       ], 
@@ -92,6 +94,10 @@ export default {
 <style>
 .navDrawer {
   padding: 0px 0 !important;
+}
+
+.routerLink{
+  text-decoration: none;
 }
 </style>
 

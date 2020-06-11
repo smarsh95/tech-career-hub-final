@@ -38,7 +38,7 @@ export default {
                     .auth()
                     .currentUser.getIdTokenResult()
                     .then(tokenResult => {
-                        console.log(tokenResult.claims);
+                        console.log(tokenResult.claims.candidate);
                     });
             }
         });

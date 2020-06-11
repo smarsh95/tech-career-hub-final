@@ -2,12 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../pages/home/Home.vue'
 import Login from '@/pages/auth/Login.vue'
-import Student from '@/pages/student-profile/Student.vue'
-import StudentProfileForm from '@/pages/student-profile/StudentProfileForm.vue'
-import SignupStudent from '@/pages/auth/SignupStudent.vue'
+import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
+import CandidateProfileForm from '@/pages/candidate-profile/CandidateProfileForm.vue'
+import SignupCandidate from '@/pages/auth/SignupCandidate.vue'
 import SignupEmployer from '@/pages/auth/SignupEmployer.vue'
 import Employer from '@/pages/employer-profile/Employer.vue'
+import AllJobs from '@/pages/jobs/AllJobs.vue'
 import firebase from 'firebase'
+
 
 Vue.use(VueRouter)
 
@@ -33,25 +35,17 @@ const router = new VueRouter({
       component: Login, 
     },
     {
-      path: '/Student',
-      name: 'Student',
-      component: Student,
+      path: '/CandidateProfileForm',
+      name: 'CandidateProfileForm',
+      component: CandidateProfileForm, 
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/StudentProfileForm',
-      name: 'StudentProfileForm',
-      component: StudentProfileForm, 
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/SignupStudent',
-      name: 'SignupStudent',
-      component: SignupStudent, 
+      path: '/SignupCandidate',
+      name: 'SignupCandidate',
+      component: SignupCandidate, 
     },
     {
       path: '/Employer',
@@ -65,6 +59,16 @@ const router = new VueRouter({
       path: '/SignupEmployer', 
       name: 'SignupEmployer', 
       component: SignupEmployer
+    }, 
+    {
+      path: '/profile/:id', 
+      name: CandidateProfile, 
+      component: CandidateProfile
+    }, 
+    {
+      path: '/AllJobs', 
+      name: AllJobs, 
+      component: AllJobs
     }
   ]
 })
