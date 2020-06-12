@@ -4,6 +4,9 @@
       <span>Your Profile is now complete!</span>
       <v-icon dark>mdi-checkbox-marked-circle</v-icon>
     </v-snackbar>
+ 
+    <v-card-title class="display-1 mt-10 mb-5 pl-2 justify-left blue-grey--text font-weight-light">Your Tech Wizard Profile</v-card-title>
+        
     <v-form ref="form" @submit.prevent="submit">
       <v-container>
         <v-row>
@@ -58,7 +61,9 @@
 </template>
 
 <script>
-import firebaseApp from "@/firebase/init.js";
+import firebase from "firebase"
+import db from "@/firebase/init"
+//import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 
 export default {
   data() {
@@ -69,7 +74,9 @@ export default {
       topSkills: "",
       age: "",
       inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"], 
-      snackbar: false
+      snackbar: false, 
+      candidateUser: null, 
+      profile: null
     };
   },
   methods: {
@@ -83,16 +90,48 @@ export default {
           topSkills: this.topSkills,
           age: this.age
         };
-        firebaseApp
+        db
           .collection("candidateProfiles")
           .add(candidateProfile)
           .then(() => {
             this.loading = false;
             this.$emit("profileAdded");
+            
           });
           this.snackbar = "true";
+          
+          this.$router.push({ path: '/CandidateProfile/' + this.candidateUser.id })
       }
     }
+  }, 
+   created() {
+    let ref = db.collection("candidateUsers");
+
+    // get current user
+    ref
+      .where("user_id", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
+          console.log(this.candidateUser.id)
+        });
+      });
+
+    //profile data
+    /*
+    console.log(this.$route)
+    ref
+      .doc({path: '/candidateProfile/:id', component: CandidateProfile})
+      .get()
+      .then(candidateUser => {
+        this.profile = candidateUser.data();
+      });
+    */
   }
 };
 </script>
+
+<style>
+  
+</style>

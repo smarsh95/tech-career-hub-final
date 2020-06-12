@@ -61,7 +61,7 @@ const router = new VueRouter({
       component: SignupEmployer
     }, 
     {
-      path: '/profile/:id', 
+      path: '/candidateProfile/:id', 
       name: CandidateProfile, 
       component: CandidateProfile
     }, 

@@ -73,7 +73,7 @@ export default {
                   .httpsCallable("AddCandidateRole");
                 addCandidateRole({ email: this.email }).then(result => {
                   console.log(result);
-                  this.$router.push({ name: "Home" });
+                  this.$router.push({ name: "CandidateProfileForm" });
                 });
               })
               .catch(err => {
