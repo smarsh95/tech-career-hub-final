@@ -47,7 +47,11 @@
             <v-text-field v-model="topSkills" label="Top Skills" color="orange"></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="6">
+           <v-col cols="12" lg="12">
+            <v-text-field v-model="workExperience" label="Work Experience" color="orange"></v-text-field>
+          </v-col>
+
+          <v-col cols="12" sm="6" lg="12">
             <v-slider v-model="age" color="orange" label="Age" min="1" max="100" thumb-label></v-slider>
           </v-col>
 
@@ -86,6 +90,7 @@ export default {
       bio: "",
       topSkills: "",
       age: "",
+      workExperience: "",
       careerPaths: [],
       paths: [
         "Embedded Systems",
@@ -115,7 +120,8 @@ export default {
             bio: this.bio,
             topSkills: this.topSkills,
             age: this.age,
-            careerPaths: this.careerPaths
+            careerPaths: this.careerPaths,
+            workExperience: this.workExperience
           })
           .then(() => {
             this.loading = false;

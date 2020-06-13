@@ -1,8 +1,8 @@
 <template>
-  <div class="view-profile">
+  <div class="candidateProfile-menu">
     <v-row>
-      <v-card flat class="navDrawer center my-10">
-        <v-navigation-drawer permanent expand-on-hover dark color="blue-grey darken-2">
+      <v-card flat class="navDrawer center my-10 ml-3">
+        <v-navigation-drawer permanent expand-on-hover dark color="orange darken-2">
           <v-list nav>
             <v-list-item link>
               <v-list-item-icon>
@@ -49,71 +49,11 @@
           </v-list>
         </v-navigation-drawer>
       </v-card>
-      <v-card v-if="profile" class="mx-auto my-5" min-width="400">
-        <v-list-item-title class="headline my-8 mx-5">{{ profile.username }}'s Profile</v-list-item-title>
-      </v-card>
     </v-row>
   </div>
 </template>
 
-<script>
-import firebase from "firebase";
-import db from "@/firebase/init";
 
-export default {
-  name: "Candidate",
-  data() {
-    return {
-      candidateUser: null,
-      drawer: false,
-      links: [
-        { text: "Explore Tech Careers", route: "/" },
-        { text: "View Jobs", route: "/projects" },
-        { text: "View Employers", route: "/team" },
-        { text: "View Candidates", route: "/team" }
-      ],
-      profile: null
-    };
-  },
-  methods: {
-    logout() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.push({ name: "Login" });
-        });
-    }
-  },
-  created() {
-    let ref = db.collection("candidateUsers");
-
-    // get current user
-    ref
-      .where("user_id", "==", firebase.auth().currentUser.uid)
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-        });
-      });
-
-    //profile data
-    ref
-      .doc(this.$route.params.id)
-      .get()
-      .then(candidateUser => {
-        this.profile = candidateUser.data();
-      });
-  }
-};
-</script>
-
-<style>
-.v-content__wrap {
-  margin-left: -16px;
-}
-</style>
 
 
 

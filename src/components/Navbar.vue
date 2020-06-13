@@ -38,7 +38,7 @@
               :to="link.route"
               class="ml-2"
             >
-              <v-list-item-content class="white--text mt-0 ml-6 left display-2">
+              <v-list-item-content class="white--text mt-0 ml-6 left display-2 font-weight-light">
                 <v-list-item-title>{{ link.text }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>

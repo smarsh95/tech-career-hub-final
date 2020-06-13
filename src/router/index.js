@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../pages/home/Home.vue'
 import Login from '@/pages/auth/Login.vue'
+import CandidateMenu from '@/pages/candidate-profile/CandidateMenu.vue'
 import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 import CandidateProfileForm from '@/pages/candidate-profile/CandidateProfileForm.vue'
 import SignupCandidate from '@/pages/auth/SignupCandidate.vue'
@@ -33,6 +34,11 @@ const router = new VueRouter({
       path: '/Login',
       name: 'Login',
       component: Login, 
+    },
+    {
+      path: '/CandidateMenu', 
+      name: 'CandidateMenu', 
+      component: CandidateMenu
     },
     {
       path: '/CandidateProfileForm',

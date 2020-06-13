@@ -1,68 +1,133 @@
 <template>
-    <v-container class="view-profile" fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12" lg="10" md="8">
-          <v-card v-if="profile" class="mx-auto blue-grey" flat>
-            <v-list-item>
-              <v-list-item-content>
-                <div>
-                  <v-col cols="8">
-                    <div class="caption grey--text text--lighten-1">Name</div>
-                    <h3
-                      class="font-weight-light white--text"
-                    >{{ profile.firstName + " " + profile.lastName }}</h3>
-                  </v-col>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <div>
-                  <v-col cols="8">
-                    <div class="caption grey--text text--lighten-1">Top Skills</div>
-                    <div class="white--text">{{profile.topSkills}}</div>
-                  </v-col>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <div>
-                  <v-col cols="8">
-                    <div class="caption grey--text text--lighten-1">Bio</div>
-                    <div class="white--text">{{profile.bio}}</div>
-                  </v-col>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <div>
-                  <v-col cols="8">
-                    <div class="caption grey--text text--lighten-1">Age</div>
-                    <div class="white--text">
-                      <p class="text-justify">{{profile.age}}</p>
-                    </div>
-                  </v-col>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-             <v-list-item>
-              <v-list-item-content>
-                <div>
-                  <v-col cols="8">
-                    <div class="caption grey--text text--lighten-1">Desired Career Paths</div>
-                    <div class="white--text">
-                      <p class="text-justify">{{profile.careerPaths.toString().replace(/,/g, ", ")}}</p>
-                    </div>
-                  </v-col>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-          </v-card>
-        </v-col>
+  <v-container class="view-profile" fluid>
+    <div class="candidateProfile-menu">
+      <v-row>
+        <v-card flat class="navDrawer center my-10 ml-3">
+          <v-navigation-drawer permanent expand-on-hover dark color="orange darken-2">
+            <v-list nav>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-home</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Dashboard</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Profile</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-android-messages</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Messages</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-bell-ring</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Notifications</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-heart</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Favourites</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-cog-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Settings</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-icon>
+                  <v-icon>mdi-logout</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-navigation-drawer>
+        </v-card>
       </v-row>
-    </v-container>
+    </div>
+
+    <v-row align="center" justify="center">
+      <v-col cols="12" lg="10" md="8">
+        <v-card v-if="profile" class="mx-auto blue-grey" flat>
+          <v-list-item>
+            <v-list-item-content>
+              <div>
+                <v-col cols="8">
+                  <div class="caption grey--text text--lighten-1">Name</div>
+                  <h3
+                    class="font-weight-light white--text"
+                  >{{ profile.firstName + " " + profile.lastName }}</h3>
+                </v-col>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <div>
+                <v-col cols="8">
+                  <div class="caption grey--text text--lighten-1">Top Skills</div>
+                  <div class="white--text">{{profile.topSkills}}</div>
+                </v-col>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <div>
+                <v-col cols="8">
+                  <div class="caption grey--text text--lighten-1">Bio</div>
+                  <div class="white--text">{{profile.bio}}</div>
+                </v-col>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <div>
+                <v-col cols="8">
+                  <div class="caption grey--text text--lighten-1">Work Experience</div>
+                  <div class="white--text">
+                    <p class="text-justify">{{profile.workExperience}}</p>
+                  </div>
+                </v-col>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <div>
+                <v-col cols="8">
+                  <div class="caption grey--text text--lighten-1">Age</div>
+                  <div class="white--text">
+                    <p class="text-justify">{{profile.age}}</p>
+                  </div>
+                </v-col>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <div>
+                <v-col cols="8">
+                  <div class="caption grey--text text--lighten-1">Desired Career Paths</div>
+                  <div class="white--text">
+                    <p class="text-justify">{{profile.careerPaths.toString().replace(/,/g, ", ")}}</p>
+                  </div>
+                </v-col>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
   <!--v-row align="center" justify="center">
