@@ -4,9 +4,11 @@
       <span>Your Profile is now complete!</span>
       <v-icon dark>mdi-checkbox-marked-circle</v-icon>
     </v-snackbar>
- 
-    <v-card-title class="display-1 mt-10 mb-5 pl-2 justify-left blue-grey--text font-weight-light">Your Tech Wizard Profile</v-card-title>
-        
+
+    <v-card-title
+      class="display-1 mt-10 mb-5 pl-2 justify-left blue-grey--text font-weight-light"
+    >Your Tech Wizard Profile</v-card-title>
+
     <v-form ref="form" @submit.prevent="submit">
       <v-container>
         <v-row>
@@ -48,6 +50,17 @@
           <v-col cols="12" sm="6">
             <v-slider v-model="age" color="orange" label="Age" min="1" max="100" thumb-label></v-slider>
           </v-col>
+
+          <v-col cols="12" sm="6" lg="12">
+            <v-select
+              v-model="careerPaths"
+              :items="paths"
+              label="Select"
+              multiple
+              hint="Choose your desired Career Paths"
+              persistent-hint
+            ></v-select>
+          </v-col>
         </v-row>
       </v-container>
 
@@ -61,8 +74,8 @@
 </template>
 
 <script>
-import firebase from "firebase"
-import db from "@/firebase/init"
+import firebase from "firebase";
+import db from "@/firebase/init";
 //import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 
 export default {
@@ -73,9 +86,20 @@ export default {
       bio: "",
       topSkills: "",
       age: "",
-      inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"], 
-      snackbar: false, 
-      candidateUser: null, 
+      careerPaths: [],
+      paths: [
+        "Embedded Systems",
+        "IT Security",
+        "Web Development",
+        "Research",
+        "Database Devellopment",
+        "UX/UI",
+        "iOS Development",
+        "Android Development"
+      ],
+      inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"],
+      snackbar: false,
+      candidateUser: null,
       profile: null
     };
   },
@@ -83,28 +107,30 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        const candidateProfile = {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          bio: this.bio,
-          topSkills: this.topSkills,
-          age: this.age
-        };
-        db
-          .collection("candidateProfiles")
-          .add(candidateProfile)
+        db.collection("candidateUsers")
+          .doc(this.candidateUser.id)
+          .update({
+            firstName: this.firstName,
+            lastName: this.lastName,
+            bio: this.bio,
+            topSkills: this.topSkills,
+            age: this.age,
+            careerPaths: this.careerPaths
+          })
           .then(() => {
             this.loading = false;
             this.$emit("profileAdded");
-            
+            console.log("Document successfully updated");
           });
-          this.snackbar = "true";
-          
-          this.$router.push({ path: '/CandidateProfile/' + this.candidateUser.id })
+        this.snackbar = "true";
+
+        this.$router.push({
+          path: "/CandidateProfile/" + this.candidateUser.id
+        });
       }
     }
-  }, 
-   created() {
+  },
+  created() {
     let ref = db.collection("candidateUsers");
 
     // get current user
@@ -114,7 +140,7 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-          console.log(this.candidateUser.id)
+          console.log(this.candidateUser.id);
         });
       });
 
@@ -133,5 +159,5 @@ export default {
 </script>
 
 <style>
-  
+
 </style>
