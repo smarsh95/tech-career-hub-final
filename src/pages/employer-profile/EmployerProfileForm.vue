@@ -7,52 +7,63 @@
 
     <v-card-title
       class="display-1 mt-10 mb-5 pl-2 justify-left blue-grey--text font-weight-light"
-    >Your Tech Wizard Candidate Profile</v-card-title>
+    >Your Tech Wizard Employer Profile</v-card-title>
 
     <v-form ref="form" @submit.prevent="submit">
       <v-container>
         <v-row>
           <v-col cols="12" sm="6">
             <v-text-field
-              v-model="firstName"
+              v-model="companyName"
               color="orange darken-2"
-              label="First name"
-              required
-              :rules="inputRules"
-            ></v-text-field>
-          </v-col>
-
-          <v-col cols="12" sm="6">
-            <v-text-field
-              v-model="lastName"
-              color="orange darken-2"
-              label="Last name"
+              label="Company Name"
               required
               :rules="inputRules"
             ></v-text-field>
           </v-col>
 
           <v-col cols="12">
-            <v-textarea v-model="bio" color="teal" :rules="inputRules">
+            <v-textarea v-model="companyOverview" color="teal" :rules="inputRules">
               <template v-slot:label>
                 <div>
-                  Bio
-                  <small>(optional)</small>
+                  Company Overview
                 </div>
               </template>
             </v-textarea>
           </v-col>
 
           <v-col cols="12">
-            <v-text-field v-model="topSkills" label="Top Skills" color="orange"></v-text-field>
+            <v-textarea v-model="companyVision" color="teal" :rules="inputRules">
+              <template v-slot:label>
+                <div>
+                  Company Vision 
+                </div>
+              </template>
+            </v-textarea>
           </v-col>
 
-           <v-col cols="12" lg="12">
-            <v-text-field v-model="workExperience" label="Work Experience" color="orange"></v-text-field>
+           <v-col cols="12">
+            <v-textarea v-model="companyValues" color="teal" :rules="inputRules">
+              <template v-slot:label>
+                <div>
+                  Company Values
+                </div>
+              </template>
+            </v-textarea>
           </v-col>
 
-          <v-col cols="12" sm="6" lg="12">
-            <v-slider v-model="age" color="orange" label="Age" min="1" max="100" thumb-label></v-slider>
+           <v-col cols="12">
+            <v-textarea v-model="companyAchievements" color="teal" :rules="inputRules">
+              <template v-slot:label>
+                <div>
+                  Company Achievements
+                </div>
+              </template>
+            </v-textarea>
+          </v-col>
+
+          <v-col cols="12">
+            <v-text-field v-model="skillsDesired" label="Skills Desired From Candidates" color="orange"></v-text-field>
           </v-col>
 
           <v-col cols="12" sm="6" lg="12">
@@ -61,7 +72,7 @@
               :items="paths"
               label="Select"
               multiple
-              hint="Choose your desired Career Paths"
+              hint="We offer jobs in the following Career Paths"
               persistent-hint
             ></v-select>
           </v-col>
@@ -80,17 +91,16 @@
 <script>
 import firebase from "firebase";
 import db from "@/firebase/init";
-//import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 
 export default {
   data() {
     return {
-      firstName: "",
-      lastName: "",
-      bio: "",
-      topSkills: "",
-      age: "",
-      workExperience: "",
+      companyName: "",
+      companyOverview: "",
+      companyVision: "",
+      companyValues: "", 
+      companyAchievements: "", 
+      skillsDesired: "",
       careerPaths: [],
       paths: [
         "Embedded Systems",
@@ -104,7 +114,7 @@ export default {
       ],
       inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"],
       snackbar: false,
-      candidateUser: null,
+      EmployerUser: null,
       profile: null
     };
   },
@@ -112,32 +122,30 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        db.collection("candidateUsers")
-          .doc(this.candidateUser.id)
+        db.collection("employerUsers")
+          .doc(this.employerUser.id)
           .update({
-            firstName: this.firstName,
-            lastName: this.lastName,
-            bio: this.bio,
-            topSkills: this.topSkills,
-            age: this.age,
-            careerPaths: this.careerPaths,
-            workExperience: this.workExperience
+            companyName: this.companyName,
+            companyOverview: this.companyOverview,
+            companyVision: this.companyVision,
+            companyValues: this.companyValues,
+            companyAchievements: this.companyAchievements,
           })
           .then(() => {
             this.loading = false;
-            this.$emit("profileAdded");
+            this.$emit("companyProfileAdded");
             console.log("Document successfully updated");
           });
         this.snackbar = "true";
 
         this.$router.push({
-          path: "/CandidateProfile/" + this.candidateUser.id
+          path: "/EmployerProfile/" + this.employerUser.id
         });
       }
     }
   },
   created() {
-    let ref = db.collection("candidateUsers");
+    let ref = db.collection("employerUsers");
 
     // get current user
     ref
@@ -145,21 +153,10 @@ export default {
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-          console.log(this.candidateUser.id);
+          (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
+          console.log(this.employerUser.id);
         });
       });
-
-    //profile data
-    /*
-    console.log(this.$route)
-    ref
-      .doc({path: '/candidateProfile/:id', component: CandidateProfile})
-      .get()
-      .then(candidateUser => {
-        this.profile = candidateUser.data();
-      });
-    */
   }
 };
 </script>

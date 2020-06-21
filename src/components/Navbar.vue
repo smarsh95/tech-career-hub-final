@@ -5,7 +5,7 @@
       <v-btn text color="white" @click="snackbar = false" >Close</v-btn>
     </v-snackbar>
 
-    <v-app-bar flat app>
+    <v-app-bar flat app clipped-left>
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link class="routerLink" :to="{name: 'Home'}">
@@ -59,7 +59,7 @@ export default {
       drawer: false,
       links: [
         { text: "Explore Tech Careers", route: "/" },
-        { text: "View Jobs", route: "/jobs" },
+        { text: "View Jobs", route: "/allJobs" },
         { text: "View Employers", route: "/team" },
         { text: "View Candidates", route: "/team" }
       ], 

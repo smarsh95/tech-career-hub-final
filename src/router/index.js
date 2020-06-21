@@ -7,8 +7,11 @@ import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 import CandidateProfileForm from '@/pages/candidate-profile/CandidateProfileForm.vue'
 import SignupCandidate from '@/pages/auth/SignupCandidate.vue'
 import SignupEmployer from '@/pages/auth/SignupEmployer.vue'
-import Employer from '@/pages/employer-profile/Employer.vue'
+import EmployerProfile from '@/pages/employer-profile/EmployerProfile.vue'
+import EmployerProfileForm from '@/pages/employer-profile/EmployerProfileForm.vue'
+import EmployerAddJob from '@/pages/employer-profile/EmployerAddJob.vue'
 import AllJobs from '@/pages/jobs/AllJobs.vue'
+import CandidateChart from '@/pages/candidate-profile/d3/CandidateChart.vue'
 import firebase from 'firebase'
 
 
@@ -54,9 +57,14 @@ const router = new VueRouter({
       component: SignupCandidate, 
     },
     {
-      path: '/Employer',
-      name: 'Employer',
-      component: Employer,
+      path: '/CandidateChart/', 
+      name: 'CandidateChart', 
+      component: CandidateChart
+    },
+    {
+      path: '/EmployerProfile/:id',
+      name: 'EmployerProfile',
+      component: EmployerProfile,
       meta: {
         requiresAuth: true
       }
@@ -67,13 +75,23 @@ const router = new VueRouter({
       component: SignupEmployer
     }, 
     {
+      path: '/EmployerProfileForm', 
+      name: 'EmployerProfileForm', 
+      component: EmployerProfileForm
+    },
+    {
+      path: '/EmployerAddJob', 
+      name: 'EmployerAddJob', 
+      component: EmployerAddJob
+    },
+    {
       path: '/candidateProfile/:id', 
-      name: CandidateProfile, 
+      name: 'CandidateProfile', 
       component: CandidateProfile
     }, 
     {
       path: '/AllJobs', 
-      name: AllJobs, 
+      name: 'AllJobs', 
       component: AllJobs
     }
   ]

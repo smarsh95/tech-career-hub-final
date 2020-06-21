@@ -9,7 +9,7 @@
             <v-card class="ma-3 mx-4" max-width="437px" v-for="card in cards" :key="card.title">
               <v-img class="white--text align-start" height="200px" :src="card.src"></v-img>
               <v-card-actions>
-                <v-btn text color="grey darken-2" v-text="card.buttonText"></v-btn>
+                <v-btn text color="grey darken-2" v-text="card.buttonText" :to="card.route"></v-btn>
               </v-card-actions>
             </v-card>
           </v-row>
@@ -26,11 +26,13 @@ export default {
     cards: [
       {
         buttonText: "Get Hired",
-        src: "/StudentTwo.jpeg"
+        src: "/StudentTwo.jpeg", 
+        route: "/SignupCandidate"
       },
       {
         buttonText: "Start Hiring",
-        src: "/StartUp.jpeg"
+        src: "/StartUp.jpeg", 
+        route: "/SignupEmployer"
       }
     ],
     alignmentsAvailable: ["start", "center", "end", "baseline", "stretch"],
