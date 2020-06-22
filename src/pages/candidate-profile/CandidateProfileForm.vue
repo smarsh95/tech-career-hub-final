@@ -165,5 +165,7 @@ export default {
 </script>
 
 <style>
-
+.v-main__wrap {
+  background-color: #3e5769;
+}
 </style>

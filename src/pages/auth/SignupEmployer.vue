@@ -107,3 +107,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.v-main__wrap {
+  background-color: #F1EFE8 !important;
+}
+</style>

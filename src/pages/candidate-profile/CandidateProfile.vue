@@ -136,6 +136,11 @@ export default {
 .v-content__wrap {
   margin-left: -16px;
 }
+
+.v-main__wrap {
+  background-color: #3e5769;
+}
+
 </style>
 
 

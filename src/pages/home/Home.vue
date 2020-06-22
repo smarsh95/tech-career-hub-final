@@ -57,6 +57,11 @@ export default {
 /*.card-title{
   text-shadow: 0px 0px 5px #000000;
 }*/
+
+.v-main__wrap {
+  background-color: #2b3a41 !important;
+}
+
 </style>
 
 

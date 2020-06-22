@@ -5,19 +5,19 @@
       <v-btn text color="white" @click="snackbar = false" >Close</v-btn>
     </v-snackbar>
 
-    <v-app-bar flat app>
+    <v-app-bar flat app color="#F1EFE8">
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="text-uppercase grey--text">
+      <v-toolbar-title class="text-uppercase white--text">
         <router-link class="routerLink" :to="{name: 'Home'}">
-          <span class="font-weight-light grey--text">Tech Careers</span>
+          <span class="font-weight-light grey--text darken-5">Tech Careers</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn text v-if="!user" :to="{ name: 'SignupCandidate' }">
-        <span class="font-weight-regular grey--text text--darken-2">Sign Up</span>
+        <span class="font-weight-regular">Sign Up</span>
       </v-btn>
       <v-btn text v-if="!user" :to="{ name: 'Login' }">
-        <span class="font-weight-regular grey--text text--darken-2">Login</span>
+        <span class="font-weight-regular">Login</span>
       </v-btn>
       <v-btn text v-if="user">
         <a>{{ user.email }}</a>
@@ -27,7 +27,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer temporary v-model="drawer" app color="primary">
+    <v-navigation-drawer temporary v-model="drawer" app color="#4B696F">
       <v-row>
         <v-col class="mt-5">
           <v-list class="navDrawer">
@@ -38,7 +38,7 @@
               :to="link.route"
               class="ml-2"
             >
-              <v-list-item-content class="white--text mt-0 ml-6 left display-2 font-weight-light">
+              <v-list-item-content class="white--text mt-0 ml-6 left display-2 font-weight-light text-uppercase">
                 <v-list-item-title>{{ link.text }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>

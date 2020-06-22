@@ -1,23 +1,23 @@
 <template>
   <div class="jobDashboard">
     <v-container class="my-5">
-      <v-card flat v-for="job in jobs" :key="job.jobTitle">
-        <v-row row wrap :class="`pa-3 job ${job.status}`">
-          <v-col cols="12" md="6">
-            <div class="caption grey--text">Job Title</div>
-            <div>{{ job.jobTitle }}</div>
+      <v-card v-for="job in jobs" :key="job.jobTitle" class="my-4 mx-2" color="#2F4858"> 
+        <v-row row wrap :class="`py-3 px-6 job ${job.status}`">
+          <v-col cols="12" md="6" lg="6">
+            <div class="caption grey--text font-weight-bold text-uppercase">Job Title</div>
+            <div class="white--text">{{ job.jobTitle }}</div>
           </v-col>
           <v-col xs="2">
-            <div class="caption grey--text">Company Name</div>
-            <div>{{ job.companyName }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Company Name</div>
+            <div class="white--text">{{ job.companyName }}</div>
           </v-col>
           <v-col xs="2">
-            <div class="caption grey--text">Closing Date</div>
-            <div>{{ job.due }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Closing Date</div>
+            <div class="white--text">{{ job.due }}</div>
           </v-col>
           <v-col xs="2">
             <div>
-              <v-btn color="light-blue" dark :class="`${job.status} white--text caption my-2`">{{job.status}}</v-btn>
+              <v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn>
             </div>
           </v-col>
           <v-col xs="2">
@@ -60,9 +60,6 @@ export default {
 </script>
 
 <style>
-.job {
-  border-left: 4px solid lightblue;
-}
 .project.ongoing {
   border-left: 4px solid orange;
 }
@@ -78,4 +75,8 @@ export default {
 .v-chip.overdue {
   background: #fc5c65 !important;
 }
+.v-main__wrap {
+  background-color: #78909c;
+}
+
 </style>
