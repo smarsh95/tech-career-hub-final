@@ -5,11 +5,11 @@
       <v-btn text color="white" @click="snackbar = false" >Close</v-btn>
     </v-snackbar>
 
-    <v-app-bar flat app clipped-left>
+    <v-app-bar flat app>
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link class="routerLink" :to="{name: 'Home'}">
-          <span class="font-weight-light grey--text">Tech Wizard</span>
+          <span class="font-weight-light grey--text">Tech Careers</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -99,6 +99,8 @@ export default {
 .routerLink{
   text-decoration: none;
 }
+
+
 </style>
 
 

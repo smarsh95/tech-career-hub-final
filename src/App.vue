@@ -1,9 +1,9 @@
 <template>
   <v-app >
     <Navbar/>
-    <v-content class="mx-0">
+    <v-main class="mx-0">
       <router-view></router-view>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -23,3 +23,8 @@ export default {
   }),
 };
 </script>
+<style>
+  .v-main{
+    padding-top: 56px !important;
+  }
+</style>

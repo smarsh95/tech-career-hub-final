@@ -1,5 +1,5 @@
 <template>
-  <v-app class="light-blue">
+  <v-app class="teal darken-3">
     <v-container>
       <div class="candidateChart">
         <v-row justify="center" align="center">
@@ -49,6 +49,7 @@
 import firebase from "firebase";
 import db from "@/firebase/init";
 import * as d3 from "d3";
+import { legendColor } from 'd3-svg-legend';
 
 export default {
   data() {
@@ -57,7 +58,7 @@ export default {
       profile: null,
       experienceLevel: null,
       skill: "",
-      skills: null
+      skills: []
     };
   },
   mounted() {
@@ -67,10 +68,17 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        this.skills.push({
-          skill: this.skill,
-          experienceLevel: this.experienceLevel
-        });
+        if(this.skills == undefined){
+          this.skills = [{
+            skill: this.skill,
+            experienceLevel: this.experienceLevel
+          }]
+        }else{
+          this.skills.push({
+            skill: this.skill,
+            experienceLevel: this.experienceLevel
+          })
+        }
         db.collection("candidateUsers")
           .doc(this.candidateUser.id)
           .update({ skills: this.skills })
@@ -109,13 +117,14 @@ export default {
 
       const colour = d3.scaleOrdinal(d3['schemeSet1'])
 
-      /*legend setup 
+      //legend setup 
       const legendGroup = svg.append('g')
         .attr('transform', `translate(${dims.width + 40}, 10)`)
 
-      const legend = d3.legendColor()
+      const legend = legendColor()
         .shape('circle')
-        .scale(colour)*/
+        .shapePadding(10)
+        .scale(colour)
 
       const arcTweenEnter = (d) => {
             var i = d3.interpolate(d.endAngle, d.startAngle)
@@ -135,6 +144,21 @@ export default {
             }
           }
 
+      // event handlers 
+      const handleMouseOver = (d, i, n) => {
+        //console.log(n[i])
+        d3.select(n[i])
+          .transition('changeSliceFill').duration(300)
+            .attr('fill', '#fff');
+      }
+
+      const handleMouseOut = (d,i,n) => {
+        d3.select(n[i])
+          .transition('changeSliceFill').duration(300)
+          .attr('fill', colour(d.data.name))
+      }
+
+
       // use function keyword to allow use of 'this'
       function arcTweenUpdate(d){
         //interpolate between the two objects 
@@ -150,12 +174,13 @@ export default {
       //update function
       const update = data => {
 
-        //update colour scale domain 
+        //update colour scale domain
+        
         colour.domain(data.map(d => d.skill)); 
 
         //update and call legend 
-        //legendGroup.call(legend)
-
+        legendGroup.call(legend)
+        legendGroup.selectAll('text').attr('fill', 'white')
 
         //join enhanced (pie) data to path elements
         const paths = graph.selectAll("path").data(pie(data));
@@ -183,10 +208,17 @@ export default {
           .each(function(d){ this._current = d})
           .transition().duration(750)
             .attrTween("d", arcTweenEnter);
+      
+
+      //add events 
+      graph.selectAll('path')
+        .on('mouseover', handleMouseOver)
+        .on('mouseout', handleMouseOut)
+
       };
 
       //data array and firesotre
-      var data = [];
+      //var data = [];
 
       db.collection("candidateUsers")
         .where("user_id", "==", firebase.auth().currentUser.uid)
@@ -194,12 +226,14 @@ export default {
         .then(snapshot => {
           snapshot.forEach(document => {
             let username = document.get("username")
-            data = document.get("skills")
+            this.skills = document.get("skills")
             db.collection("candidateUsers").doc(username).onSnapshot(res => {
-              data = res.get("skills")
-              update(data)
+              this.skills = res.get("skills")
+              //this.skills = this.skills
+              update(this.skills)
+              
             })
-             update(data)
+             update(this.skills)
           })  
         })
     }
@@ -218,7 +252,7 @@ export default {
           //console.log(this.candidateUser.skills);
           if (!this.candidateUser.skills) {
             console.log("There are no skills listed yet");
-            this.skills = [{}];
+            this.skills = [];
           } else {
             this.skills = this.candidateUser.skills;
           }
@@ -230,4 +264,5 @@ export default {
 </script>
 
 <style>
+
 </style>

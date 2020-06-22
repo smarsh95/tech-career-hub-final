@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login teal darken-3">
     <v-container class="mx-auto mt-6">
       <v-row justify="center">
         <v-col xs="12" sm="8" md="8" lg="6" class="text-center">
