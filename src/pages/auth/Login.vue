@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <v-container class="mx-auto mt-6">
+    <v-container class="mx-auto mt-6 LoginBox">
       <v-row justify="center">
         <v-col xs="12" sm="8" md="8" lg="6" class="text-center">
           <v-card class="pa-4">
@@ -68,6 +68,12 @@ export default {
 <style>
 .v-main__wrap {
   background-color: #3e5769;
+}
+
+@media screen and (max-width: 600px) {
+  .LoginBox{
+    padding: 18px 18px;
+  }
 }
 
 </style>

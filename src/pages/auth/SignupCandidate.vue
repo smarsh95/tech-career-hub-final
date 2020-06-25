@@ -96,4 +96,9 @@ export default {
 .v-main__wrap {
   background-color: #d5ddd5 !important;
 }
+@media screen and (max-width: 600px) {
+  .v-col{
+    padding: 18px 18px;
+  }
+}
 </style>

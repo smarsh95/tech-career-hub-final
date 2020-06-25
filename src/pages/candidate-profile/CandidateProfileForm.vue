@@ -1,80 +1,82 @@
 <template>
-  <v-card flat style="max-width: 600px; margin:auto;">
+  <v-container>
     <v-snackbar v-model="snackbar" absolute top color="primary">
       <span>Your Profile is now complete!</span>
       <v-icon dark>mdi-checkbox-marked-circle</v-icon>
     </v-snackbar>
+    <v-card flat style="max-width: 600px; margin:auto;">
+      <v-card-title
+        class="display-1 mt-10 pl-2 mx-6 pt-8 justify-left blue-grey--text font-weight-light"
+      >Your Tech Wizard Profile</v-card-title>
 
-    <v-card-title
-      class="display-1 mt-10 mb-5 pl-2 justify-left blue-grey--text font-weight-light"
-    >Your Tech Wizard Candidate Profile</v-card-title>
+      <v-form ref="form" @submit.prevent="submit" class>
+        <v-container>
+          <v-row class="mx-4">
+            <v-col cols="12" sm="6">
+              <v-text-field
+                v-model="firstName"
+                color="orange darken-2"
+                label="First name"
+                required
+                :rules="inputRules"
+              ></v-text-field>
+            </v-col>
 
-    <v-form ref="form" @submit.prevent="submit">
-      <v-container>
-        <v-row>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              v-model="firstName"
-              color="orange darken-2"
-              label="First name"
-              required
-              :rules="inputRules"
-            ></v-text-field>
-          </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                v-model="lastName"
+                color="orange darken-2"
+                label="Last name"
+                required
+                :rules="inputRules"
+              ></v-text-field>
+            </v-col>
 
-          <v-col cols="12" sm="6">
-            <v-text-field
-              v-model="lastName"
-              color="orange darken-2"
-              label="Last name"
-              required
-              :rules="inputRules"
-            ></v-text-field>
-          </v-col>
+            <v-col cols="12">
+              <v-textarea v-model="bio" color="teal" :rules="inputRules">
+                <template v-slot:label>
+                  <div>
+                    Bio
+                    <small>(optional)</small>
+                  </div>
+                </template>
+              </v-textarea>
+            </v-col>
 
-          <v-col cols="12">
-            <v-textarea v-model="bio" color="teal" :rules="inputRules">
-              <template v-slot:label>
-                <div>
-                  Bio
-                  <small>(optional)</small>
-                </div>
-              </template>
-            </v-textarea>
-          </v-col>
+            <v-col cols="12">
+              <v-text-field v-model="topSkills" label="Top Skills" color="orange"></v-text-field>
+            </v-col>
 
-          <v-col cols="12">
-            <v-text-field v-model="topSkills" label="Top Skills" color="orange"></v-text-field>
-          </v-col>
+            <v-col cols="12">
+              <v-text-field v-model="workExperience" label="Work Experience" color="orange"></v-text-field>
+            </v-col>
 
-           <v-col cols="12" lg="12">
-            <v-text-field v-model="workExperience" label="Work Experience" color="orange"></v-text-field>
-          </v-col>
+            <v-col cols="12">
+              <v-slider v-model="age" color="orange" label="Age" min="1" max="100" thumb-label></v-slider>
+            </v-col>
 
-          <v-col cols="12" sm="6" lg="12">
-            <v-slider v-model="age" color="orange" label="Age" min="1" max="100" thumb-label></v-slider>
-          </v-col>
-
-          <v-col cols="12" sm="6" lg="12">
-            <v-select
-              v-model="careerPaths"
-              :items="paths"
-              label="Select"
-              multiple
-              hint="Choose your desired Career Paths"
-              persistent-hint
-            ></v-select>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <v-card-actions>
-        <v-btn text>Cancel</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn text color="primary" type="submit">Complete Profile</v-btn>
-      </v-card-actions>
-    </v-form>
-  </v-card>
+            <v-col cols="12">
+              <v-select
+                v-model="careerPaths"
+                :items="paths"
+                label="Select"
+                multiple
+                hint="Choose your desired Career Paths"
+                persistent-hint
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-card-actions>
+                <v-btn text>Cancel</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn right text color="primary" type="submit">Complete Profile</v-btn>
+              </v-card-actions>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-card>
+  </v-container>
 </template>
 
 <script>

@@ -9,7 +9,7 @@
       <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase white--text">
         <router-link class="routerLink" :to="{name: 'Home'}">
-          <span class="font-weight-light grey--text darken-5">Tech Careers</span>
+          <span class="font-weight-light grey--text darken-5">Tech Wizard</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>

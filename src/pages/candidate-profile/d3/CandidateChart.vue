@@ -1,3 +1,4 @@
+
 <template>
   <v-container>
     <div class="candidateChart">
@@ -7,7 +8,7 @@
         </v-col>
       </v-row>
       <v-row class="pt-6">
-        <v-col sm="12" md="6">
+        <v-col sm="12" md="6" class="ma-3">
           <div>
             <v-card class="pa-2">
               <v-form ref="form" @submit.prevent="submit">
@@ -30,7 +31,7 @@
             </v-card>
           </div>
         </v-col>
-        <v-col sm="12" md="5" offset-md="1">
+        <v-col sm="12" md="5" offset-md="1" class="ma-3">
           <div class="canvas mt-6 insideChart"></div>
         </v-col>
       </v-row>
@@ -43,7 +44,6 @@ import firebase from "firebase";
 import db from "@/firebase/init";
 import * as d3 from "d3";
 import { legendColor } from "d3-svg-legend";
-
 export default {
   data() {
     return {
@@ -86,56 +86,44 @@ export default {
     },
     generateChart() {
       console.log("generateChart");
-      const dims = { height: 300, width: 300, radius: 150 };
-      const cent = { x: dims.width / 2 + 5, y: dims.height / 2 + 5 };
-
+      const dimensions = { height: 300, width: 300, radius: 150 };
+      const cent = { x: dimensions.width / 2 + 5, y: dimensions.height / 2 + 5 };
       const svg = d3
         .select(".canvas")
         .append("svg")
-        .attr("width", dims.width + 200)
-        .attr("height", dims.height + 150)
-
+        .attr("width", dimensions.width + 200)
+        .attr("height", dimensions.height + 150)
       const graph = svg
         .append("g")
         .attr("transform", `translate(${cent.x}, ${cent.y})`);
-
       const pie = d3
         .pie()
         .sort(null)
         .value(d => d.experienceLevel);
-
       const arcPath = d3
         .arc()
-        .outerRadius(dims.radius)
-        .innerRadius(dims.radius / 2);
-
+        .outerRadius(dimensions.radius)
+        .innerRadius(dimensions.radius / 2);
       const colour = d3.scaleOrdinal(d3["schemeSet2"]);
-
       //legend setup
       const legendGroup = svg
         .append("g")
-        .attr("transform", `translate(${dims.width + 40}, 10)`);
-
+        .attr("transform", `translate(${dimensions.width + 40}, 10)`);
       const legend = legendColor()
         .shape("circle")
         .shapePadding(10)
         .scale(colour);
-
       //update function
       const update = data => {
         if (data == undefined) return;
         //update colour scale domain
         colour.domain(data.map(d => d.skill));
-
         //update and call legend
         legendGroup.call(legend);
         legendGroup.selectAll("text").attr("fill", "#2F4858");
-
         //join enhanced (pie) data to path elements
         const paths = graph.selectAll("path").data(pie(data));
-
         console.log(pie(data));
-
         //handle the exit selection
         paths
           .exit()
@@ -143,13 +131,11 @@ export default {
           .duration(750)
           .attrTween("d", arcTweenExit)
           .remove();
-
         //handle the current DOM path updates
         paths
           .transition()
           .duration(750)
           .attrTween("d", arcTweenUpdate);
-
         paths
           .enter()
           .append("path")
@@ -163,18 +149,15 @@ export default {
           .transition()
           .duration(750)
           .attrTween("d", arcTweenEnter);
-
         //add events
         graph
           .selectAll("path")
-          .on("mouseover", handleMouseOver)
-          .on("mouseout", handleMouseOut);
+          //.on("mouseover", handleMouseOver)
+          //.on("mouseout", handleMouseOut);
         //.on('click', handleClick)
       };
-
       //data array and firesotre
       //var data = [];
-
       db.collection("candidateUsers")
         .where("user_id", "==", firebase.auth().currentUser.uid)
         .get()
@@ -191,41 +174,33 @@ export default {
               });
             update(this.skills);
           });
-
           update(this.skills);
         });
-
       const arcTweenEnter = d => {
         var i = d3.interpolate(d.endAngle, d.startAngle);
-
         return function(t) {
           d.startAngle = i(t);
           return arcPath(d);
         };
       };
-
       const arcTweenExit = d => {
         var i = d3.interpolate(d.endAngle, d.startAngle);
-
         return function(t) {
           d.startAngle = i(t);
           return arcPath(d);
         };
       };
-
       // use function keyword to allow use of 'this'
       function arcTweenUpdate(d) {
         //interpolate between the two objects
         var i = d3.interpolate(this._current, d);
         // update the current prop with new updated data
         this._current = i(1);
-
         return function(t) {
           return arcPath(i(t));
         };
       }
-
-      // event handlers
+      /* event handlers
       const handleMouseOver = (d, i, n) => {
         //console.log(n[i])
         d3.select(n[i])
@@ -233,18 +208,16 @@ export default {
           .duration(300)
           .attr("fill", "#fff");
       };
-
       const handleMouseOut = (d, i, n) => {
         d3.select(n[i])
           .transition("changeSliceFill")
           .duration(300)
           .attr("fill", colour(d.data.skill));
-      };
+      };*/
     }
   },
   created() {
     let ref = db.collection("candidateUsers");
-
     // get current user
     ref
       .where("user_id", "==", firebase.auth().currentUser.uid)
@@ -270,7 +243,6 @@ export default {
 .v-subheader {
   padding: 0 !important;
 }
-
 .v-text-field {
   padding-top: 0 !important;
 }
