@@ -1,6 +1,7 @@
 <template>
+<div>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500" >
+    <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on }">
         <v-btn color="orange" dark v-on="on">Post a new Job</v-btn>
       </template>
@@ -30,32 +31,67 @@
       </v-card>
     </v-dialog>
   </div>
+  </div>
 </template>
 
 <script>
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import db from '@/firebase/init.js'
+import firebase from 'firebase'
 
 export default {
   data() {
     return {
+      employerUser: null, 
+      profile: null,
+      jobs: [],
       jobTitle: "",
       companyName: "", 
       description: "",
       requiredSkills: "",
       due: null,
-      dialog: false, 
-      snackbar: false,
       inputRules: [
           v => v.length >= 3 || 'Minimum length is 3 characters'
       ], 
       loading: false, 
+      dialog: false, 
       
     }
   }, 
   methods: {
       submit() {
+      if (this.$refs.form.validate()) {
+        this.loading = true;
+        if (this.jobs == undefined) {
+          this.jobs = [
+            {
+              jobTitle: this.jobTitle, 
+              companyName: this.companyName, 
+              due: format(parseISO(this.due), 'do MMM yyyy'), 
+              status: 'view'
+            }
+          ];
+        } else {
+          this.jobs.push({
+            jobTitle: this.jobTitle, 
+              companyName: this.companyName, 
+              due: format(parseISO(this.due), 'do MMM yyyy'), 
+              status: 'view'
+          });
+        }
+        db.collection("employerUsers")
+          .doc(this.employerUser.id)
+          .update({ jobs: this.jobs  })
+          .then(() => {
+            console.log("Document successfully updated")
+            this.loading = false
+            this.dialog = false
+            this.$emit("jobHasBeenAdded");
+          });
+      }
+    },
+      /*{
           if(this.$refs.form.validate()) {
             this.loading = true;
             const job = {
@@ -70,12 +106,32 @@ export default {
                 this.$emit('jobAdded')
             })
           } 
-      }
-  }, 
+      }*/
+  },
   computed: {
       formattedDate() {
           return this.due ? format(parseISO(this.due), 'do MMM yyyy') : '' 
       }
+  }, 
+    created() {
+    let ref = db.collection("employerUsers");
+    // get current user
+    ref
+      .where("user_id", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
+          //console.log(this.candidateUser.id);
+          //console.log(this.candidateUser.skills);
+          if (!this.employerUser.skills) {
+            console.log("There are no jobs listed yet");
+            this.jobs = [];
+          } else {
+            this.jobs = this.employerUser.jobs;
+          }
+        });
+      });
   }
 };
 </script>

@@ -2,7 +2,7 @@
   <nav>
     <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
       <span>Awesome! You added a new job.</span>
-      <v-btn text color="white" @click="snackbar = false" >Close</v-btn>
+      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
 
     <v-app-bar flat app color="#F1EFE8">
@@ -30,6 +30,7 @@
     <v-navigation-drawer temporary v-model="drawer" app color="#4B696F">
       <v-row>
         <v-col class="mt-5">
+          <AddJobPopup @jobHasBeenAdded = "snackbar = true"/>
           <v-list class="navDrawer">
             <v-list-item
               v-for="link in links"
@@ -51,8 +52,13 @@
 
 <script>
 import firebase from "firebase";
+import AddJobPopup from '@/pages/employer-profile/AddJobPopup.vue'
+
 export default {
   name: "Navbar",
+  components: {
+    AddJobPopup
+  },
   data() {
     return {
       user: null,

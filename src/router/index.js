@@ -80,7 +80,7 @@ const router = new VueRouter({
       component: EmployerProfileForm
     },
     {
-      path: '/EmployerAddJob', 
+      path: '/EmployerAddJob/:id', 
       name: 'EmployerAddJob', 
       component: EmployerAddJob
     },
