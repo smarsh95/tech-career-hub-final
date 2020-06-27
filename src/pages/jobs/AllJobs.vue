@@ -1,7 +1,7 @@
 <template>
   <div class="jobDashboard">
     <v-container class="my-5">
-      <v-card v-for="job in jobs" :key="job.jobTitle" class="my-4 mx-2" color="#2F4858"> 
+      <v-card v-for="job in jobs" :key="job.jobTitle" class="my-4 mx-2" color="#2F4858">
         <v-row row wrap :class="`py-3 px-6 job ${job.status}`">
           <v-col cols="12" md="6" lg="6">
             <div class="caption grey--text font-weight-bold text-uppercase">Job Title</div>
@@ -17,7 +17,8 @@
           </v-col>
           <v-col xs="2">
             <div>
-              <v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn>
+              <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
+              <JobInfoPopup :job="job"/>
             </div>
           </v-col>
           <v-col xs="2">
@@ -36,11 +37,15 @@
 
 <script>
 import db from "@/firebase/init";
+import JobInfoPopup from "@/pages/jobs/JobInfoPopup.vue";
 
 export default {
+  components: {
+        JobInfoPopup
+      },
   data() {
     return {
-      jobs: []
+      jobs: [],
     };
   },
   created() {
@@ -78,5 +83,4 @@ export default {
 .v-main__wrap {
   background-color: #78909c;
 }
-
 </style>

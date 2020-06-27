@@ -79,7 +79,7 @@ export default {
                 db.collection("employerUsers")
                   .doc(this.slug)
                   .set({
-                    username: this.username,
+                    username: this.username.toLowerCase(),
                     user_id: cred.user.uid
                   });
               })
@@ -89,7 +89,7 @@ export default {
                   .httpsCallable("AddEmployerRole");
                 addEmployerRole({ email: this.email }).then(result => {
                   console.log(result);
-                  this.$router.push({ name: "Home" });
+                  this.$router.push({ name: "EmployerProfileForm" });
                 });
               })
               .catch(err => {
