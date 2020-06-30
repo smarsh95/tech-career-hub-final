@@ -1,50 +1,46 @@
 <template>
-  <div class="jobDashboard">
+  <div class="employerList">
     <v-container class="my-5">
-      <v-tooltip top>
+        <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('jobTitle')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('employerName')" v-on="on">
             <v-icon left small>mdi-folder</v-icon>
-            <span class="caption text-lowercase">By Job Title</span>
+            <span class="caption text-lowercase">By Employer Name</span>
           </v-btn>
         </template>
-        <span>Sort Jobs By Title</span>
+        <span>Sort Employers By Name</span>
       </v-tooltip>
 
      <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('companyName')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('careerPathsOffered')" v-on="on">
             <v-icon left small>mdi-account</v-icon>
-            <span class="caption text-lowercase">By Company Name</span>
+            <span class="caption text-lowercase">By Career Paths Offered</span>
           </v-btn>
         </template>
-        <span>Sort Jobs By Company Name</span>
+        <span>Sort Employers By Career Paths Offered</span>
       </v-tooltip>
 
-      <v-card v-for="job in jobs" :key="job.jobTitle" class="my-4 mx-2" color="#2F4858">
-        <v-row row wrap :class="`py-3 px-6 job ${job.status}`">
+      <v-card v-for="employerUser in employerUsers" :key="employerUser.companyName" class="my-4 mx-2" color="#2F4858">
+        <v-row row wrap :class="'py-3 px-6'">
           <v-col cols="12" md="6" lg="6">
-            <div class="caption grey--text font-weight-bold text-uppercase">Job Title</div>
-            <div class="white--text">{{ job.jobTitle }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Name:</div>
+            <div class="white--text">{{ employerUser.companyName }}</div>
           </v-col>
           <v-col xs="2">
-            <div class="caption grey--text font-weight-bold text-uppercase">Company Name</div>
-            <div class="white--text">{{ job.companyName }}</div>
-          </v-col>
-          <v-col xs="2">
-            <div class="caption grey--text font-weight-bold text-uppercase">Closing Date</div>
-            <div class="white--text">{{ job.due }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Career Paths Offered:</div>
+            <div class="white--text">{{ employerUser.companyCareerPathsOffered.toString().replace(/,/g, ", ") }}</div>
           </v-col>
           <v-col xs="2">
             <div>
               <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
-              <JobInfoPopup :job="job"/>
+              <EmployerInfoPopup :employerUser="employerUser"/>
             </div>
           </v-col>
-          <v-col xs="2">
+           <v-col xs="2">
             <div>
               <v-btn class="mx-2 my-1" fab dark small color="pink">
-                <v-icon dark>mdi-heart</v-icon>
+                <v-icon dark>mdi-star</v-icon>
               </v-btn>
             </div>
           </v-col>
@@ -56,29 +52,29 @@
 </template>
 
 <script>
-import db from "@/firebase/init";
-import JobInfoPopup from "@/pages/jobs/JobInfoPopup.vue";
+import db from "@/firebase/init"
+import EmployerInfoPopup from "@/pages/employer-profile/EmployerInfoPopup.vue"
 
 export default {
   components: {
-        JobInfoPopup
+        EmployerInfoPopup
       },
   data() {
     return {
-      jobs: [],
+      employerUsers: [],
     };
   },
   methods: {
     sortBy(prop) {
-      this.jobs.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));
+      this.employerUsers.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));
     }
   },
   created() {
-    db.collection("jobs").onSnapshot(res => {
+    db.collection("employerUsers").onSnapshot(res => {
       const changes = res.docChanges();
       changes.forEach(change => {
         if (change.type === "added") {
-          this.jobs.push({
+          this.employerUsers.push({
             ...change.doc.data(),
             id: change.doc.id
           });

@@ -2,15 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../pages/home/Home.vue'
 import Login from '@/pages/auth/Login.vue'
+import AllCandidates from '@/pages/candidate-profile/AllCandidates.vue'
 import CandidateMenu from '@/pages/candidate-profile/CandidateMenu.vue'
 import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 import CandidateProfileForm from '@/pages/candidate-profile/CandidateProfileForm.vue'
 import SignupCandidate from '@/pages/auth/SignupCandidate.vue'
 import SignupEmployer from '@/pages/auth/SignupEmployer.vue'
+import AllEmployers from '@/pages/employer-profile/AllEmployers.vue'
 import EmployerProfile from '@/pages/employer-profile/EmployerProfile.vue'
 import EmployerProfileForm from '@/pages/employer-profile/EmployerProfileForm.vue'
 import EmployerAddJob from '@/pages/employer-profile/EmployerAddJob.vue'
+import EmployerMap from '@/pages/employer-profile/EmployerMap.vue'
 import AllJobs from '@/pages/jobs/AllJobs.vue'
+import CandidateMap from '@/pages/candidate-profile/CandidateMap.vue'
 import CandidateChart from '@/pages/candidate-profile/d3/CandidateChart.vue'
 import firebase from 'firebase'
 
@@ -39,6 +43,11 @@ const router = new VueRouter({
       component: Login, 
     },
     {
+      path: '/AllCandidates', 
+      name: 'AllCandidates', 
+      component: AllCandidates
+    },
+    {
       path: '/CandidateMenu', 
       name: 'CandidateMenu', 
       component: CandidateMenu
@@ -60,6 +69,11 @@ const router = new VueRouter({
       path: '/CandidateChart/', 
       name: 'CandidateChart', 
       component: CandidateChart
+    },
+    {
+      path: '/AllEmployers', 
+      name: 'AllEmployers', 
+      component: AllEmployers
     },
     {
       path: '/EmployerProfile/:id',
@@ -85,6 +99,11 @@ const router = new VueRouter({
       component: EmployerAddJob
     },
     {
+      path: '/EmployerMap', 
+      name: 'EmployerMap', 
+      component: EmployerMap
+    },
+    {
       path: '/candidateProfile/:id', 
       name: 'CandidateProfile', 
       component: CandidateProfile
@@ -93,6 +112,11 @@ const router = new VueRouter({
       path: '/AllJobs', 
       name: 'AllJobs', 
       component: AllJobs
+    }, 
+    {
+      path: '/candidateMap', 
+      name: 'CandidateMap', 
+      component: CandidateMap
     }
   ]
 })

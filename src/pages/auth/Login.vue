@@ -22,6 +22,7 @@
 
 <script>
 import firebase from "firebase";
+import db from "@/firebase/init";
 export default {
   name: "Login",
   data() {
@@ -32,17 +33,17 @@ export default {
     };
   },
   created() {
-        firebase.auth().onAuthStateChanged(userAuth => {
-            if (userAuth) {
-                firebase
-                    .auth()
-                    .currentUser.getIdTokenResult()
-                    .then(tokenResult => {
-                        console.log(tokenResult.claims.candidate);
-                    });
-            }
-        });
-    },
+    firebase.auth().onAuthStateChanged(userAuth => {
+      if (userAuth) {
+        firebase
+          .auth()
+          .currentUser.getIdTokenResult()
+          .then(tokenResult => {
+            console.log(tokenResult.claims.candidate);
+          });
+      }
+    });
+  },
   methods: {
     login() {
       if (this.email && this.password) {
@@ -51,7 +52,36 @@ export default {
           .signInWithEmailAndPassword(this.email, this.password)
           .then(cred => {
             console.log(cred.user);
-            this.$router.push({ name: "Home" });
+            firebase
+              .auth()
+              .currentUser.getIdTokenResult()
+              .then(idTokenResult => {
+                if (idTokenResult.claims.candidate) {
+                  db.collection("candidateUsers")
+                    .where("user_id", "==", firebase.auth().currentUser.uid)
+                    .get()
+                    .then(snapshot => {
+                      snapshot.forEach(doc => {
+                        console.log(doc)
+                        this.$router.push({ path: "/candidateProfile/" + doc.get('username') });
+                      });
+                    });
+                  //this.$router.push({ name: "/candidateProfile/:id" });
+                } else if (idTokenResult.claims.employer) {
+                  db.collection("employerUsers")
+                    .where("user_id", "==", firebase.auth().currentUser.uid)
+                    .get()
+                    .then(snapshot => {
+                      snapshot.forEach(doc => {
+                        this.$router.push({ path: "/EmployerProfile/" + doc.get('username') });
+                      });
+                    });
+                  //this.$router.push({ name: "/EmployerProfile/:id" });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
           })
           .catch(err => {
             this.feedback = err.message;
@@ -60,7 +90,7 @@ export default {
       } else {
         this.feedback = "Please fill in both fields";
       }
-    },
+    }
   }
 };
 </script>
@@ -71,9 +101,8 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .LoginBox{
+  .LoginBox {
     padding: 18px 18px;
   }
 }
-
 </style>

@@ -1,50 +1,54 @@
 <template>
-  <div class="jobDashboard">
+  <div class="candidateList">
     <v-container class="my-5">
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('jobTitle')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('firstName')" v-on="on">
             <v-icon left small>mdi-folder</v-icon>
-            <span class="caption text-lowercase">By Job Title</span>
+            <span class="caption text-lowercase">By Candidate Name</span>
           </v-btn>
         </template>
-        <span>Sort Jobs By Title</span>
+        <span>Sort Candidates By Name</span>
       </v-tooltip>
 
-     <v-tooltip top>
+      <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('companyName')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('topSkills')" v-on="on">
             <v-icon left small>mdi-account</v-icon>
-            <span class="caption text-lowercase">By Company Name</span>
+            <span class="caption text-lowercase">By Top Skills</span>
           </v-btn>
         </template>
-        <span>Sort Jobs By Company Name</span>
+        <span>Sort Candidates By Top Skills</span>
       </v-tooltip>
-
-      <v-card v-for="job in jobs" :key="job.jobTitle" class="my-4 mx-2" color="#2F4858">
-        <v-row row wrap :class="`py-3 px-6 job ${job.status}`">
+      <v-card
+        v-for="candidateUser in candidateUsers"
+        :key="candidateUser.firstName"
+        class="my-4 mx-2"
+        color="#2F4858"
+      >
+        <v-row row wrap :class="'py-3 px-6'">
           <v-col cols="12" md="6" lg="6">
-            <div class="caption grey--text font-weight-bold text-uppercase">Job Title</div>
-            <div class="white--text">{{ job.jobTitle }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Name:</div>
+            <div class="white--text">{{ candidateUser.firstName + " " + candidateUser.lastName }}</div>
           </v-col>
           <v-col xs="2">
-            <div class="caption grey--text font-weight-bold text-uppercase">Company Name</div>
-            <div class="white--text">{{ job.companyName }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Top Skills:</div>
+            <div class="white--text">{{ candidateUser.topSkills }}</div>
           </v-col>
           <v-col xs="2">
-            <div class="caption grey--text font-weight-bold text-uppercase">Closing Date</div>
-            <div class="white--text">{{ job.due }}</div>
+            <div class="caption grey--text font-weight-bold text-uppercase">Careers of Interest:</div>
+            <div class="white--text">{{ candidateUser.careerPaths.toString().replace(/,/g, ", ") }}</div>
           </v-col>
           <v-col xs="2">
             <div>
               <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
-              <JobInfoPopup :job="job"/>
+              <CandidateInfoPopup :candidateUser="candidateUser" />
             </div>
           </v-col>
           <v-col xs="2">
             <div>
               <v-btn class="mx-2 my-1" fab dark small color="pink">
-                <v-icon dark>mdi-heart</v-icon>
+                <v-icon dark>mdi-star</v-icon>
               </v-btn>
             </div>
           </v-col>
@@ -57,28 +61,29 @@
 
 <script>
 import db from "@/firebase/init";
-import JobInfoPopup from "@/pages/jobs/JobInfoPopup.vue";
+import CandidateInfoPopup from "@/pages/candidate-profile/CandidateInfoPopup.vue";
 
 export default {
   components: {
-        JobInfoPopup
-      },
+    CandidateInfoPopup
+  },
   data() {
     return {
-      jobs: [],
+      candidateUsers: []
     };
   },
   methods: {
     sortBy(prop) {
-      this.jobs.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));
+      console.log(this.candidateUsers)
+      this.candidateUsers.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));
     }
   },
   created() {
-    db.collection("jobs").onSnapshot(res => {
+    db.collection("candidateUsers").onSnapshot(res => {
       const changes = res.docChanges();
       changes.forEach(change => {
         if (change.type === "added") {
-          this.jobs.push({
+          this.candidateUsers.push({
             ...change.doc.data(),
             id: change.doc.id
           });

@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn class="my-2" caption dark color="blue" v-bind="attrs" v-on="on" @click="loadCompanyData">View Job</v-btn>
+        <v-btn class="my-2" caption dark color="blue" v-bind="attrs" v-on="on" @click="loadCompanyData">View</v-btn>
       </template>
       <v-card>
         <v-card-title>

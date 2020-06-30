@@ -58,8 +58,8 @@ export default {
       links: [
         { text: "Explore Tech Careers", route: "/" },
         { text: "View Jobs", route: "/allJobs" },
-        { text: "View Employers", route: "/team" },
-        { text: "View Candidates", route: "/team" }
+        { text: "View Employers", route: "/allEmployers" },
+        { text: "View Candidates", route: "/allCandidates" }
       ], 
       snackbar: false
     };
