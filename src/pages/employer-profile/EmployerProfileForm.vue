@@ -152,7 +152,7 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
-          console.log(this.employerUser.id);
+          console.log('ID: ' + this.employerUser.id);
         });
       });
   }

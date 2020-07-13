@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="text-center">
+    <div class="text-left mx-2">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="orange" dark v-on="on">Post a new Job</v-btn>
+          <v-btn color="blue" dark v-on="on">Add Job</v-btn>
         </template>
         <v-card>
           <v-card-title
@@ -225,56 +225,8 @@ export default {
               });
           });
       }
-
-      /*
-      if (this.$refs.form.validate()) {
-        this.loading = true;
-        if (this.jobs == undefined) {
-          this.jobs = [
-            {
-              jobTitle: this.jobTitle, 
-              companyName: this.companyName, 
-              due: format(parseISO(this.due), 'do MMM yyyy'), 
-              status: 'view'
-            }
-          ];
-        } else {
-          this.jobs.push({
-            jobTitle: this.jobTitle, 
-              companyName: this.companyName, 
-              due: format(parseISO(this.due), 'do MMM yyyy'), 
-              status: 'view'
-          });
-        }
-        db.collection("employerUsers")
-          .doc(this.employerUser.id)
-          .update({ jobs: this.jobs  })
-          .then(() => {
-            console.log("Document successfully updated")
-            this.loading = false
-            this.dialog = false
-            this.$emit("jobHasBeenAdded");
-          });
-          */
     }
   },
-  /*{
-          if(this.$refs.form.validate()) {
-            this.loading = true;
-            const job = {
-                jobTitle: this.jobTitle, 
-                companyName: this.companyName, 
-                due: format(parseISO(this.due), 'do MMM yyyy'), 
-                status: 'view'
-            }
-            db.collection('jobs').add(job).then(() => {
-                this.loading = false;
-                this.dialog = false;
-                this.$emit('jobAdded')
-            })
-          } 
-      }*/
-
   computed: {
     formattedDate() {
       return this.due ? format(parseISO(this.due), "do MMM yyyy") : "";
@@ -287,7 +239,7 @@ export default {
       .where("user_id", "==", firebase.auth().currentUser.uid)
       .get()
       .then(snapshot => {
-        snapshot.forEach(doc => {
+       snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
           //console.log(this.candidateUser.id);
           //console.log(this.candidateUser.skills);

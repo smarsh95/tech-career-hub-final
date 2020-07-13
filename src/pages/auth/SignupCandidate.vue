@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col xs="10" sm="8" md="8" lg="6" class="text-center">
           <v-card class="pa-4">
-            <v-card-title class="headline blue-grey--text justify-center">Signup for Candidates</v-card-title>
+            <v-card-title class="headline graffiti blue-grey--text justify-center">SIGNUP</v-card-title>
             <v-form class="px-6 py-3">
               <v-text-field label="Email:" v-model="email" type="email" name="email"></v-text-field>
               <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
@@ -51,7 +51,7 @@ export default {
           lower: true
         });
         let checkUsername = firebase.functions().httpsCallable("checkUsername");
-        checkUsername({ slug: this.slug }).then(result => {
+        checkUsername({ slug: this.slug, userType: 'candidate' }).then(result => {
           console.log(result);
           if (!result.data.unique) {
             this.feedback = "This username already exists";
@@ -73,7 +73,13 @@ export default {
                   .httpsCallable("AddCandidateRole");
                 addCandidateRole({ email: this.email }).then(result => {
                   console.log(result);
-                  this.$router.push({ name: "CandidateProfileForm" });
+                  //this.$router.push({ name: "CandidateProfileForm" });
+                }).then(() => {
+                  firebase
+                    .auth()
+                    .currentUser.getIdToken(true).then(() => {
+                      this.$router.push({ name: "CandidateProfileForm" });
+                    });
                 });
               })
               .catch(err => {

@@ -33,7 +33,7 @@
             </v-col>
 
             <v-col cols="12">
-              <v-textarea v-model="bio" color="teal" :rules="inputRules">
+              <v-textarea v-model="bio" color="teal">
                 <template v-slot:label>
                   <div>
                     Bio
@@ -44,7 +44,11 @@
             </v-col>
 
             <v-col cols="12">
-              <v-text-field v-model="topSkills" label="Top Skills" color="orange"></v-text-field>
+              <v-text-field v-model="location" label="Location" color="orange" :rules="inputRules"></v-text-field>
+            </v-col>
+
+            <v-col cols="12">
+              <v-text-field v-model="topSkills" label="Top Skills" color="orange" :rules="inputRules"></v-text-field>
             </v-col>
 
             <v-col cols="12">
@@ -65,6 +69,16 @@
                 persistent-hint
               ></v-select>
             </v-col>
+
+            <v-col cols="12">
+              <v-menu max-width="290">
+                <template v-slot:activator="{ on }">
+                  <v-text-field :value="formattedDate" label="Available From" v-on="on" :rules="inputRules"></v-text-field>
+                </template>
+                <v-date-picker v-model="due"></v-date-picker>
+              </v-menu>
+            </v-col>
+
             <v-col cols="12">
               <v-card-actions>
                 <v-btn text>Cancel</v-btn>
@@ -82,6 +96,8 @@
 <script>
 import firebase from "firebase";
 import db from "@/firebase/init";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 //import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
 
 export default {
@@ -92,6 +108,7 @@ export default {
       bio: "",
       topSkills: "",
       age: "",
+      location: "", 
       workExperience: "",
       careerPaths: [],
       paths: [
@@ -104,6 +121,7 @@ export default {
         "iOS Development",
         "Android Development"
       ],
+      due: null,
       inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"],
       snackbar: false,
       candidateUser: null,
@@ -120,6 +138,8 @@ export default {
             firstName: this.firstName,
             lastName: this.lastName,
             bio: this.bio,
+            due: format(parseISO(this.due), "do MMMM yyyy"),
+            location: this.location,
             topSkills: this.topSkills,
             age: this.age,
             careerPaths: this.careerPaths,
@@ -136,6 +156,11 @@ export default {
           path: "/CandidateProfile/" + this.candidateUser.id
         });
       }
+    }
+  },
+  computed: {
+    formattedDate() {
+      return this.due ? format(parseISO(this.due), "do MMM yyyy") : "";
     }
   },
   created() {

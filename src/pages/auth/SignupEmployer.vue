@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col xs="12" sm="8" md="8" lg="6" class="text-center">
           <v-card class="pa-4">
-            <v-card-title class="headline blue-grey--text justify-center">Signup for Employers</v-card-title>
+            <v-card-title class="headline graffiti blue-grey--text justify-center">SIGNUP</v-card-title>
             <v-form class="px-6 py-3 user-actions">
               <v-text-field
                 label="Company Name:"
@@ -24,7 +24,7 @@
               ></v-text-field>
               <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
               <v-text-field label="Username:" v-model="username" type="text" name="username"></v-text-field>
-              <p v-if="feedback" class="orange--text text--darken-2 text-center">{{ feedback }}</p>
+              <p v-if="feedback" class="text--darken-2 text-center">{{ feedback }}</p>
               <div class="my-4">
                 <v-btn class="block rounded blue-grey lighten-1 white--text" @click="signup">Signup</v-btn>
               </div>
@@ -67,7 +67,7 @@ export default {
           lower: true
         });
         let checkUsername = firebase.functions().httpsCallable("checkUsername");
-        checkUsername({ slug: this.slug }).then(result => {
+        checkUsername({ slug: this.slug, userType: 'employer' }).then(result => {
           console.log(result);
           if (!result.data.unique) {
             this.feedback = "This username already exists";
@@ -89,7 +89,13 @@ export default {
                   .httpsCallable("AddEmployerRole");
                 addEmployerRole({ email: this.email }).then(result => {
                   console.log(result);
-                  this.$router.push({ name: "EmployerProfileForm" });
+                  //this.$router.push({ name: "EmployerProfileForm" });
+                }).then(() => {
+                  firebase
+                    .auth()
+                    .currentUser.getIdToken(true).then(() => {
+                      this.$router.push({ name: "EmployerProfileForm" });
+                    });
                 });
               })
               .catch(err => {

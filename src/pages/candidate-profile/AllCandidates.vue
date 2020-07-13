@@ -1,6 +1,11 @@
 <template>
   <div class="candidateList">
     <v-container class="my-5">
+
+      <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
+        <v-text-field label="Search By Skills" outlined v-model="search" dense></v-text-field>
+      </v-col>
+
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn small text color="light-grey" @click="sortBy('firstName')" v-on="on">
@@ -20,8 +25,9 @@
         </template>
         <span>Sort Candidates By Top Skills</span>
       </v-tooltip>
+
       <v-card
-        v-for="candidateUser in candidateUsers"
+        v-for="candidateUser in filteredCandidateUsers "
         :key="candidateUser.firstName"
         class="my-4 mx-2"
         color="#2F4858"
@@ -31,11 +37,11 @@
             <div class="caption grey--text font-weight-bold text-uppercase">Name:</div>
             <div class="white--text">{{ candidateUser.firstName + " " + candidateUser.lastName }}</div>
           </v-col>
-          <v-col xs="2">
+          <v-col xs="3">
             <div class="caption grey--text font-weight-bold text-uppercase">Top Skills:</div>
             <div class="white--text">{{ candidateUser.topSkills }}</div>
           </v-col>
-          <v-col xs="2">
+          <v-col xs="3">
             <div class="caption grey--text font-weight-bold text-uppercase">Careers of Interest:</div>
             <div class="white--text">{{ candidateUser.careerPaths.toString().replace(/,/g, ", ") }}</div>
           </v-col>
@@ -69,7 +75,8 @@ export default {
   },
   data() {
     return {
-      candidateUsers: []
+      candidateUsers: [], 
+      search: ""
     };
   },
   methods: {
@@ -86,10 +93,19 @@ export default {
           this.candidateUsers.push({
             ...change.doc.data(),
             id: change.doc.id
-          });
+          })
         }
-      });
-    });
+      })
+      console.log(this.candidateUsers)
+    })
+  }, 
+  computed: {
+    filteredCandidateUsers: function(){
+      return this.candidateUsers.filter((candidateUser) => {
+        if(candidateUser.topSkills) return candidateUser.topSkills.match(this.search);
+        return;
+      })
+    }
   }
 };
 </script>

@@ -43,7 +43,11 @@
 import firebase from "firebase";
 import db from "@/firebase/init";
 import * as d3 from "d3";
+import d3Tip from "d3-tip";
 import { legendColor } from "d3-svg-legend";
+
+d3.tip = d3Tip;
+
 export default {
   data() {
     return {
@@ -87,12 +91,15 @@ export default {
     generateChart() {
       console.log("generateChart");
       const dimensions = { height: 300, width: 300, radius: 150 };
-      const cent = { x: dimensions.width / 2 + 5, y: dimensions.height / 2 + 5 };
+      const cent = {
+        x: dimensions.width / 2 + 5,
+        y: dimensions.height / 2 + 5
+      };
       const svg = d3
         .select(".canvas")
         .append("svg")
         .attr("width", dimensions.width + 200)
-        .attr("height", dimensions.height + 150)
+        .attr("height", dimensions.height + 150);
       const graph = svg
         .append("g")
         .attr("transform", `translate(${cent.x}, ${cent.y})`);
@@ -113,6 +120,19 @@ export default {
         .shape("circle")
         .shapePadding(10)
         .scale(colour);
+
+      const tip = d3
+        .tip()
+        .attr("class", "tip")
+        .html(d => {
+          let content = `<div class="skill">${d.data.skill}</div>`;
+          content += `<div class="experienceLevel">${d.data.experienceLevel}</div>`;
+          content += `<div class="delete">Click slice to delete</div>`;
+          return content;
+        });
+
+      graph.call(tip);
+
       //update function
       const update = data => {
         if (data == undefined) return;
@@ -149,32 +169,40 @@ export default {
           .transition()
           .duration(750)
           .attrTween("d", arcTweenEnter);
+
         //add events
         graph
           .selectAll("path")
-          //.on("mouseover", handleMouseOver)
-          //.on("mouseout", handleMouseOut);
-        //.on('click', handleClick)
+          .on("mouseover", (d, i, n) => {
+            tip.show(d, n[i]);
+            handleMouseOver(d, i, n);
+          })
+          .on("mouseout", (d, i, n) => {
+            tip.hide();
+            handleMouseOut(d, i, n);
+          })
+          .on("click", handleClick);
       };
-      //data array and firesotre
-      //var data = [];
+
+      //data array and firestore
+
+      // get current user database document
       db.collection("candidateUsers")
         .where("user_id", "==", firebase.auth().currentUser.uid)
         .get()
         .then(snapshot => {
-          snapshot.forEach(document => {
-            let username = document.get("username");
-            this.skills = document.get("skills");
+          snapshot.forEach(document => {              
+            let username = document.get("username");  //store username of current user 
+            this.skills = document.get("skills");     //store skills of current user
+
+            //set listener on the datebase document of the user to check if skills are modified
             db.collection("candidateUsers")
               .doc(username)
               .onSnapshot(res => {
-                this.skills = res.get("skills");
-                //this.skills = this.skills
-                update(this.skills);
+                this.skills = res.get("skills");      //update local skills data with skills data from database
+                update(this.skills);                  //call the update function to re-render the donut chart with the modified skills
               });
-            update(this.skills);
           });
-          update(this.skills);
         });
       const arcTweenEnter = d => {
         var i = d3.interpolate(d.endAngle, d.startAngle);
@@ -200,7 +228,7 @@ export default {
           return arcPath(i(t));
         };
       }
-      /* event handlers
+      //event handlers
       const handleMouseOver = (d, i, n) => {
         //console.log(n[i])
         d3.select(n[i])
@@ -213,7 +241,42 @@ export default {
           .transition("changeSliceFill")
           .duration(300)
           .attr("fill", colour(d.data.skill));
-      };*/
+      };
+
+      // Attempt to resolve glitching of chart on delete of skill by setting experience level to zero before delete
+      function setExperienceToZero(skillName, myArray) {
+        for (var i = 0; i < myArray.length; i++) {
+          if (myArray[i].skill === skillName) {
+            myArray[i].experienceLevel = 0;
+            //myArray[i] = {};
+            return;
+          }
+        }
+      }
+
+      // Delete skill with matching name from an array
+      function deleteSkill(skillName, myArray) {
+        for (var i = 0; i < myArray.length; i++) {
+          if (myArray[i].skill === skillName) {
+            myArray.splice(i, 1);
+            return;
+          }
+        }
+      }
+      const handleClick = d => {
+        console.log(d);
+        const skillName = d.data.skill;
+        setExperienceToZero(skillName, this.skills);  // Set experience level of skill to 0 in local skill array
+        db.collection("candidateUsers")
+          .doc(this.candidateUser.id)
+          .update({ skills: this.skills })            // Update skills in database with experience level of skill to delete set to 0
+          .then(() => {
+            deleteSkill(skillName, this.skills);      // Delete skill from local skill array
+            db.collection("candidateUsers")
+              .doc(this.candidateUser.id)
+              .update({ skills: this.skills });       // Update skills in database with local skill
+          });
+      };
     }
   },
   created() {
@@ -225,8 +288,6 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-          //console.log(this.candidateUser.id);
-          //console.log(this.candidateUser.skills);
           if (!this.candidateUser.skills) {
             console.log("There are no skills listed yet");
             this.skills = [];
@@ -250,10 +311,20 @@ export default {
   background-color: #3e5769;
 }
 h1 {
-  color: #4B696F !important;
+  color: #4b696f !important;
 }
 .chart {
   border-radius: 25px;
+}
+.tip {
+  padding: 15px;
+  background: #333;
+  color: #fff;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+.tip .delete {
+  color: hotpink;
+  font-size: 1em;
 }
 </style>
 

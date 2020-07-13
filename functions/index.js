@@ -3,13 +3,17 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 exports.checkUsername = functions.https.onCall((data, context) => {
-
-    const ref = admin.firestore().collection('users').doc(data.slug); 
-    return ref.get().then(doc => {
-        return { unique: !doc.exists }
-    }).catch(err => {
-        throw new functions.https.HttpsError('failed to connect');
-    });
+  let ref;
+  if (data.userType == 'candidate') {
+    ref = admin.firestore().collection('candidateUsers').doc(data.slug);
+  } else {
+    ref = admin.firestore().collection('employerUsers').doc(data.slug);
+  }
+  return ref.get().then(doc => {
+    return { unique: !doc.exists }
+  }).catch(err => {
+    throw new functions.https.HttpsError('failed to connect');
+  });
 });
 
 //adding user based authentication
@@ -25,7 +29,7 @@ exports.AddEmployerRole = functions.https.onCall((data, context) => {
       message: `Success! ${data.email} has been made an employer`
     }
   }).catch(err => {
-    return err; 
+    return err;
   })
 })
 
@@ -40,13 +44,13 @@ exports.AddCandidateRole = functions.https.onCall((data, context) => {
       message: `Success! ${data.email} has been made a candidate`
     }
   }).catch(err => {
-    return err; 
+    return err;
   })
 })
 
 
 
-  
-  
+
+
 
 

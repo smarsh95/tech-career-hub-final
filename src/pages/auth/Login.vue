@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col xs="12" sm="8" md="8" lg="6" class="text-center">
           <v-card class="pa-4">
-            <v-card-title class="headline blue-grey--text justify-center">Login</v-card-title>
+            <v-card-title class="headline graffiti blue-grey--text justify-center my-2">LOGIN</v-card-title>
             <v-form class="px-6 py-3">
               <v-text-field label="Email:" v-model="email" type="email" name="email"></v-text-field>
               <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
@@ -98,6 +98,16 @@ export default {
 <style>
 .v-main__wrap {
   background-color: #3e5769;
+}
+
+.v-application .graffiti{
+  font-family: gothic-open-shaded, sans-serif !important;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.02em !important;
+  font-size: 3em !important;
+  /*color:#4b696f !important;*/
+  color: #3e5769 !important;
 }
 
 @media screen and (max-width: 600px) {
