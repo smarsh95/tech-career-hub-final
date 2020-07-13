@@ -48,7 +48,12 @@
             </v-col>
 
             <v-col cols="12">
-              <v-text-field v-model="topSkills" label="Top Skills" color="orange" :rules="inputRules"></v-text-field>
+              <v-text-field
+                v-model="topSkills"
+                label="Top Skills"
+                color="orange"
+                :rules="inputRules"
+              ></v-text-field>
             </v-col>
 
             <v-col cols="12">
@@ -70,25 +75,67 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" class="pb-0">
               <v-menu max-width="290">
                 <template v-slot:activator="{ on }">
-                  <v-text-field :value="formattedDate" label="Available From" v-on="on" :rules="inputRules"></v-text-field>
+                  <v-text-field
+                    :value="formattedDate"
+                    label="Available From"
+                    v-on="on"
+                    :rules="inputRules"
+                  ></v-text-field>
                 </template>
                 <v-date-picker v-model="due"></v-date-picker>
               </v-menu>
             </v-col>
 
+            <v-col cols="12" class="pt-0">
+              <v-checkbox v-model="tcChecked" color="green">
+                <template v-slot:label>
+                  <div @click.stop>
+                    Do you accept the
+                    <a href="javascript:;" @click.stop="terms = true">terms</a>
+                    and
+                    <a
+                      href="javascript:;"
+                      @click.stop="conditions = true"
+                    >conditions?</a>
+                  </div>
+                </template>
+              </v-checkbox>
+            </v-col>
+
             <v-col cols="12">
               <v-card-actions>
-                <v-btn text>Cancel</v-btn>
+                <v-btn text @click="resetForm">Cancel</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn right text color="primary" type="submit">Complete Profile</v-btn>
+                <v-btn right text color="primary" type="submit" :disabled="!formIsValid">Complete Profile</v-btn>
               </v-card-actions>
             </v-col>
           </v-row>
         </v-container>
       </v-form>
+
+      <v-dialog v-model="terms" width="70%">
+        <v-card>
+          <v-card-title class="title">Terms</v-card-title>
+          <v-card-text v-for="n in 5" :key="n">{{ content }}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="purple" @click="terms = false">Ok</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="conditions" width="70%">
+        <v-card>
+          <v-card-title class="title">Conditions</v-card-title>
+          <v-card-text v-for="n in 5" :key="n">{{ content }}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="purple" @click="conditions = false">Ok</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -108,7 +155,7 @@ export default {
       bio: "",
       topSkills: "",
       age: "",
-      location: "", 
+      location: "",
       workExperience: "",
       careerPaths: [],
       paths: [
@@ -125,7 +172,11 @@ export default {
       inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"],
       snackbar: false,
       candidateUser: null,
-      profile: null
+      profile: null,
+      terms: false,
+      conditions: false,
+      tcChecked: false,
+      content: 'Lorem Ipsum'
     };
   },
   methods: {
@@ -156,12 +207,37 @@ export default {
           path: "/CandidateProfile/" + this.candidateUser.id
         });
       }
-    }
+    }, 
+     resetForm () {
+          this.firstName = "",
+          this.lastName = "",
+          this.bio = "",
+          this.due = "",
+          this.location = "",
+          this.topSkills = "",
+          this.age = "",
+          this.workExperience = "",
+          this.careerPaths = "",
+          this.tcChecked = false
+      },
   },
   computed: {
     formattedDate() {
       return this.due ? format(parseISO(this.due), "do MMM yyyy") : "";
-    }
+    },
+    formIsValid () {
+        return (
+          this.firstName &&
+          this.lastName &&
+          this.due &&
+          this.location &&
+          this.topSkills &&
+          this.age &&
+          this.workExperience &&
+          this.careerPaths &&
+          this.tcChecked
+        )
+      }
   },
   created() {
     let ref = db.collection("candidateUsers");

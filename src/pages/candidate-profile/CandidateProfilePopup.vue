@@ -7,11 +7,11 @@
         </v-btn>
       </template>
       <v-card>
-          <v-toolbar dark color="primary" flat>
-          <v-btn icon dark @click="dialog = false" right >
+        <v-toolbar dark color="primary" flat>
+          <v-btn icon dark @click="dialog = false" right>
             <v-icon>mdi-close</v-icon>
           </v-btn>
-           <v-toolbar-title>Edit Profile</v-toolbar-title>
+          <v-toolbar-title>Edit Profile</v-toolbar-title>
         </v-toolbar>
         <v-form ref="form" @submit.prevent="submit" class>
           <v-container>
@@ -98,6 +98,8 @@
                 </v-menu>
               </v-col>
 
+              
+
               <v-col cols="12">
                 <v-card-actions>
                   <v-btn text>Cancel</v-btn>
@@ -119,7 +121,6 @@ import db from "@/firebase/init";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 //import CandidateProfile from '@/pages/candidate-profile/CandidateProfile.vue'
-
 export default {
   data() {
     return {
@@ -146,10 +147,10 @@ export default {
       inputRules: [v => v.length >= 3 || "Minimum length is 3 characters"],
       snackbar: false,
       profile: null,
-      candidateUser: null
+      candidateUser: null,
     };
   },
-    /*props: {
+  /*props: {
     candidateUser: Object
   },*/
   methods: {
@@ -186,8 +187,6 @@ export default {
             console.log("Document successfully updated");
           });
         this.snackbar = "true";
-
-        
       }
     }
   },
@@ -198,7 +197,6 @@ export default {
   },
   created() {
     let ref = db.collection("candidateUsers");
-
     // get current user
     ref
       .where("user_id", "==", firebase.auth().currentUser.uid)
@@ -210,7 +208,6 @@ export default {
           this.setFields();
         });
       });
-
     //profile data
     /*
     console.log(this.$route)
