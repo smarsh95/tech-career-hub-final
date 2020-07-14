@@ -4,11 +4,14 @@
       <v-col cols="12" lg="12" md="10">
         <v-card
           v-if="profile"
-          class="mx-auto blue-grey"
+          class="mx-auto mt-4 blue-grey"
           flat
           id="employerProfile"
           max-width="600px"
         >
+          <div>
+            <EmployerProfilePopup />
+          </div>
           <v-list-item>
             <v-list-item-content>
               <div>
@@ -74,9 +77,13 @@
 <script>
 import firebase from "firebase";
 import db from "@/firebase/init";
+import EmployerProfilePopup from "@/pages/employer-profile/EmployerProfilePopup.vue";
 
 export default {
   name: "EmployerProfile",
+  components: {
+    EmployerProfilePopup
+  },
   data() {
     return {
       employerUser: null,
@@ -94,6 +101,10 @@ export default {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
         });
+      }).then(() => {
+        ref.doc(this.employerUser.id).onSnapshot( res => {
+          this.profile = res.data()
+        });
       });
 
     //profile data
@@ -110,7 +121,7 @@ export default {
 </script>
 
 <style>
-#employerProfile{
+#employerProfile {
   font-family: sofia-pro-soft !important;
 }
 .v-content__wrap {

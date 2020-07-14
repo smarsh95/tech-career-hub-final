@@ -33,15 +33,15 @@
         color="#2F4858"
       >
         <v-row row wrap :class="'py-3 px-6'">
-          <v-col cols="12" md="6" lg="6">
+          <v-col cols="12" md="4" lg="4">
             <div class="caption grey--text font-weight-bold text-uppercase">Name:</div>
             <div class="white--text">{{ candidateUser.firstName + " " + candidateUser.lastName }}</div>
           </v-col>
-          <v-col xs="3">
+          <v-col xs="2">
             <div class="caption grey--text font-weight-bold text-uppercase">Top Skills:</div>
             <div class="white--text">{{ candidateUser.topSkills }}</div>
           </v-col>
-          <v-col xs="3">
+          <v-col xs="2"> 
             <div class="caption grey--text font-weight-bold text-uppercase">Careers of Interest:</div>
             <div class="white--text">{{ candidateUser.careerPaths.toString().replace(/,/g, ", ") }}</div>
           </v-col>
@@ -52,9 +52,12 @@
             </div>
           </v-col>
           <v-col xs="2">
-            <div>
-              <v-btn class="mx-2 my-1" fab dark small color="pink">
+            <div class="ml-4 my-2" >
+              <v-btn fab dark small color="pink" :class="{ 'mb-4': $vuetify.breakpoint.xsOnly, 'mr-4': $vuetify.breakpoint.smAndUp, 'mr-4 mt-4': $vuetify.breakpoint.xs}">
                 <v-icon dark>mdi-star</v-icon>
+              </v-btn>
+               <v-btn fab dark small color="blue">
+                <v-icon dark>mdi-message</v-icon>
               </v-btn>
             </div>
           </v-col>

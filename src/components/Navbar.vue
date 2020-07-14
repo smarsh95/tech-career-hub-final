@@ -12,7 +12,7 @@
       <!-- dropdown menu -->
       <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on }">
-          <v-btn text v-on="on" color="blue-grey">
+          <v-btn text v-on="on" color="blue-grey" class="btnFont">
             <v-icon left>mdi-expand_more</v-icon>
             <span>Menu</span>
           </v-btn>
@@ -213,6 +213,10 @@ export default {
 
 .logo{
   font-family: roboto; 
+}
+
+.btnFont{
+  font-family: sofia-pro-soft !important;
 }
 
 /* Extra small devices (phones, 600px and down) */

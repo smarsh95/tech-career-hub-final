@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" absolute dark fab top right color="green">
+        <v-btn v-bind="attrs" v-on="on" absolute dark fab top right color="orange">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </template>
@@ -97,9 +97,6 @@
                   <v-date-picker v-model="due"></v-date-picker>
                 </v-menu>
               </v-col>
-
-              
-
               <v-col cols="12">
                 <v-card-actions>
                   <v-btn text>Cancel</v-btn>

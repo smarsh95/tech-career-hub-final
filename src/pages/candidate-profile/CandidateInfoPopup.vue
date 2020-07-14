@@ -16,7 +16,9 @@
           <strong>Career Paths Of Interest:</strong> {{ candidateUser.careerPaths.toString().replace(/,/g, ", ") }}
         </v-card-text>
          <v-card-text><strong>Available From:</strong> {{ candidateUser.due }}</v-card-text>
-        
+         <div>
+        <v-btn class="ml-5 mb-6" caption dark color="blue">View Profile</v-btn>
+        </div>
       </v-card>
     </v-dialog>
   </v-row>

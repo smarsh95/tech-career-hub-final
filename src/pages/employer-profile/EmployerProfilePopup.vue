@@ -1,15 +1,19 @@
 <template>
-  <v-card flat style="max-width: 600px; margin:auto;">
-    <v-snackbar v-model="snackbar" absolute top color="primary">
-      <span>Your Profile is now complete!</span>
-      <v-icon dark>mdi-checkbox-marked-circle</v-icon>
-    </v-snackbar>
-
-    <v-card-title
-      class="display-1 mt-10 mb-5 pl-2 mx-6 pt-8 justify-left blue-grey--text font-weight-light"
-    >Your Company Profile</v-card-title>
-
-    <v-form ref="form" @submit.prevent="submit">
+  <v-row justify="center">
+    <v-dialog v-model="dialog" width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" absolute dark fab top right color="orange">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary" flat>
+          <v-btn icon dark @click="dialog = false" right>
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Edit Company Profile</v-toolbar-title>
+        </v-toolbar>
+         <v-form ref="form" @submit.prevent="submit">
       <v-container>
         <v-row class="mx-4">
           <v-col cols="12" sm="6">
@@ -23,7 +27,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-textarea v-model="companyOverview" color="teal" :rules="inputRules" required>
+            <v-textarea v-model="companyOverview" color="teal" :rules="inputRules">
               <template v-slot:label>
                 <div>Company Overview</div>
               </template>
@@ -31,7 +35,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-textarea v-model="companyVision" color="teal" :rules="inputRules" required>
+            <v-textarea v-model="companyVision" color="teal" :rules="inputRules">
               <template v-slot:label>
                 <div>Company Vision</div>
               </template>
@@ -39,7 +43,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-textarea v-model="companyValues" color="teal" :rules="inputRules" required>
+            <v-textarea v-model="companyValues" color="teal" :rules="inputRules">
               <template v-slot:label>
                 <div>Company Values</div>
               </template>
@@ -47,7 +51,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-textarea v-model="companyAchievements" color="teal" :rules="inputRules" required>
+            <v-textarea v-model="companyAchievements" color="teal" :rules="inputRules">
               <template v-slot:label>
                 <div>Company Achievements</div>
               </template>
@@ -59,7 +63,6 @@
               v-model="skillsDesired"
               label="Skills Desired From Candidates"
               color="orange"
-              :rules="inputRules" required
             ></v-text-field>
           </v-col>
 
@@ -71,7 +74,6 @@
               multiple
               hint="We offer jobs in the following Career Paths"
               persistent-hint
-              required
             ></v-select>
           </v-col>
           <v-col id="cancelBtn">
@@ -84,16 +86,21 @@
         </v-row>
       </v-container>
     </v-form>
-  </v-card>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
 import firebase from "firebase";
 import db from "@/firebase/init";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 
 export default {
   data() {
     return {
+      dialog: "",
       companyName: "",
       companyOverview: "",
       companyVision: "",
@@ -118,6 +125,17 @@ export default {
     };
   },
   methods: {
+    setFields() {
+      this.companyName = this.employerUser.companyName;
+      this.companyOverview = this.employerUser.companyOverview;
+      this.companyVision = this.employerUser.companyVision;
+      this.companyValues = this.employerUser.companyValues;
+      this.companyAchievements = this.employerUser.companyAchievements;
+      this.skillsDesired = this.employerUser.skillsDesired;
+      this.companyCareerPathsOffered = this.employerUser.companyCareerPathsOffered;
+      this.careerPaths = this.employerUser.careerPaths;
+      //this.due = this.employerUser.due;
+    },
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -133,20 +151,20 @@ export default {
           })
           .then(() => {
             this.loading = false;
-            this.$emit("companyProfileAdded");
+            this.$emit("profileAdded");
             console.log("Document successfully updated");
           });
         this.snackbar = "true";
-
-        this.$router.push({
-          path: "/EmployerProfile/" + this.employerUser.id
-        });
       }
+    }
+  },
+  computed: {
+    formattedDate() {
+      return this.due ? format(parseISO(this.due), "do MMM yyyy") : "";
     }
   },
   created() {
     let ref = db.collection("employerUsers");
-
     // get current user
     ref
       .where("user_id", "==", firebase.auth().currentUser.uid)
@@ -154,7 +172,8 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
-          console.log('ID: ' + this.employerUser.id);
+          console.log(this.employerUser.id);
+          this.setFields();
         });
       });
   }
@@ -162,12 +181,10 @@ export default {
 </script>
 
 <style>
-.v-main__wrap {
-  background-color: #3e5769;
-}
-#cancelBtn{
-  padding-left: 4px !important;
+.infoStyle {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: #4b696f !important;
 }
 </style>
-
-
