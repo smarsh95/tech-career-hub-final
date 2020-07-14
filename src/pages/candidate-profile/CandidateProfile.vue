@@ -1,10 +1,15 @@
 <template>
+<div>
+  <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+      <span>All done! Your profile changes have been updated!</span>
+      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   <v-container class="view-profile" fluid>
       <v-col cols="12" lg="12" md="12">
         <v-card v-if="profile" class="mx-auto mt-4 blue-grey" id="profilePage" max-width="600px" flat>
          <div>
               <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
-              <CandidateProfilePopup />
+              <CandidateProfilePopup @profileChanged="snackbar = true"/>
             </div>
           <v-list-item>
             <v-list-item-content>
@@ -99,6 +104,7 @@
         </v-card>
       </v-col>
   </v-container>
+  </div>
 </template>
 
   <!--v-row align="center" justify="center">
@@ -133,7 +139,8 @@ export default {
   data() {
     return {
       candidateUser: null,
-      profile: null
+      profile: null, 
+      snackbar: false
     };
   },
   created() {

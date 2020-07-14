@@ -78,9 +78,9 @@
           </v-col>
           <v-col id="cancelBtn">
             <v-card-actions>
-              <v-btn text>Cancel</v-btn>
+              <v-btn @click="dialog = false" text color="grey darken-1">Cancel</v-btn>
               <v-spacer></v-spacer>
-              <v-btn text color="primary" type="submit">Complete Profile</v-btn>
+              <v-btn text color="green" type="submit">Update Profile</v-btn>
             </v-card-actions>
           </v-col>
         </v-row>
@@ -150,9 +150,10 @@ export default {
             companyCareerPathsOffered: this.companyCareerPathsOffered
           })
           .then(() => {
-            this.loading = false;
-            this.$emit("profileAdded");
             console.log("Document successfully updated");
+            this.loading = false;
+            this.dialog = false;
+            this.$emit("profileChanged");
           });
         this.snackbar = "true";
       }

@@ -37,23 +37,23 @@
             <div class="caption grey--text font-weight-bold text-uppercase">Name:</div>
             <div class="white--text">{{ candidateUser.firstName + " " + candidateUser.lastName }}</div>
           </v-col>
-          <v-col xs="2">
+          <v-col xs="6">
             <div class="caption grey--text font-weight-bold text-uppercase">Top Skills:</div>
             <div class="white--text">{{ candidateUser.topSkills }}</div>
           </v-col>
-          <v-col xs="2"> 
+          <v-col xs="6"> 
             <div class="caption grey--text font-weight-bold text-uppercase">Careers of Interest:</div>
             <div class="white--text">{{ candidateUser.careerPaths.toString().replace(/,/g, ", ") }}</div>
           </v-col>
-          <v-col xs="2">
+          <v-col>
             <div>
               <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
               <CandidateInfoPopup :candidateUser="candidateUser" />
             </div>
           </v-col>
-          <v-col xs="2">
+          <v-col>
             <div class="ml-4 my-2" >
-              <v-btn fab dark small color="pink" :class="{ 'mb-4': $vuetify.breakpoint.xsOnly, 'mr-4': $vuetify.breakpoint.smAndUp, 'mr-4 mt-4': $vuetify.breakpoint.xs}">
+              <v-btn fab dark small color="pink" :class="{ 'mb-4': $vuetify.breakpoint.xsOnly, 'mr-4 mt-4': $vuetify.breakpoint.xs, 'mr-4': $vuetify.breakpoint.smAndUp,}">
                 <v-icon dark>mdi-star</v-icon>
               </v-btn>
                <v-btn fab dark small color="blue">

@@ -1,5 +1,9 @@
 <template>
   <div class="jobDashboard">
+     <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+      <span>All done! The job has been added to your favouriteJobs!</span>
+      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
 
     <v-container class="my-5">
 
@@ -50,7 +54,7 @@
           <v-col xs="2">
             <div>
               <v-btn class="mx-2 my-1" fab dark small color="pink">
-                <v-icon @click="addToFavourites(job.jobTitle)" >mdi-heart</v-icon>
+                <v-icon @click="addToFavourites(job.jobTitle)">mdi-heart</v-icon>
               </v-btn>
             </div>
           </v-col>
@@ -75,7 +79,8 @@ export default {
       jobs: [],
       search: "",
       candidateUser: null, 
-      favourites: []
+      favouriteJobs: [], 
+      snackbar: false
     };
   },
   methods: {
@@ -89,9 +94,10 @@ export default {
           jobToAdd = job;
         }
       })
-      this.favourites.push(jobToAdd);
+      this.favouriteJobs.push(jobToAdd);
       let ref = db.collection("candidateUsers").doc(this.candidateUser.username);
-      ref.update({ favourites: this.favourites});
+      ref.update({ favouriteJobs: this.favouriteJobs});
+      this.snackbar = "true"
     }
   },
   created() {
@@ -115,11 +121,11 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-          if (!this.candidateUser.favourites) {
-            console.log("There are no favourites listed yet");
-            this.favourites = [];
+          if (!this.candidateUser.favouriteJobs) {
+            console.log("There are no favouriteJobs listed yet");
+            this.favouriteJobs = [];
           } else {
-            this.favourites = this.candidateUser.favourites;
+            this.favouriteJobs = this.candidateUser.favouriteJobs;
           }
         });
       });

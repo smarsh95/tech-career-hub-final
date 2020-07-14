@@ -17,7 +17,8 @@
         </v-card-text>
          <v-card-text><strong>Available From:</strong> {{ candidateUser.due }}</v-card-text>
          <div>
-        <v-btn class="ml-5 mb-6" caption dark color="blue">View Profile</v-btn>
+        <v-btn class="ml-5 mb-6" caption dark color="blue"
+        @click="redirectToProfile()">View Profile</v-btn>
         </div>
       </v-card>
     </v-dialog>
@@ -37,6 +38,11 @@ export default {
     candidateUser: Object
   },
   methods: {
+    redirectToProfile(){
+      this.$router.push({
+          path: "/CandidateProfile/" + this.candidateUser.id
+        });
+    }
     /*
     loadCandidateData() {
       //console.log("employerID: " + this.candidateUser.employerId);

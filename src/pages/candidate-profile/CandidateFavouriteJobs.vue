@@ -1,5 +1,9 @@
 <template>
   <div class="jobDashboard">
+     <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+      <span>All done! The job has been deleted from your favouriteJobs!</span>
+      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
     <v-container class="my-5">
       <h1 class="display-1 mb-7 ml-3 text-start">My Favourite Jobs</h1>
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
@@ -8,7 +12,7 @@
 
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('favourite.jobTitle')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('favouriteJob.jobTitle')" v-on="on">
             <v-icon left small>mdi-folder</v-icon>
             <span class="caption text-lowercase">By Job Title</span>
           </v-btn>
@@ -27,40 +31,40 @@
       </v-tooltip>
 
       <v-card
-        v-for="favourite in favourites"
-        :key="favourite.jobTitle"
+        v-for="favouriteJob in favouriteJobs"
+        :key="favouriteJob.jobTitle"
         class="my-4 mx-2"
         color="#2F4858"
       >
-        <v-row row wrap :class="`py-3 px-6 job ${favourite.status}`">
+        <v-row row wrap :class="`py-3 px-6 job ${favouriteJob.status}`">
           <v-col cols="12" md="6" lg="6">
             <div
               class="caption grey--text text--lighten-1 font-weight-bold text-uppercase"
             >Job Title</div>
-            <div class="white--text">{{ favourite.jobTitle }}</div>
+            <div class="white--text">{{ favouriteJob.jobTitle }}</div>
           </v-col>
           <v-col xs="2">
             <div
               class="caption grey--text text--lighten-1 font-weight-bold text-uppercase"
             >Company Name</div>
-            <div class="white--text">{{ favourite.companyName }}</div>
+            <div class="white--text">{{ favouriteJob.companyName }}</div>
           </v-col>
           <v-col xs="2">
             <div
               class="caption grey--text text--lighten-1 font-weight-bold text-uppercase"
             >Closing Date</div>
-            <div class="white--text">{{ favourite.due }}</div>
+            <div class="white--text">{{ favouriteJob.due }}</div>
           </v-col>
           <v-col xs="2">
             <div>
               <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
-              <JobInfoPopup :job="favourite" />
+              <JobInfoPopup :job="favouriteJob" />
             </div>
           </v-col>
           <v-col xs="2">
             <div>
               <v-btn
-                @click="deleteFavouriteItem(favourite.jobTitle)"
+                @click="deleteFavouriteItem(favouriteJob.jobTitle)"
                 class="mx-2 my-1"
                 fab
                 dark
@@ -91,26 +95,28 @@ export default {
     return {
       search: "",
       candidateUser: null,
-      favourites: []
+      favouriteJobs: [], 
+      snackbar: false
     };
   },
   methods: {
     sortBy(prop) {
-      this.favourites.sort((a, b) =>
+      this.favouriteJobs.sort((a, b) =>
         a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1
       );
     },
     deleteFavouriteItem(itemTitle) {
       var index = 0;
-      for(index; index < this.favourites.length; index++){
-          if (this.favourites[index].jobTitle == itemTitle) break;
+      for(index; index < this.favouriteJobs.length; index++){
+          if (this.favouriteJobs[index].jobTitle == itemTitle) break;
       }
 
-      this.favourites.splice(index, 1);
+      this.favouriteJobs.splice(index, 1);
       let ref = db
         .collection("candidateUsers")
         .doc(this.candidateUser.username);
-      ref.update({ favourites: this.favourites });
+      ref.update({ favouriteJobs: this.favouriteJobs });
+      this.snackbar = "true"
     }
   },
   created() {
@@ -122,22 +128,22 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-          if (!this.candidateUser.favourites) {
-            console.log("There are no favourites listed yet");
-            this.favourites = [];
+          if (!this.candidateUser.favouriteJobs) {
+            console.log("There are no favouriteJobs listed yet");
+            this.favouriteJobs = [];
           } else {
-            this.favourites = this.candidateUser.favourites;
+            this.favouriteJobs = this.candidateUser.favouriteJobs;
           }
           ref.doc(this.candidateUser.id).onSnapshot(res => {
             this.candidateUser = res.data();
-            this.favourites = this.candidateUser.favourites;
+            this.favouriteJobs = this.candidateUser.favouriteJobs;
           });
         });
       });
   },
   computed: {
     filteredJobs: function() {
-      return this.favourites.filter(job => {
+      return this.favouriteJobs.filter(job => {
         return job.jobTitle.match(this.search);
       });
     }

@@ -1,7 +1,10 @@
 <template>
   <div class="employerList">
     <v-container class="my-5">
-
+      <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+        <span>All done! The employer has been added to your employer Favourites!</span>
+        <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+      </v-snackbar>
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
         <v-text-field label="Search By Company" outlined v-model="search" dense></v-text-field>
       </v-col>
@@ -34,25 +37,28 @@
       >
         <v-row row wrap :class="'py-3 px-6'">
           <v-col cols="12" md="6" lg="6">
-            <div class="caption grey--text text--lighten-1 font-weight-bold text-uppercase">Company Name:</div>
+            <div
+              class="caption grey--text text--lighten-1 font-weight-bold text-uppercase"
+            >Company Name:</div>
             <div class="white--text">{{ employerUser.companyName }}</div>
           </v-col>
           <v-col xs="2">
-            <div class="caption grey--text text--lighten-1 font-weight-bold text-uppercase">Career Paths Offered:</div>
+            <div
+              class="caption grey--text text--lighten-1 font-weight-bold text-uppercase"
+            >Career Paths Offered:</div>
             <div
               class="white--text"
             >{{ employerUser.companyCareerPathsOffered.toString().replace(/,/g, ", ") }}</div>
           </v-col>
           <v-col xs="2">
             <div>
-              <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
               <EmployerInfoPopup :employerUser="employerUser" />
             </div>
           </v-col>
           <v-col xs="2">
             <div>
               <v-btn class="mx-2 my-1" fab dark small color="pink">
-                <v-icon dark>mdi-star</v-icon>
+                <v-icon @click="addTofavouriteEmployers(employerUser.companyName)" dark>mdi-star</v-icon>
               </v-btn>
             </div>
           </v-col>
@@ -65,6 +71,7 @@
 
 <script>
 import db from "@/firebase/init";
+import firebase from 'firebase'
 import EmployerInfoPopup from "@/pages/employer-profile/EmployerInfoPopup.vue";
 
 export default {
@@ -73,16 +80,34 @@ export default {
   },
   data() {
     return {
-      employerUsers: [], 
-      search: ""
+      employerUsers: [],
+      employerUser: null,
+      search: "",
+      snackbar: false,
+      favouriteEmployers: [], 
+      candidateUser: null
     };
   },
   methods: {
     sortBy(prop) {
       this.employerUsers.sort((a, b) =>
         a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1
-      )
-    }, 
+      );
+    },
+    addTofavouriteEmployers(companyName) {
+      var employerUserToAdd;
+      this.employerUsers.forEach(employerUser => {
+        if (employerUser.companyName == companyName) {
+          employerUserToAdd = employerUser;
+        }
+      });
+      this.favouriteEmployers.push(employerUserToAdd);
+      let ref = db
+        .collection("candidateUsers")
+        .doc(this.candidateUser.username);
+      ref.update({ favouriteEmployers: this.favouriteEmployers });
+      this.snackbar = "true";
+    }
   },
   created() {
     db.collection("employerUsers").onSnapshot(res => {
@@ -96,12 +121,30 @@ export default {
         }
       });
     });
-  }, 
+
+    let refCandidate = db.collection("candidateUsers");
+    // get current user
+    refCandidate
+      .where("user_id", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
+          if (!this.candidateUser.favouriteEmployers) {
+            console.log("There are no favouriteEmployers listed yet");
+            this.favouriteEmployers = [];
+          } else {
+            this.favouriteEmployers = this.candidateUser.favouriteEmployers;
+          }
+        });
+      });
+  },
+
   computed: {
-    filteredEmployerUsers: function(){
-      return this.employerUsers.filter((employerUser) => {
-        return employerUser.companyName.match(this.search)
-      })
+    filteredEmployerUsers: function() {
+      return this.employerUsers.filter(employerUser => {
+        return employerUser.companyName.match(this.search);
+      });
     }
   }
 };

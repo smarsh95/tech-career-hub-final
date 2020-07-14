@@ -82,15 +82,20 @@ export default {
       links: [],
       //
       candidateLinks: [
-        { text: "Tech Careers", route: "/" },
+        { text: "Home", route: "/"},
+        { text: "Tech Careers", route: "/techCareers" },
         { text: "View Tech Jobs", route: "/allJobs" },
         { text: "View Employers", route: "/allEmployers" }
       ],
-      employerLinks: [{ text: "View Candidates", route: "/allCandidates" }],
+      employerLinks: [
+        { text: "Home", route: "/"},
+        { text: "View Candidates", route: "/allCandidates" }
+        ],
       subLinksCandidates: [
         { text: "My Profile", route: "/candidateProfile/:id" },
         { text: "My Skills", route: "/CandidateChart/" },
-        { text: "My Favourite Jobs", route: "/candidateFavouriteJobs"}
+        { text: "My Favourite Jobs", route: "/candidateFavouriteJobs"},
+         { text: "My Favourite Employers", route: "/candidateFavouriteEmployers"}
       ],
       subLinksEmployers: [
         { text: "Company Profile", route: "/EmployerProfile/:id" },

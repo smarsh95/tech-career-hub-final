@@ -18,8 +18,12 @@ import CandidateMap from '@/pages/candidate-profile/CandidateMap.vue'
 import CandidateChart from '@/pages/candidate-profile/d3/CandidateChart.vue'
 import CandidateMatches from '@/pages/candidate-profile/CandidateMatches.vue'
 import CandidateFavouriteJobs from '@/pages/candidate-profile/CandidateFavouriteJobs.vue'
+import CandidateFavouriteEmployers from '@/pages/candidate-profile/CandidateFavouriteEmployers.vue'
 import TechCareers from '@/pages/techCareers/TechCareers.vue'
 import firebase from 'firebase'
+import Messaging from '@/messaging/Messaging.vue'
+import NewMessage from '@/messaging/NewMessage.vue'
+
 
 
 Vue.use(VueRouter)
@@ -27,6 +31,16 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   routes: [
+    {
+      path: '/messaging', 
+      name: Messaging, 
+      component: Messaging
+    },
+    {
+      path: '/newMessage', 
+      name: NewMessage, 
+      component: NewMessage
+    },
     {
       path: '/',
       name: 'Home',
@@ -86,7 +100,7 @@ const router = new VueRouter({
     {
       path: '/CandidateFavouriteEmployers', 
       name: 'CandidateFavouriteEmployers', 
-      component: CandidateFavouriteJobs
+      component: CandidateFavouriteEmployers
     },
     {
       path: '/AllEmployers', 

@@ -179,9 +179,10 @@ export default {
             workExperience: this.workExperience
           })
           .then(() => {
-            this.loading = false;
-            this.$emit("profileAdded");
             console.log("Document successfully updated");
+            this.loading = false;
+            this.dialog = false;
+            this.$emit("profileChanged");
           });
         this.snackbar = "true";
       }
