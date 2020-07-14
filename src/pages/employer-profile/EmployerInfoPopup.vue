@@ -40,6 +40,7 @@
           <strong>Company Career Paths:</strong>
           {{ employerUser.companyCareerPathsOffered.toString().replace(/,/g, ", ") }}
         </v-card-text>
+        <v-btn class="ml-5 mb-6" caption dark color="blue" @click="redirectToProfile()">View Profile</v-btn>
       </v-card>
     </v-dialog>
   </v-row>
@@ -58,6 +59,11 @@ export default {
     employerUser: Object
   },
   methods: {
+    redirectToProfile(){
+      this.$router.push({
+          path: "/EmployerProfile/" + this.employerUser.id
+        })
+    },
     loadEmployerData() {
       //console.log("employerID: " + this.employerUser.employerId);
       db.collection("jobs")

@@ -7,7 +7,7 @@
     <v-card flat style="max-width: 600px; margin:auto;">
       <v-card-title
         class="display-1 mt-10 pl-2 mx-6 pt-8 justify-left blue-grey--text font-weight-light"
-      >Your Tech Wizard Profile</v-card-title>
+      >Your Profile</v-card-title>
 
       <v-form ref="form" @submit.prevent="submit" class>
         <v-container>

@@ -2,6 +2,7 @@
   <div>
     <v-row align="center" justify="center">
       <v-col lg="8" md="6" sm="10" class="ma-3">
+        <h1 class="display-1 text-center">Tech Careers</h1>
         <v-slide-group v-model="model" class="py-4 px-0 slideGroup">
           <v-slide-item v-for="careerPath in careerPaths" :key="careerPath.id">
             <v-card :color="'#2F4858'" class="ma-6" height="520" width="420">

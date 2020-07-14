@@ -1,16 +1,22 @@
 <template>
-<div>
-  <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+  <div>
+    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
       <span>All done! Your profile changes have been updated!</span>
       <v-btn text color="white" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
-  <v-container class="view-profile" fluid>
+    <v-container class="view-profile" fluid>
       <v-col cols="12" lg="12" md="12">
-        <v-card v-if="profile" class="mx-auto mt-4 blue-grey" id="profilePage" max-width="600px" flat>
-         <div>
-              <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
-              <CandidateProfilePopup @profileChanged="snackbar = true"/>
-            </div>
+        <v-card
+          v-if="profile"
+          class="mx-auto mt-4 blue-grey"
+          id="profilePage"
+          max-width="600px"
+          flat
+        >
+          <div>
+            <!--v-btn color="blue" dark :class="`${job.status} caption my-2`">{{job.status}}</v-btn-->
+            <CandidateProfilePopup v-if="isOwner" @profileChanged="snackbar = true" />
+          </div>
           <v-list-item>
             <v-list-item-content>
               <div>
@@ -43,7 +49,7 @@
               </div>
             </v-list-item-content>
           </v-list-item>
-           <v-list-item>
+          <v-list-item>
             <v-list-item-content>
               <div>
                 <v-col cols="8">
@@ -89,7 +95,7 @@
               </div>
             </v-list-item-content>
           </v-list-item>
-           <v-list-item>
+          <v-list-item>
             <v-list-item-content>
               <div>
                 <v-col cols="8">
@@ -103,7 +109,7 @@
           </v-list-item>
         </v-card>
       </v-col>
-  </v-container>
+    </v-container>
   </div>
 </template>
 
@@ -139,8 +145,9 @@ export default {
   data() {
     return {
       candidateUser: null,
-      profile: null, 
-      snackbar: false
+      profile: null,
+      snackbar: false,
+      isOwner: false
     };
   },
   created() {
@@ -153,11 +160,15 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
+          if (this.candidateUser.id == this.$route.params.id) this.isOwner = true;
         });
-      }).then(() => {
-        ref.doc(this.candidateUser.id).onSnapshot( res => {
-          this.profile = res.data()
-        });
+      })
+      .then(() => {
+        if (this.isOwner) {
+          ref.doc(this.candidateUser.id).onSnapshot(res => {
+            this.profile = res.data();
+          });
+        }
       });
 
     //profile data

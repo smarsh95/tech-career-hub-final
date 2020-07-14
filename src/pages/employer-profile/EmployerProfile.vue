@@ -15,7 +15,7 @@
             max-width="600px"
           >
             <div>
-              <EmployerProfilePopup @profileChanged="snackbar = true"/>
+              <EmployerProfilePopup v-if="isOwner" @profileChanged="snackbar = true" />
             </div>
             <v-list-item>
               <v-list-item-content>
@@ -94,7 +94,8 @@ export default {
     return {
       employerUser: null,
       profile: null,
-      snackbar: false
+      snackbar: false,
+      isOwner: false
     };
   },
   created() {
@@ -107,12 +108,15 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
+          if (this.employerUser.id == this.$route.params.id) this.isOwner = true;
         });
       })
       .then(() => {
-        ref.doc(this.employerUser.id).onSnapshot(res => {
-          this.profile = res.data();
-        });
+        if (this.isOwner) {
+          ref.doc(this.employerUser.id).onSnapshot(res => {
+            this.profile = res.data();
+          });
+        }
       });
 
     //profile data

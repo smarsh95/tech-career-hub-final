@@ -5,7 +5,7 @@
       <v-btn text color="white" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
     <v-container class="my-5">
-      <h1 class="display-1 mb-7 ml-3 text-start">My Favourite Jobs</h1>
+      <h1 class="display-1 mb-9 text-center">My Favourite Jobs</h1>
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
         <v-text-field label="Search By Job Title" outlined v-model="search" dense></v-text-field>
       </v-col>

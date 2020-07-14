@@ -1,7 +1,7 @@
 <template>
   <div class="jobDashboard">
     <v-container class="my-5">
-      <h1 class="display-1 mb-7 ml-3 text-start">My Favourite Employers</h1>
+      <h1 class="display-1 mb-7 text-center">My Favourite Employers</h1>
 
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
         <v-text-field label="Search By Company" outlined v-model="search" dense></v-text-field>
