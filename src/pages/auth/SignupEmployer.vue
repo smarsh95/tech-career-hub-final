@@ -24,7 +24,7 @@
               ></v-text-field>
               <v-text-field label="Password:" v-model="password" type="password" name="password"></v-text-field>
               <v-text-field label="Username:" v-model="username" type="text" name="username"></v-text-field>
-              <p v-if="feedback" class="text--darken-2 text-center">{{ feedback }}</p>
+              <p v-if="feedback" color="orange" class="text--darken-2 text-center">{{ feedback }}</p>
               <div class="my-4">
                 <v-btn class="block rounded blue-grey lighten-1 white--text" @click="signup">Signup</v-btn>
               </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+    <v-snackbar v-model="snackbar" :timeout="40000" top color="success">
       <span>Awesome! You added a new job.</span>
       <v-btn text color="white" @click="snackbar = false">Close</v-btn>
     </v-snackbar>

@@ -12,7 +12,7 @@
       <!-- dropdown menu -->
       <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on }">
-          <v-btn text v-on="on" color="blue-grey" class="btnFont">
+          <v-btn text v-on="on" color="#4b696f" class="btnFont">
             <v-icon left>mdi-expand_more</v-icon>
             <span>Menu</span>
           </v-btn>
@@ -43,7 +43,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer temporary v-model="drawer" v-if="user" app color="#4B696F">
+    <v-navigation-drawer temporary v-model="drawer" v-if="user" app color="#4b696f">
       <v-row>
         <v-col class="mt-5">
           <v-list class="navDrawer">

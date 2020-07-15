@@ -8,8 +8,8 @@
           <h1
             class="ma-3 mx-4 text-center font-weight-light customFont heading-1"
           >Find Your Dream Career</h1>
-          <h2 class="ma-3 mx-4 text-center text--darken-4 customFontLight" color="#4b696f">
-           We connect Tech Graduates with Tech Companies. We help students to find the right career path and a company that matches with their interests and preferences. We have also simplified tedious hiring processes for employers, making recruitment a breeze.  
+          <h2 class="ma-3 mx-4 text-center text--darken-4 customFontLight">
+           We connect Tech Graduates with Tech Companies. We help students to find the right career path and a company that matches with their interests and preferences.  
           </h2>
         </v-col>
       </v-row>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+
+
 import Navbar from "@/components/Navbar";
 export default {
   data() {
@@ -75,18 +77,18 @@ h1{
   font-family: sofia-pro-soft, sans-serif;
   font-weight: 400;
   font-style: normal;
-  color:#4b696f !important
+  color: #4b696f;
 }
 
 .customFontLight {
   font-family: sofia-pro, sans-serif;
   font-weight: 300 !important;
   font-style: normal;
-  color:#4b696f !important
+  color: #4b696f;
 }
 
 .v-main__wrap {
-  background-color: #2b3a41 !important;
+  background-color: #4b696f !important;
 
 }
 

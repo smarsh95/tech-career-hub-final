@@ -20,9 +20,9 @@ import CandidateMatches from '@/pages/candidate-profile/CandidateMatches.vue'
 import CandidateFavouriteJobs from '@/pages/candidate-profile/CandidateFavouriteJobs.vue'
 import CandidateFavouriteEmployers from '@/pages/candidate-profile/CandidateFavouriteEmployers.vue'
 import TechCareers from '@/pages/techCareers/TechCareers.vue'
-import firebase from 'firebase'
 import Messaging from '@/messaging/Messaging.vue'
 import NewMessage from '@/messaging/NewMessage.vue'
+import firebase from 'firebase'
 
 
 
@@ -34,12 +34,18 @@ const router = new VueRouter({
     {
       path: '/messaging', 
       name: Messaging, 
-      component: Messaging
+      component: Messaging, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/newMessage', 
       name: NewMessage, 
-      component: NewMessage
+      component: NewMessage, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/',
@@ -49,7 +55,10 @@ const router = new VueRouter({
     {
       path: '/techCareers', 
       name: 'TechCareers', 
-      component: TechCareers
+      component: TechCareers, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/about',
@@ -72,7 +81,10 @@ const router = new VueRouter({
     {
       path: '/CandidateMenu', 
       name: 'CandidateMenu', 
-      component: CandidateMenu
+      component: CandidateMenu, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/CandidateProfileForm',
@@ -90,22 +102,34 @@ const router = new VueRouter({
     {
       path: '/CandidateChart/', 
       name: 'CandidateChart', 
-      component: CandidateChart
+      component: CandidateChart, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/CandidateFavouriteJobs', 
       name: 'CandidateFavouriteJobs', 
-      component: CandidateFavouriteJobs
+      component: CandidateFavouriteJobs, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/CandidateFavouriteEmployers', 
       name: 'CandidateFavouriteEmployers', 
-      component: CandidateFavouriteEmployers
+      component: CandidateFavouriteEmployers, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/AllEmployers', 
       name: 'AllEmployers', 
-      component: AllEmployers
+      component: AllEmployers, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/EmployerProfile/:id',
@@ -123,37 +147,59 @@ const router = new VueRouter({
     {
       path: '/EmployerProfileForm', 
       name: 'EmployerProfileForm', 
-      component: EmployerProfileForm
+      component: EmployerProfileForm, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/EmployerMyJobs/:id', 
       name: 'EmployerMyJobs', 
-      component: EmployerMyJobs
+      component: EmployerMyJobs, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/EmployerMap', 
       name: 'EmployerMap', 
-      component: EmployerMap
+      component: EmployerMap, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/candidateProfile/:id', 
       name: 'CandidateProfile', 
-      component: CandidateProfile
+      component: CandidateProfile, 
+      meta: {
+        requiresAuth: true
+      }
+
     }, 
     {
       path: '/AllJobs', 
       name: 'AllJobs', 
-      component: AllJobs
+      component: AllJobs, 
+      meta: {
+        requiresAuth: true
+      }
     }, 
     {
       path: '/candidateMap', 
       name: 'CandidateMap', 
-      component: CandidateMap
+      component: CandidateMap, 
+      meta: {
+        requiresAuth: true
+      }
     }, 
     {
       path: '/candidateMatches', 
       name: 'CandidateMatches', 
-      component: CandidateMatches
+      component: CandidateMatches, 
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
