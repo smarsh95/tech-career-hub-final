@@ -97,6 +97,21 @@
                   <v-date-picker v-model="due"></v-date-picker>
                 </v-menu>
               </v-col>
+
+              <v-col cols="12" class="pt-0">
+                <v-checkbox v-model="confirmLocationCapture" color="green">
+                  <template v-slot:label>
+                    <div @click.stop>
+                      Would you be happy to share your
+                      <a
+                        href="javascript:;"
+                        @click.stop="locationPopup = true"
+                      >current location</a> with other users?
+                    </div>
+                  </template>
+                </v-checkbox>
+              </v-col>
+
               <v-col cols="12">
                 <v-card-actions>
                   <v-btn text>Cancel</v-btn>
@@ -107,6 +122,17 @@
             </v-row>
           </v-container>
         </v-form>
+
+        <v-dialog v-model="locationPopup" width="70%">
+          <v-card>
+            <v-card-title class="title">Share your Location</v-card-title>
+            <v-card-text>{{ locationContent }}</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="blue" @click="locationPopup = false">Ok</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card>
     </v-dialog>
   </v-row>
@@ -145,12 +171,55 @@ export default {
       snackbar: false,
       profile: null,
       candidateUser: null,
+      locationPopup: false,
+      locationContent: "Lorem Ipsum",
+      confirmLocationCapture: false,
+      geolocation: null
     };
   },
   /*props: {
     candidateUser: Object
   },*/
   methods: {
+    saveLocation(deleteLocation) {
+      return new Promise((resolve, reject) => {
+        var tempGeolocation = null;
+        if (!deleteLocation) {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+              //find the user record and then update geocoords
+              db.collection("candidateUsers")
+                .doc(this.candidateUser.id)
+                .update({
+                  geolocation: {
+                    lat: pos.coords.latitude,
+                    lng: pos.coords.longitude
+                  }
+                })
+                .then(() => {
+                  resolve("Success!");
+                })
+                .catch(() => {
+                  reject("Not successfull");
+                });
+            });
+          }
+        } else {
+
+          db.collection("candidateUsers")
+            .doc(this.candidateUser.id)
+            .update({
+              geolocation: tempGeolocation
+            })
+            .then(() => {
+              resolve("Success!");
+            })
+            .catch(() => {
+              reject("Rejected.");
+            });
+        }
+      });
+    },
     setFields() {
       this.firstName = this.candidateUser.firstName;
       this.lastName = this.candidateUser.lastName;
@@ -160,6 +229,8 @@ export default {
       this.location = this.candidateUser.location;
       this.workExperience = this.candidateUser.workExperience;
       this.careerPaths = this.candidateUser.careerPaths;
+      this.confirmLocationCapture = this.candidateUser.confirmLocationCapture;
+      this.geolocation = this.candidateUser.geolocation;
       //this.due = this.candidateUser.due;
     },
     submit() {
@@ -176,15 +247,26 @@ export default {
             topSkills: this.topSkills,
             age: this.age,
             careerPaths: this.careerPaths,
-            workExperience: this.workExperience
+            workExperience: this.workExperience,
+            confirmLocationCapture: this.confirmLocationCapture
           })
           .then(() => {
             console.log("Document successfully updated");
-            this.loading = false;
-            this.dialog = false;
             this.$emit("profileChanged");
+            if (this.confirmLocationCapture) {
+              this.saveLocation(false).then(() => {
+                this.loading = false;
+                this.dialog = false;
+                this.snackbar = "true";
+              });
+            } else {
+              this.saveLocation(true).then(() => {
+                this.loading = false;
+                this.dialog = false;
+                this.snackbar = "true";
+              });
+            }
           });
-        this.snackbar = "true";
       }
     }
   },

@@ -192,7 +192,7 @@ export default {
         .get()
         .then(snapshot => {
           snapshot.forEach(document => {              
-            let username = document.get("username");  //store username of current user 
+            let username = document.id //get("username");  //store username of current user 
             this.skills = document.get("skills");     //store skills of current user
 
             //set listener on the datebase document of the user to check if skills are modified

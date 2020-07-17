@@ -160,7 +160,13 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
-          if (this.candidateUser.id == this.$route.params.id) this.isOwner = true;
+          console.log(this.candidateUser.id);
+          console.log(this.$route.params.id);
+          if (
+            this.candidateUser.id.toLowerCase() ==
+            this.$route.params.id.toLowerCase()
+          )
+            this.isOwner = true;
         });
       })
       .then(() => {
@@ -168,16 +174,17 @@ export default {
           ref.doc(this.candidateUser.id).onSnapshot(res => {
             this.profile = res.data();
           });
+        } else {
+          ref
+            .doc(this.$route.params.id.toLowerCase())
+            .get()
+            .then(candidateUser => {
+              this.profile = candidateUser.data();
+            });
         }
       });
 
     //profile data
-    ref
-      .doc(this.$route.params.id)
-      .get()
-      .then(candidateUser => {
-        this.profile = candidateUser.data();
-      });
   }
 };
 </script>

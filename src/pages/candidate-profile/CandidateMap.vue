@@ -30,7 +30,7 @@ export default {
       db.collection('candidateUsers').get().then(candidateUsers => {
           candidateUsers.docs.forEach(doc => {
               let data = doc.data()
-              if(data.geolocation){
+              if(data.geolocation.lat){
                   let marker = new google.maps.Marker({
                       position: {
                           lat: data.geolocation.lat, 
@@ -82,7 +82,7 @@ export default {
           console.log(err)
           this.renderMap()
         },
-        { maximumAge: 60000, timeout: 3000 }
+        { maximumAge: 999960000, timeout: 5000 }
       );
     } else {
       //position centre by default values

@@ -106,15 +106,19 @@ export default {
       );
     },
     deleteFavouriteItem(itemTitle) {
+
+      // Iterate over favourite jobs array and find job with matching title -> save index of matching job
       var index = 0;
       for(index; index < this.favouriteJobs.length; index++){
           if (this.favouriteJobs[index].jobTitle == itemTitle) break;
       }
 
-      this.favouriteJobs.splice(index, 1);
+      this.favouriteJobs.splice(index, 1); //delete Job from favourites list
+      console.log(this.favouriteJobs);
+
       let ref = db
         .collection("candidateUsers")
-        .doc(this.candidateUser.username);
+        .doc(this.candidateUser.id);
       ref.update({ favouriteJobs: this.favouriteJobs });
       this.snackbar = "true"
     }
@@ -134,8 +138,10 @@ export default {
           } else {
             this.favouriteJobs = this.candidateUser.favouriteJobs;
           }
+          console.log(this.candidateUser.id);
           ref.doc(this.candidateUser.id).onSnapshot(res => {
             this.candidateUser = res.data();
+            this.candidateUser.id = res.id;
             this.favouriteJobs = this.candidateUser.favouriteJobs;
           });
         });

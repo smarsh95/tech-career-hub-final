@@ -108,7 +108,8 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
-          if (this.employerUser.id == this.$route.params.id) this.isOwner = true;
+          if (this.employerUser.id.toLowerCase() == this.$route.params.id.toLowerCase())
+            this.isOwner = true;
         });
       })
       .then(() => {
@@ -116,18 +117,19 @@ export default {
           ref.doc(this.employerUser.id).onSnapshot(res => {
             this.profile = res.data();
           });
+        } else {
+          ref
+            .doc(this.$route.params.id)
+            .get()
+            .then(employerUser => {
+              this.profile = employerUser.data();
+              console.log(this.employerUser);
+              console.log(this.profile);
+            });
         }
       });
 
     //profile data
-    ref
-      .doc(this.$route.params.id)
-      .get()
-      .then(employerUser => {
-        this.profile = employerUser.data();
-        console.log(this.employerUser);
-        console.log(this.profile);
-      });
   }
 };
 </script>

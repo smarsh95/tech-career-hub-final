@@ -107,7 +107,7 @@ export default {
       this.favouriteEmployers.splice(index, 1);
       let ref = db
         .collection("candidateUsers")
-        .doc(this.candidateUser.username);
+        .doc(this.candidateUser.id);
       ref.update({ favouriteEmployers: this.favouriteEmployers });
       this.snackbar = "true";
     }
@@ -129,6 +129,7 @@ export default {
           }
           ref.doc(this.candidateUser.id).onSnapshot(res => {
             this.candidateUser = res.data();
+            this.candidateUser.id = res.id;
             this.favouriteEmployers = this.candidateUser.favouriteEmployers;
           });
         });

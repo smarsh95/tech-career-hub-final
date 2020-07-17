@@ -146,6 +146,7 @@ export default {
           .then(snapshot => {
             snapshot.forEach(doc => {
               this.userData = doc.data();
+              this.userData.id = doc.id;
             });
           })
           //set route for user for each sublink
@@ -153,7 +154,7 @@ export default {
             this.subLinksToDisplay.forEach(element => {
               element.route = element.route.replace(
                 ":id",
-                this.userData.username
+                this.userData.id
               );
             });
           });

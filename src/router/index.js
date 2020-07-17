@@ -32,20 +32,14 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/messaging', 
-      name: Messaging, 
-      component: Messaging, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/messaging',
+      name: Messaging,
+      component: Messaging,
     },
     {
-      path: '/newMessage', 
-      name: NewMessage, 
-      component: NewMessage, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/newMessage',
+      name: NewMessage,
+      component: NewMessage,
     },
     {
       path: '/',
@@ -53,12 +47,9 @@ const router = new VueRouter({
       component: Home
     },
     {
-      path: '/techCareers', 
-      name: 'TechCareers', 
-      component: TechCareers, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/techCareers',
+      name: 'TechCareers',
+      component: TechCareers,
     },
     {
       path: '/about',
@@ -71,135 +62,92 @@ const router = new VueRouter({
     {
       path: '/Login',
       name: 'Login',
-      component: Login, 
+      component: Login,
     },
     {
-      path: '/AllCandidates', 
-      name: 'AllCandidates', 
+      path: '/AllCandidates',
+      name: 'AllCandidates',
       component: AllCandidates
     },
     {
-      path: '/CandidateMenu', 
-      name: 'CandidateMenu', 
-      component: CandidateMenu, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/CandidateMenu',
+      name: 'CandidateMenu',
+      component: CandidateMenu,
     },
     {
       path: '/CandidateProfileForm',
       name: 'CandidateProfileForm',
-      component: CandidateProfileForm, 
-      meta: {
-        requiresAuth: true
-      }
+      component: CandidateProfileForm,
     },
     {
       path: '/SignupCandidate',
       name: 'SignupCandidate',
-      component: SignupCandidate, 
+      component: SignupCandidate,
     },
     {
-      path: '/CandidateChart/', 
-      name: 'CandidateChart', 
-      component: CandidateChart, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/CandidateChart/',
+      name: 'CandidateChart',
+      component: CandidateChart,
     },
     {
-      path: '/CandidateFavouriteJobs', 
-      name: 'CandidateFavouriteJobs', 
-      component: CandidateFavouriteJobs, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/CandidateFavouriteJobs',
+      name: 'CandidateFavouriteJobs',
+      component: CandidateFavouriteJobs,
     },
     {
-      path: '/CandidateFavouriteEmployers', 
-      name: 'CandidateFavouriteEmployers', 
-      component: CandidateFavouriteEmployers, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/CandidateFavouriteEmployers',
+      name: 'CandidateFavouriteEmployers',
+      component: CandidateFavouriteEmployers,
     },
     {
-      path: '/AllEmployers', 
-      name: 'AllEmployers', 
-      component: AllEmployers, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/AllEmployers',
+      name: 'AllEmployers',
+      component: AllEmployers,
     },
     {
       path: '/EmployerProfile/:id',
       name: 'EmployerProfile',
       component: EmployerProfile,
-      meta: {
-        requiresAuth: true
-      }
-    }, 
+    },
     {
-      path: '/SignupEmployer', 
-      name: 'SignupEmployer', 
+      path: '/SignupEmployer',
+      name: 'SignupEmployer',
       component: SignupEmployer
-    }, 
-    {
-      path: '/EmployerProfileForm', 
-      name: 'EmployerProfileForm', 
-      component: EmployerProfileForm, 
-      meta: {
-        requiresAuth: true
-      }
     },
     {
-      path: '/EmployerMyJobs/:id', 
-      name: 'EmployerMyJobs', 
-      component: EmployerMyJobs, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/EmployerProfileForm',
+      name: 'EmployerProfileForm',
+      component: EmployerProfileForm,
     },
     {
-      path: '/EmployerMap', 
-      name: 'EmployerMap', 
-      component: EmployerMap, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/EmployerMyJobs/:id',
+      name: 'EmployerMyJobs',
+      component: EmployerMyJobs,
     },
     {
-      path: '/candidateProfile/:id', 
-      name: 'CandidateProfile', 
-      component: CandidateProfile, 
-      meta: {
-        requiresAuth: true
-      }
-
-    }, 
+      path: '/EmployerMap',
+      name: 'EmployerMap',
+      component: EmployerMap,
+    },
     {
-      path: '/AllJobs', 
-      name: 'AllJobs', 
-      component: AllJobs, 
-      meta: {
-        requiresAuth: true
-      }
-    }, 
+      path: '/candidateProfile/:id',
+      name: 'CandidateProfile',
+      component: CandidateProfile,
+    },
     {
-      path: '/candidateMap', 
-      name: 'CandidateMap', 
-      component: CandidateMap, 
-      meta: {
-        requiresAuth: true
-      }
-    }, 
+      path: '/AllJobs',
+      name: 'AllJobs',
+      component: AllJobs,
+    },
     {
-      path: '/candidateMatches', 
-      name: 'CandidateMatches', 
-      component: CandidateMatches, 
-      meta: {
-        requiresAuth: true
-      }
+      path: '/candidateMap',
+      name: 'CandidateMap',
+      component: CandidateMap,
+    },
+    {
+      path: '/candidateMatches',
+      name: 'CandidateMatches',
+      component: CandidateMatches,
     }
   ]
 })

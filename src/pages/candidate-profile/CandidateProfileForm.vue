@@ -105,34 +105,64 @@
               </v-checkbox>
             </v-col>
 
+            <v-col cols="12" class="pt-0">
+              <v-checkbox v-model="confirmLocationCapture" color="green">
+                <template v-slot:label>
+                  <div @click.stop>
+                    Would you be happy to share your
+                    <a
+                      href="javascript:;"
+                      @click.stop="locationPopup = true"
+                    >current location</a> with other users?
+                  </div>
+                </template>
+              </v-checkbox>
+            </v-col>
+
             <v-col cols="12">
               <v-card-actions>
-                <v-btn text @click="resetForm">Cancel</v-btn>
+                <v-btn text @click="redirectToHome">Fill out Later</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn right text color="primary" type="submit" :disabled="!formIsValid">Complete Profile</v-btn>
+                <v-btn
+                  right
+                  text
+                  color="primary"
+                  type="submit"
+                  :disabled="!formIsValid"
+                >Complete Profile</v-btn>
               </v-card-actions>
             </v-col>
           </v-row>
         </v-container>
       </v-form>
 
+      <v-dialog v-model="locationPopup" width="70%">
+        <v-card>
+          <v-card-title class="title">Share your Location</v-card-title>
+          <v-card-text>{{ locationContent }}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="blue" @click="locationPopup = false">Ok</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-dialog v-model="terms" width="70%">
         <v-card>
           <v-card-title class="title">Terms</v-card-title>
-          <v-card-text v-for="n in 5" :key="n">{{ content }}</v-card-text>
+          <v-card-text>{{ content }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text color="purple" @click="terms = false">Ok</v-btn>
+            <v-btn text color="blue" @click="terms = false">Ok</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <v-dialog v-model="conditions" width="70%">
         <v-card>
           <v-card-title class="title">Conditions</v-card-title>
-          <v-card-text v-for="n in 5" :key="n">{{ content }}</v-card-text>
+          <v-card-text>{{ content }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text color="purple" @click="conditions = false">Ok</v-btn>
+            <v-btn text color="blue" @click="conditions = false">Ok</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -176,10 +206,41 @@ export default {
       terms: false,
       conditions: false,
       tcChecked: false,
-      content: 'Lorem Ipsum'
+      content: "Lorem Ipsum",
+      locationPopup: false,
+      locationContent: "Lorem Ipsum",
+      confirmLocationCapture: false
     };
   },
   methods: {
+    saveLocation() {
+      return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(pos => {
+            //find the user record and then update geocoords
+            db.collection("candidateUsers")
+              .doc(this.candidateUser.id)
+              .update({
+                geolocation: {
+                  lat: pos.coords.latitude,
+                  lng: pos.coords.longitude
+                }
+              })
+              .then(() => {
+                resolve("Success!");
+
+              })
+              .catch(() => {
+                reject("Not successfull");
+
+              });
+          });
+        }
+      });
+    },
+    redirectToHome() {
+      this.$router.push({ name: "Home" });
+    },
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -194,50 +255,59 @@ export default {
             topSkills: this.topSkills,
             age: this.age,
             careerPaths: this.careerPaths,
-            workExperience: this.workExperience
+            workExperience: this.workExperience,
+            confirmLocationCapture: this.confirmLocationCapture
           })
           .then(() => {
-            this.loading = false;
             this.$emit("profileAdded");
             console.log("Document successfully updated");
+            if (this.confirmLocationCapture) {
+              this.saveLocation().then(() => {
+                this.loading = false;
+                this.$router.push({
+                  path: "/CandidateProfile/" + this.candidateUser.id
+                });
+              });
+            } else {
+              this.loading = false;
+              this.$router.push({
+                path: "/CandidateProfile/" + this.candidateUser.id
+              });
+            }
           });
-        this.snackbar = "true";
-
-        this.$router.push({
-          path: "/CandidateProfile/" + this.candidateUser.id
-        });
+        
       }
-    }, 
-     resetForm () {
-          this.firstName = "",
-          this.lastName = "",
-          this.bio = "",
-          this.due = "",
-          this.location = "",
-          this.topSkills = "",
-          this.age = "",
-          this.workExperience = "",
-          this.careerPaths = "",
-          this.tcChecked = false
-      },
+    },
+    resetForm() {
+      (this.firstName = ""),
+        (this.lastName = ""),
+        (this.bio = ""),
+        (this.due = ""),
+        (this.location = ""),
+        (this.topSkills = ""),
+        (this.age = ""),
+        (this.workExperience = ""),
+        (this.careerPaths = ""),
+        (this.tcChecked = false);
+    }
   },
   computed: {
     formattedDate() {
       return this.due ? format(parseISO(this.due), "do MMM yyyy") : "";
     },
-    formIsValid () {
-        return (
-          this.firstName &&
-          this.lastName &&
-          this.due &&
-          this.location &&
-          this.topSkills &&
-          this.age &&
-          this.workExperience &&
-          this.careerPaths &&
-          this.tcChecked
-        )
-      }
+    formIsValid() {
+      return (
+        this.firstName &&
+        this.lastName &&
+        this.due &&
+        this.location &&
+        this.topSkills &&
+        this.age &&
+        this.workExperience &&
+        this.careerPaths &&
+        this.tcChecked
+      );
+    }
   },
   created() {
     let ref = db.collection("candidateUsers");

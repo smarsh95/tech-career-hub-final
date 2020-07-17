@@ -1,7 +1,7 @@
 <template>
   <div class="jobDashboard">
      <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
-      <span>All done! The job has been added to your favouriteJobs!</span>
+      <span>{{ snackbarMessageToDisplay }}</span>
       <v-btn text color="white" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
 
@@ -80,7 +80,8 @@ export default {
       search: "",
       candidateUser: null, 
       favouriteJobs: [], 
-      snackbar: false
+      snackbar: false,
+      snackbarMessageToDisplay: ''
     };
   },
   methods: {
@@ -94,10 +95,15 @@ export default {
           jobToAdd = job;
         }
       })
-      this.favouriteJobs.push(jobToAdd);
-      let ref = db.collection("candidateUsers").doc(this.candidateUser.username);
-      ref.update({ favouriteJobs: this.favouriteJobs});
-      this.snackbar = "true"
+      if (!this.favouriteJobs.includes(jobToAdd)) {
+        this.favouriteJobs.push(jobToAdd);
+        let ref = db.collection("candidateUsers").doc(this.candidateUser.id);
+        ref.update({ favouriteJobs: this.favouriteJobs});
+        this.snackbarMessageToDisplay = 'All done! ' + jobToAdd.jobTitle + ' has been added to your favouriteJobs!';
+      }else{
+        this.snackbarMessageToDisplay = jobToAdd.jobTitle + ' is already in your favourites list.';
+      }
+      this.snackbar = "true";
     }
   },
   created() {

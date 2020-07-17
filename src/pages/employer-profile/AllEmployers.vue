@@ -2,7 +2,7 @@
   <div class="employerList">
     <v-container class="my-5">
       <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
-        <span>All done! The employer has been added to your employer Favourites!</span>
+        <span>{{ snackbarMessageToDisplay }}</span>
         <v-btn text color="white" @click="snackbar = false">Close</v-btn>
       </v-snackbar>
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
@@ -71,7 +71,7 @@
 
 <script>
 import db from "@/firebase/init";
-import firebase from 'firebase'
+import firebase from "firebase";
 import EmployerInfoPopup from "@/pages/employer-profile/EmployerInfoPopup.vue";
 
 export default {
@@ -84,7 +84,8 @@ export default {
       employerUser: null,
       search: "",
       snackbar: false,
-      favouriteEmployers: [], 
+      snackbarMessageToDisplay: '',
+      favouriteEmployers: [],
       candidateUser: null
     };
   },
@@ -101,11 +102,14 @@ export default {
           employerUserToAdd = employerUser;
         }
       });
-      this.favouriteEmployers.push(employerUserToAdd);
-      let ref = db
-        .collection("candidateUsers")
-        .doc(this.candidateUser.username);
-      ref.update({ favouriteEmployers: this.favouriteEmployers });
+      if (!this.favouriteEmployers.includes(employerUserToAdd)) {
+        this.favouriteEmployers.push(employerUserToAdd);
+        let ref = db.collection("candidateUsers").doc(this.candidateUser.id);
+        ref.update({ favouriteEmployers: this.favouriteEmployers });
+        this.snackbarMessageToDisplay = 'All done! ' + employerUserToAdd.companyName + ' has been added to your employer Favourites!';
+      }else{
+        this.snackbarMessageToDisplay =  employerUserToAdd.companyName + ' is already in your favourites list.';
+      }
       this.snackbar = "true";
     }
   },

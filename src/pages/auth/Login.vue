@@ -63,7 +63,7 @@ export default {
                     .then(snapshot => {
                       snapshot.forEach(doc => {
                         console.log(doc)
-                        this.$router.push({ path: "/candidateProfile/" + doc.get('username') });
+                        this.$router.push({ path: "/candidateProfile/" + doc.id });
                       });
                     });
                   //this.$router.push({ name: "/candidateProfile/:id" });
@@ -73,7 +73,7 @@ export default {
                     .get()
                     .then(snapshot => {
                       snapshot.forEach(doc => {
-                        this.$router.push({ path: "/EmployerProfile/" + doc.get('username') });
+                        this.$router.push({ path: "/EmployerProfile/" + doc.id });
                       });
                     });
                   //this.$router.push({ name: "/EmployerProfile/:id" });

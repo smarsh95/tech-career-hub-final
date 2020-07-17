@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-snackbar v-model="snackbar" :timeout="40000" top color="success">
+    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
       <span>Awesome! You added a new job.</span>
       <v-btn text color="white" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
@@ -125,7 +125,7 @@ export default {
 
         // Set listener on document of the employer user in the database. Listener fires if employer user document changes
         db.collection("employerUsers")
-          .doc(this.employerUser.username)
+          .doc(this.employerUser.id)
           .onSnapshot(res => {
             this.employerJobRefs = res.data().jobs; // Update local array of employer's job reference IDs
             this.findJobs(); // Execute findJobs method to populate the employerJobs array with the jobs that match the updated employer job reference IDs and therefore to display these jobs.
