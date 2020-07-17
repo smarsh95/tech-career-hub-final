@@ -27,6 +27,18 @@
                 </div>
               </v-list-item-content>
             </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>
+                <div>
+                  <v-col cols="8">
+                    <div class="caption grey--text text--lighten-1">Company Location</div>
+                    <h3 class="font-weight-light white--text">{{ profile.companyLocation }}</h3>
+                  </v-col>
+                </div>
+              </v-list-item-content>
+            </v-list-item>
+
             <v-list-item>
               <v-list-item-content>
                 <div>
@@ -108,7 +120,10 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
-          if (this.employerUser.id.toLowerCase() == this.$route.params.id.toLowerCase())
+          if (
+            this.employerUser.id.toLowerCase() ==
+            this.$route.params.id.toLowerCase()
+          )
             this.isOwner = true;
         });
       })

@@ -105,7 +105,7 @@ export default {
   computed: {
     filteredCandidateUsers: function(){
       return this.candidateUsers.filter((candidateUser) => {
-        if(candidateUser.topSkills) return candidateUser.topSkills.match(this.search);
+        if(candidateUser.topSkills) return candidateUser.topSkills.toUpperCase().match(this.search.toUpperCase());
         return;
       })
     }
@@ -114,21 +114,6 @@ export default {
 </script>
 
 <style>
-.project.ongoing {
-  border-left: 4px solid orange;
-}
-.project.overdue {
-  border-left: 4px solid tomato;
-}
-.v-chip.view {
-  background: lightblue !important;
-}
-.v-chip.ongoing {
-  background: #ffaa2c !important;
-}
-.v-chip.overdue {
-  background: #fc5c65 !important;
-}
 .v-main__wrap {
   background-color: #78909c;
 }

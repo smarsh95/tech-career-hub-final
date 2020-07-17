@@ -13,79 +13,88 @@
           </v-btn>
           <v-toolbar-title>Edit Company Profile</v-toolbar-title>
         </v-toolbar>
-         <v-form ref="form" @submit.prevent="submit">
-      <v-container>
-        <v-row class="mx-4">
-          <v-col cols="12" sm="6">
-            <v-text-field
-              v-model="companyName"
-              color="orange darken-2"
-              label="Company Name"
-              required
-              :rules="inputRules"
-            ></v-text-field>
-          </v-col>
+        <v-form ref="form" @submit.prevent="submit">
+          <v-container>
+            <v-row class="mx-4">
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="companyName"
+                  color="orange darken-2"
+                  label="Company Name"
+                  required
+                  :rules="inputRules"
+                ></v-text-field>
+              </v-col>
 
-          <v-col cols="12">
-            <v-textarea v-model="companyOverview" color="teal" :rules="inputRules">
-              <template v-slot:label>
-                <div>Company Overview</div>
-              </template>
-            </v-textarea>
-          </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="companyLocation"
+                  label="Company Location"
+                  color="orange"
+                  :rules="inputRules"
+                ></v-text-field>
+              </v-col>
 
-          <v-col cols="12">
-            <v-textarea v-model="companyVision" color="teal" :rules="inputRules">
-              <template v-slot:label>
-                <div>Company Vision</div>
-              </template>
-            </v-textarea>
-          </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="companyOverview" color="teal" :rules="inputRules">
+                  <template v-slot:label>
+                    <div>Company Overview</div>
+                  </template>
+                </v-textarea>
+              </v-col>
 
-          <v-col cols="12">
-            <v-textarea v-model="companyValues" color="teal" :rules="inputRules">
-              <template v-slot:label>
-                <div>Company Values</div>
-              </template>
-            </v-textarea>
-          </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="companyVision" color="teal" :rules="inputRules">
+                  <template v-slot:label>
+                    <div>Company Vision</div>
+                  </template>
+                </v-textarea>
+              </v-col>
 
-          <v-col cols="12">
-            <v-textarea v-model="companyAchievements" color="teal" :rules="inputRules">
-              <template v-slot:label>
-                <div>Company Achievements</div>
-              </template>
-            </v-textarea>
-          </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="companyValues" color="teal" :rules="inputRules">
+                  <template v-slot:label>
+                    <div>Company Values</div>
+                  </template>
+                </v-textarea>
+              </v-col>
 
-          <v-col cols="12">
-            <v-text-field
-              v-model="skillsDesired"
-              label="Skills Desired From Candidates"
-              color="orange"
-            ></v-text-field>
-          </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="companyAchievements" color="teal" :rules="inputRules">
+                  <template v-slot:label>
+                    <div>Company Achievements</div>
+                  </template>
+                </v-textarea>
+              </v-col>
 
-          <v-col cols="12">
-            <v-select
-              v-model="companyCareerPathsOffered"
-              :items="paths"
-              label="Select"
-              multiple
-              hint="We offer jobs in the following Career Paths"
-              persistent-hint
-            ></v-select>
-          </v-col>
-          <v-col id="cancelBtn">
-            <v-card-actions>
-              <v-btn @click="dialog = false" text color="grey darken-1">Cancel</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="green" type="submit">Update Profile</v-btn>
-            </v-card-actions>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="skillsDesired"
+                  label="Skills Desired From Candidates"
+                  color="orange"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <v-select
+                  v-model="companyCareerPathsOffered"
+                  :items="paths"
+                  label="Select"
+                  multiple
+                  hint="We offer jobs in the following Career Paths"
+                  persistent-hint
+                ></v-select>
+              </v-col>
+              <v-col id="cancelBtn">
+                <v-card-actions>
+                  <v-btn @click="dialog = false" text color="grey darken-1">Cancel</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="green" type="submit">Update Profile</v-btn>
+                </v-card-actions>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
       </v-card>
     </v-dialog>
   </v-row>
@@ -102,6 +111,7 @@ export default {
     return {
       dialog: "",
       companyName: "",
+      companyLocation: "",
       companyOverview: "",
       companyVision: "",
       companyValues: "",
@@ -127,6 +137,7 @@ export default {
   methods: {
     setFields() {
       this.companyName = this.employerUser.companyName;
+      this.companyLocation = this.employerUser.companyLocation;
       this.companyOverview = this.employerUser.companyOverview;
       this.companyVision = this.employerUser.companyVision;
       this.companyValues = this.employerUser.companyValues;
@@ -143,6 +154,7 @@ export default {
           .doc(this.employerUser.id)
           .update({
             companyName: this.companyName,
+            companyLocation: this.companyLocation,
             companyOverview: this.companyOverview,
             companyVision: this.companyVision,
             companyValues: this.companyValues,

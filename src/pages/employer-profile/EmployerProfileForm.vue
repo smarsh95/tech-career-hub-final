@@ -23,6 +23,15 @@
           </v-col>
 
           <v-col cols="12">
+            <v-text-field
+              v-model="companyLocation"
+              label="Company Location"
+              color="orange"
+              :rules="inputRules"
+            ></v-text-field>
+          </v-col>
+
+          <v-col cols="12">
             <v-textarea v-model="companyOverview" color="teal" :rules="inputRules" required>
               <template v-slot:label>
                 <div>Company Overview</div>
@@ -59,7 +68,8 @@
               v-model="skillsDesired"
               label="Skills Desired From Candidates"
               color="orange"
-              :rules="inputRules" required
+              :rules="inputRules"
+              required
             ></v-text-field>
           </v-col>
 
@@ -95,6 +105,7 @@ export default {
   data() {
     return {
       companyName: "",
+      companyLocation: "",
       companyOverview: "",
       companyVision: "",
       companyValues: "",
@@ -125,6 +136,7 @@ export default {
           .doc(this.employerUser.id)
           .update({
             companyName: this.companyName,
+            companyLocation: this.companyLocation,
             companyOverview: this.companyOverview,
             companyVision: this.companyVision,
             companyValues: this.companyValues,
@@ -154,7 +166,7 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
-          console.log('ID: ' + this.employerUser.id);
+          console.log("ID: " + this.employerUser.id);
         });
       });
   }
@@ -165,7 +177,7 @@ export default {
 .v-main__wrap {
   background-color: #3e5769;
 }
-#cancelBtn{
+#cancelBtn {
   padding-left: 4px !important;
 }
 </style>

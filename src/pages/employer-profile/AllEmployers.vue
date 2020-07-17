@@ -6,27 +6,27 @@
         <v-btn text color="white" @click="snackbar = false">Close</v-btn>
       </v-snackbar>
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
-        <v-text-field label="Search By Company" outlined v-model="search" dense></v-text-field>
+        <v-text-field label="Search By Location" outlined v-model="search" dense></v-text-field>
       </v-col>
 
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('employerName')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('companyName')" v-on="on">
             <v-icon left small>mdi-folder</v-icon>
-            <span class="caption text-lowercase">By Employer Name</span>
+            <span class="caption text-lowercase">By Company Name</span>
           </v-btn>
         </template>
-        <span>Sort Employers By Name</span>
+        <span>Sort Companies By Name</span>
       </v-tooltip>
 
-      <v-tooltip top>
+       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('careerPathsOffered')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('companyLocation')" v-on="on">
             <v-icon left small>mdi-account</v-icon>
-            <span class="caption text-lowercase">By Career Paths Offered</span>
+            <span class="caption text-lowercase">By Location</span>
           </v-btn>
         </template>
-        <span>Sort Employers By Career Paths Offered</span>
+        <span>Sort Employers By Location</span>
       </v-tooltip>
 
       <v-card
@@ -49,6 +49,14 @@
             <div
               class="white--text"
             >{{ employerUser.companyCareerPathsOffered.toString().replace(/,/g, ", ") }}</div>
+          </v-col>
+           <v-col xs="2">
+            <div
+              class="caption grey--text text--lighten-1 font-weight-bold text-uppercase"
+            >Location:</div>
+            <div
+              class="white--text"
+            >{{ employerUser.companyLocation }}</div>
           </v-col>
           <v-col xs="2">
             <div>
@@ -91,9 +99,7 @@ export default {
   },
   methods: {
     sortBy(prop) {
-      this.employerUsers.sort((a, b) =>
-        a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1
-      );
+      this.employerUsers.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));
     },
     addTofavouriteEmployers(companyName) {
       var employerUserToAdd;
@@ -147,7 +153,8 @@ export default {
   computed: {
     filteredEmployerUsers: function() {
       return this.employerUsers.filter(employerUser => {
-        return employerUser.companyName.match(this.search);
+        if(employerUser.companyLocation) return employerUser.companyLocation.toUpperCase().match(this.search.toUpperCase());
+        return;
       });
     }
   }
