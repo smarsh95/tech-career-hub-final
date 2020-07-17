@@ -89,7 +89,8 @@ export default {
       ],
       employerLinks: [
         { text: "Home", route: "/"},
-        { text: "View Candidates", route: "/allCandidates" }
+        { text: "View Candidates", route: "/allCandidates" }, 
+        { text: "Candidate Map", route: "/candidateMap"}
         ],
       subLinksCandidates: [
         { text: "My Profile", route: "/candidateProfile/:id" },
@@ -204,6 +205,9 @@ export default {
 
 
 <style>
+/*.v-app-bar {
+  border-bottom: 1px solid #4b696f44 !important;
+}*/
 .body {
   font-family: sofia-pro-soft !important;
   font-weight: 400; 
