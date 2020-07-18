@@ -13,6 +13,7 @@ import EmployerProfile from '@/pages/employer-profile/EmployerProfile.vue'
 import EmployerProfileForm from '@/pages/employer-profile/EmployerProfileForm.vue'
 import EmployerMyJobs from '@/pages/employer-profile/EmployerMyJobs.vue'
 import EmployerMap from '@/pages/employer-profile/EmployerMap.vue'
+import EmployerFavouriteCandidates from '@/pages/employer-profile/EmployerFavouriteCandidates.vue'
 import AllJobs from '@/pages/jobs/AllJobs.vue'
 import CandidateMap from '@/pages/candidate-profile/CandidateMap.vue'
 import CandidateChart from '@/pages/candidate-profile/d3/CandidateChart.vue'
@@ -60,37 +61,37 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "about" */ '../pages/about/About.vue')
     },
     {
-      path: '/Login',
+      path: '/login',
       name: 'Login',
       component: Login,
     },
     {
-      path: '/AllCandidates',
+      path: '/allCandidates',
       name: 'AllCandidates',
       component: AllCandidates
     },
     {
-      path: '/CandidateMenu',
+      path: '/candidateMenu',
       name: 'CandidateMenu',
       component: CandidateMenu,
     },
     {
-      path: '/CandidateProfileForm',
+      path: '/candidateProfileForm',
       name: 'CandidateProfileForm',
       component: CandidateProfileForm,
     },
     {
-      path: '/SignupCandidate',
+      path: '/signupCandidate',
       name: 'SignupCandidate',
       component: SignupCandidate,
     },
     {
-      path: '/CandidateChart/',
+      path: '/candidateChart/:id',
       name: 'CandidateChart',
       component: CandidateChart,
     },
     {
-      path: '/CandidateFavouriteJobs',
+      path: '/candidateFavouriteJobs',
       name: 'CandidateFavouriteJobs',
       component: CandidateFavouriteJobs,
     },
@@ -100,34 +101,39 @@ const router = new VueRouter({
       component: CandidateFavouriteEmployers,
     },
     {
-      path: '/AllEmployers',
+      path: '/allEmployers',
       name: 'AllEmployers',
       component: AllEmployers,
     },
     {
-      path: '/EmployerProfile/:id',
+      path: '/employerProfile/:id',
       name: 'EmployerProfile',
       component: EmployerProfile,
     },
     {
-      path: '/SignupEmployer',
+      path: '/signupEmployer',
       name: 'SignupEmployer',
       component: SignupEmployer
     },
     {
-      path: '/EmployerProfileForm',
+      path: '/employerProfileForm',
       name: 'EmployerProfileForm',
       component: EmployerProfileForm,
     },
     {
-      path: '/EmployerMyJobs/:id',
+      path: '/employerMyJobs/:id',
       name: 'EmployerMyJobs',
       component: EmployerMyJobs,
     },
     {
-      path: '/EmployerMap',
+      path: '/employerMap',
       name: 'EmployerMap',
       component: EmployerMap,
+    },
+    {
+      path: '/employerFavouriteCandidates', 
+      name: 'EmployerFavouriteCandidates', 
+      component: EmployerFavouriteCandidates
     },
     {
       path: '/candidateProfile/:id',
@@ -135,7 +141,7 @@ const router = new VueRouter({
       component: CandidateProfile,
     },
     {
-      path: '/AllJobs',
+      path: '/allJobs',
       name: 'AllJobs',
       component: AllJobs,
     },

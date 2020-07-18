@@ -82,25 +82,28 @@ export default {
       links: [],
       //
       candidateLinks: [
-        { text: "Home", route: "/"},
+        { text: "Home", route: "/" },
         { text: "Tech Careers", route: "/techCareers" },
         { text: "View Tech Jobs", route: "/allJobs" },
         { text: "View Employers", route: "/allEmployers" }
       ],
       employerLinks: [
-        { text: "Home", route: "/"},
-        { text: "View Candidates", route: "/allCandidates" }, 
-        { text: "Candidate Map", route: "/candidateMap"}
-        ],
+        { text: "Home", route: "/" },
+        { text: "View Candidates", route: "/allCandidates" },
+        { text: "Candidate Map", route: "/candidateMap" }
+      ],
       subLinksCandidates: [
         { text: "My Profile", route: "/candidateProfile/:id" },
         { text: "My Skills", route: "/CandidateChart/" },
-        { text: "My Favourite Jobs", route: "/candidateFavouriteJobs"},
-         { text: "My Favourite Employers", route: "/candidateFavouriteEmployers"}
+        { text: "My Favourite Jobs", route: "/candidateFavouriteJobs" },
+        { text: "My Favourite Employers", route: "/candidateFavouriteEmployers"
+        }
       ],
       subLinksEmployers: [
         { text: "Company Profile", route: "/EmployerProfile/:id" },
-        { text: "My Jobs", route: "/EmployerMyJobs/:id" }
+        { text: "My Jobs", route: "/EmployerMyJobs/:id" },
+        { text: "My Favourite Candidates", route: "/employerFavouriteCandidates"
+        }
       ],
       subLinksToDisplay: [],
       snackbar: false
@@ -122,22 +125,22 @@ export default {
   },
   methods: {
     /**
-     * loadSubLinks: This method loads the correct menu links depending on the user type 
+     * loadSubLinks: This method loads the correct menu links depending on the user type
      */
     loadSubLinks() {
       //variable that references the appropriate database collection depending on the user type
       let ref;
 
-      //depending on the user role, the correct sublinks (specific to user) and menu links(specific to user type) are set to display for the user 
+      //depending on the user role, the correct sublinks (specific to user) and menu links(specific to user type) are set to display for the user
       this.getRole().then(role => {
         if (role == "candidate") {
           this.subLinksToDisplay = this.subLinksCandidates; // store relevant sublinks in the sublinks which will be displayed to the user
-          ref = db.collection("candidateUsers");            // set ref variable for candidate user type
-          this.links = this.candidateLinks;                 // store relevant menu links in the menu links which will be displayed to the user
+          ref = db.collection("candidateUsers"); // set ref variable for candidate user type
+          this.links = this.candidateLinks; // store relevant menu links in the menu links which will be displayed to the user
         } else if (role == "employer") {
-          this.subLinksToDisplay = this.subLinksEmployers;  // store relevant sublinks in the sublinks which will be displayed to the user
-          ref = db.collection("employerUsers");             // set ref variable for employer user type
-          this.links = this.employerLinks;                  // store relevant menu links in the menu links which will be displayed to the user
+          this.subLinksToDisplay = this.subLinksEmployers; // store relevant sublinks in the sublinks which will be displayed to the user
+          ref = db.collection("employerUsers"); // set ref variable for employer user type
+          this.links = this.employerLinks; // store relevant menu links in the menu links which will be displayed to the user
         }
 
         //get current user data from database
@@ -153,10 +156,7 @@ export default {
           //set route for user for each sublink
           .then(() => {
             this.subLinksToDisplay.forEach(element => {
-              element.route = element.route.replace(
-                ":id",
-                this.userData.id
-              );
+              element.route = element.route.replace(":id", this.userData.id);
             });
           });
       });
@@ -210,7 +210,7 @@ export default {
 }*/
 .body {
   font-family: sofia-pro-soft !important;
-  font-weight: 400; 
+  font-weight: 400;
   font-style: normal;
 }
 .navDrawer {
@@ -221,11 +221,11 @@ export default {
   text-decoration: none;
 }
 
-.logo{
-  font-family: roboto; 
+.logo {
+  font-family: roboto;
 }
 
-.btnFont{
+.btnFont {
   font-family: sofia-pro-soft !important;
 }
 

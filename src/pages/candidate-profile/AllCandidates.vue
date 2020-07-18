@@ -54,7 +54,7 @@
           <v-col>
             <div class="ml-4 my-2" >
               <v-btn fab dark small color="pink" :class="{ 'mb-4': $vuetify.breakpoint.xsOnly, 'mr-4 mt-4': $vuetify.breakpoint.xs, 'mr-4': $vuetify.breakpoint.smAndUp,}">
-                <v-icon dark>mdi-star</v-icon>
+                <v-icon @click="addTofavouriteCandidates(candidateUser.id)" dark>mdi-star</v-icon>
               </v-btn>
                <v-btn fab dark small color="blue">
                 <v-icon dark>mdi-message</v-icon>
@@ -70,6 +70,7 @@
 
 <script>
 import db from "@/firebase/init";
+import firebase from 'firebase'
 import CandidateInfoPopup from "@/pages/candidate-profile/CandidateInfoPopup.vue";
 
 export default {
@@ -79,13 +80,36 @@ export default {
   data() {
     return {
       candidateUsers: [], 
-      search: ""
+      candidateUser: [],
+      employerUser: null,
+      search: "", 
+      favouriteCandidates: [],
+      snackbar: false,
+      snackbarMessageToDisplay: '',
     };
   },
   methods: {
     sortBy(prop) {
       console.log(this.candidateUsers)
       this.candidateUsers.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));
+    },
+    addTofavouriteCandidates(id) {
+      var candidateUserToAdd;
+      this.candidateUsers.forEach(candidateUser => {
+        if (candidateUser.id == id) {
+          candidateUserToAdd = candidateUser;
+          console.log('Candidate User found');
+        }
+      });
+      if (!this.favouriteCandidates.includes(candidateUserToAdd)) {
+        this.favouriteCandidates.push(candidateUserToAdd);
+        let ref = db.collection("employerUsers").doc(this.employerUser.id);
+        ref.update({ favouriteCandidates: this.favouriteCandidates });
+        this.snackbarMessageToDisplay = 'All done! ' + candidateUserToAdd.firstName + ' has been added to your candidate Favourites!';
+      }else{
+        this.snackbarMessageToDisplay =  candidateUserToAdd.firstName + ' is already in your favourites list.';
+      }
+      this.snackbar = "true";
     }
   },
   created() {
@@ -101,6 +125,22 @@ export default {
       })
       console.log(this.candidateUsers)
     })
+      let refEmployer = db.collection("employerUsers");
+    // get current user
+    refEmployer
+      .where("user_id", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          (this.employerUser = doc.data()), (this.employerUser.id = doc.id);
+          if (!this.employerUser.favouriteCandidates) {
+            console.log("There are no favourite Candidates listed yet");
+            this.favouriteCandidates = [];
+          } else {
+            this.favouriteCandidates = this.employerUser.favouriteCandidates;
+          }
+        });
+      });
   }, 
   computed: {
     filteredCandidateUsers: function(){
