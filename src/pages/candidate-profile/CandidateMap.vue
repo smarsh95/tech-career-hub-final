@@ -3,7 +3,9 @@
     <v-row align="center" justify="center">
       <v-col sm="12" md="8" lg="6">
         <h1 class="text-center my-3 mb-5" style="font-weight: 400;">Candidate Map</h1>
-        <v-card-text class="mapText text-center grey--text text--darken-2">Click on Map Markers to View Candidate Profiles via Location</v-card-text>
+        <v-card-text
+          class="mapText text-center grey--text text--darken-2"
+        >Click on Map Markers to View Candidate Profiles via Location</v-card-text>
         <v-card max-width="700px" height="400px" class="map text-center my-2">
           <div class="google-map" id="map"></div>
         </v-card>
@@ -25,6 +27,9 @@ export default {
     };
   },
   methods: {
+    
+
+    // Renders the map and places markers for all candidate users who allowed sharing their location
     renderMap() {
       const google = window.google;
       const map = new google.maps.Map(document.getElementById("map"), {
@@ -35,6 +40,7 @@ export default {
         streetViewControl: false
       });
 
+      // Get all candidate users locations
       db.collection("candidateUsers")
         .get()
         .then(candidateUsers => {
@@ -61,6 +67,30 @@ export default {
     }
   },
   mounted() {
+    let user = firebase.auth().currentUser;
+    console.log(user);
+
+    // Get current user location, used to center map in this.renderMap method
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          this.lat = pos.coords.latitude;
+          this.lng = pos.coords.longitude;
+        },
+        err => {
+          console.log(err);
+          this.renderMap();
+        },
+        { maximumAge: 999960000, timeout: 5000 }
+      );
+      setTimeout(this.renderMap, 4000) // Wait for 
+      
+      
+    } else {
+      //position centre by default values
+      this.renderMap();
+    }
+    /*
     //get current user
     let user = firebase.auth().currentUser;
     console.log(user);
@@ -101,6 +131,7 @@ export default {
       //position centre by default values
       this.renderMap();
     }
+    */
   }
 };
 </script>

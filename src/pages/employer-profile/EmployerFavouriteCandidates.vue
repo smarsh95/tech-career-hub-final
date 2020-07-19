@@ -4,7 +4,7 @@
       <h1 class="display-1 mb-7 text-center">My Favourite Candidates</h1>
 
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
-        <v-text-field label="Search By Company" outlined v-model="search" dense></v-text-field>
+        <v-text-field label="Search By Skills" outlined v-model="search" dense></v-text-field>
       </v-col>
 
        <v-tooltip top>
@@ -28,7 +28,7 @@
       </v-tooltip>
 
       <v-card
-        v-for="favouriteCandidate in favouriteCandidates"
+        v-for="favouriteCandidate in filteredCandidates"
         :key="favouriteCandidate.firstName"
         class="my-4 mx-2"
         color="#2F4858"
@@ -137,9 +137,10 @@ export default {
       });
   },
   computed: {
-    filteredJobs: function() {
-      return this.favouriteCandidates.filter(job => {
-        return job.firstName.match(this.search);
+    filteredCandidates: function() {
+      return this.favouriteCandidates.filter(candidateUser => {
+        if(candidateUser.topSkills) return candidateUser.topSkills.toUpperCase().match(this.search.toUpperCase());
+        return;
       });
     }
   }

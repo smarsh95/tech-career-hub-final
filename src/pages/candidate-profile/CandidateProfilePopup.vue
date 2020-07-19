@@ -114,7 +114,7 @@
 
               <v-col cols="12">
                 <v-card-actions>
-                  <v-btn text>Cancel</v-btn>
+                  <v-btn text @click="deleteAccountPopup = true">Delete Account</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn right text color="primary" type="submit">Update Profile</v-btn>
                 </v-card-actions>
@@ -122,6 +122,18 @@
             </v-row>
           </v-container>
         </v-form>
+
+        <v-dialog v-model="deleteAccountPopup" width="70%">
+          <v-card>
+            <v-card-title class="title">Delete your Account</v-card-title>
+            <v-card-text>Are you sure that you want to delete your account all data associated with it?</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="blue" @click="deleteAccountPopup = false">Chancel</v-btn>
+              <v-btn text color="blue" @click="deleteAccount">Delete Account</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
         <v-dialog v-model="locationPopup" width="70%">
           <v-card>
@@ -172,15 +184,59 @@ export default {
       profile: null,
       candidateUser: null,
       locationPopup: false,
-      locationContent: "Lorem Ipsum",
+      locationContent: "We will store your location to display employers a map of candidate user locations. You can revert your decision anytime by editing your profile.",
       confirmLocationCapture: false,
-      geolocation: null
+      geolocation: null,
+      deleteAccountPopup: false
     };
   },
   /*props: {
     candidateUser: Object
   },*/
   methods: {
+    deleteAccount() {
+      let deleteUser = firebase.functions().httpsCallable("DeleteUser");
+      deleteUser({ uid: firebase.auth().currentUser.uid }).then(result => {
+        if (result.data.success) {
+          console.log("User deleted");
+          db.collection("candidateUsers")
+            .doc(this.candidateUser.id)
+            .delete()
+            .then(() => {
+              db.collection("employerUsers")
+                .get()
+                .then(snapshot => {
+                  snapshot
+                    .forEach(doc => {
+                      let favourites = doc.data().favouriteCandidates;
+                      if (favourites) {
+                        for (var i = 0; i < favourites.length; i++) {
+                          if (favourites[i].id == this.candidateUser.id) {
+                            favourites.splice(i, 1);
+                            db.collection("employerUsers")
+                              .doc(doc.id)
+                              .update({ favouriteCandidates: favourites });
+                            break;
+                          }
+                        }
+                      }
+                    })
+                }).then(() => {
+                      firebase
+                        .auth()
+                        .signOut()
+                        .then(() => {
+                          this.$router.push({ path: "/" });
+                        });
+                    });
+            });
+        } else {
+          console.log("ERROR - Deleting user: " + result);
+        }
+      });
+    },
+
+    // Saves the users current location in the database or deletes it depending on the user choice. Wrapped as promise
     saveLocation(deleteLocation) {
       return new Promise((resolve, reject) => {
         var tempGeolocation = null;
@@ -205,7 +261,6 @@ export default {
             });
           }
         } else {
-
           db.collection("candidateUsers")
             .doc(this.candidateUser.id)
             .update({
@@ -220,6 +275,7 @@ export default {
         }
       });
     },
+    // Set fields of the form to values retrieved from database
     setFields() {
       this.firstName = this.candidateUser.firstName;
       this.lastName = this.candidateUser.lastName;
@@ -233,6 +289,7 @@ export default {
       this.geolocation = this.candidateUser.geolocation;
       //this.due = this.candidateUser.due;
     },
+    // Submit form and save/update the user in the database
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -254,12 +311,14 @@ export default {
             console.log("Document successfully updated");
             this.$emit("profileChanged");
             if (this.confirmLocationCapture) {
+              // Save Location
               this.saveLocation(false).then(() => {
                 this.loading = false;
                 this.dialog = false;
                 this.snackbar = "true";
               });
             } else {
+              // Delete Location
               this.saveLocation(true).then(() => {
                 this.loading = false;
                 this.dialog = false;
@@ -285,7 +344,7 @@ export default {
         snapshot.forEach(doc => {
           (this.candidateUser = doc.data()), (this.candidateUser.id = doc.id);
           console.log(this.candidateUser.id);
-          this.setFields();
+          this.setFields(); // Set fields of the form to the retrieved values
         });
       });
     //profile data

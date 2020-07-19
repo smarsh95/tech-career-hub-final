@@ -68,7 +68,10 @@ const router = new VueRouter({
     {
       path: '/allCandidates',
       name: 'AllCandidates',
-      component: AllCandidates
+      component: AllCandidates, 
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/candidateMenu',
@@ -79,6 +82,9 @@ const router = new VueRouter({
       path: '/candidateProfileForm',
       name: 'CandidateProfileForm',
       component: CandidateProfileForm,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/signupCandidate',
@@ -86,29 +92,44 @@ const router = new VueRouter({
       component: SignupCandidate,
     },
     {
-      path: '/candidateChart/:id',
+      path: '/candidateChart',
       name: 'CandidateChart',
       component: CandidateChart,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/candidateFavouriteJobs',
       name: 'CandidateFavouriteJobs',
       component: CandidateFavouriteJobs,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/CandidateFavouriteEmployers',
       name: 'CandidateFavouriteEmployers',
       component: CandidateFavouriteEmployers,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/allEmployers',
       name: 'AllEmployers',
       component: AllEmployers,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/employerProfile/:id',
       name: 'EmployerProfile',
       component: EmployerProfile,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/signupEmployer',
@@ -119,36 +140,57 @@ const router = new VueRouter({
       path: '/employerProfileForm',
       name: 'EmployerProfileForm',
       component: EmployerProfileForm,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/employerMyJobs/:id',
       name: 'EmployerMyJobs',
       component: EmployerMyJobs,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/employerMap',
       name: 'EmployerMap',
       component: EmployerMap,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/employerFavouriteCandidates', 
       name: 'EmployerFavouriteCandidates', 
-      component: EmployerFavouriteCandidates
+      component: EmployerFavouriteCandidates,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/candidateProfile/:id',
       name: 'CandidateProfile',
       component: CandidateProfile,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/allJobs',
       name: 'AllJobs',
       component: AllJobs,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/candidateMap',
       name: 'CandidateMap',
       component: CandidateMap,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/candidateMatches',

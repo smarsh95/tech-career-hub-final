@@ -9,26 +9,18 @@
 
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('employerName')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('companyName')" v-on="on">
             <v-icon left small>mdi-folder</v-icon>
-            <span class="caption text-lowercase">By Employer Name</span>
+            <span class="caption text-lowercase">By Company Name</span>
           </v-btn>
         </template>
-        <span>Sort Employers By Name</span>
+        <span>Sort Employers By Company Name</span>
       </v-tooltip>
 
-      <v-tooltip top>
-        <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('careerPathsOffered')" v-on="on">
-            <v-icon left small>mdi-account</v-icon>
-            <span class="caption text-lowercase">By Career Paths Offered</span>
-          </v-btn>
-        </template>
-        <span>Sort Employers By Career Paths Offered</span>
-      </v-tooltip>
+      
 
       <v-card
-        v-for="favouriteEmployer in favouriteEmployers"
+        v-for="favouriteEmployer in filteredEmployers"
         :key="favouriteEmployer.companyName"
         class="my-4 mx-2"
         color="#2F4858"
@@ -136,9 +128,9 @@ export default {
       });
   },
   computed: {
-    filteredJobs: function() {
+    filteredEmployers: function() {
       return this.favouriteEmployers.filter(job => {
-        return job.companyName.match(this.search);
+        return job.companyName.toUpperCase().match(this.search.toUpperCase());
       });
     }
   }

@@ -94,12 +94,7 @@
                 <template v-slot:label>
                   <div @click.stop>
                     Do you accept the
-                    <a href="javascript:;" @click.stop="terms = true">terms</a>
-                    and
-                    <a
-                      href="javascript:;"
-                      @click.stop="conditions = true"
-                    >conditions?</a>
+                    <a href="javascript:;" @click.stop="terms = true">Privacy Policy</a>
                   </div>
                 </template>
               </v-checkbox>
@@ -148,7 +143,7 @@
       </v-dialog>
       <v-dialog v-model="terms" width="70%">
         <v-card>
-          <v-card-title class="title">Terms</v-card-title>
+          <v-card-title class="title">Privacy Policy</v-card-title>
           <v-card-text>{{ content }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -206,13 +201,42 @@ export default {
       terms: false,
       conditions: false,
       tcChecked: false,
-      content: "Lorem Ipsum",
+      content: `Privacy Policy:
+This privacy policy ("policy") will help you understand how Tech Wizard ("us", "we", "our") uses and protects the data you provide to us when you visit and use [website] ("website", "service").
+We reserve the right to change this policy at any given time, of which you will be promptly updated. If you want to make sure that you are up to date with the latest changes, we advise you to frequently visit this page.
+What User Data We Collect
+When you visit the website, we may collect the following data:
+Your IP address.
+Your contact information and email address.
+Other information such as interests and preferences.
+Data profile regarding your online behavior on our website.
+Why We Collect Your Data
+We are collecting your data for several reasons:
+To better understand your needs.
+To improve our services and products.
+To send you promotional emails containing the information we think you will find interesting.
+To contact you to fill out surveys and participate in other types of market research.
+To customize our website according to your online behavior and personal preferences. Safeguarding and Securing the Data
+Tech Wizard is committed to securing your data and keeping it confidential. Tech Wizard has done all in its power to prevent data theft, unauthorized access, and disclosure by implementing the latest technologies and software, which help us safeguard all the information we collect online.
+Our Cookie Policy
+Once you agree to allow our website to use cookies, you also agree to use the data it collects regarding your online behavior (analyze web traffic, web pages you spend the most time on, and websites you visit).
+The data we collect by using cookies is used to customize our website to your needs. After we use the data for statistical analysis, the data is completely removed from our systems.
+Please note that cookies don't allow us to gain control of your computer in any way. They are strictly used to monitor which pages you find useful and which you do not so that we can provide a better experience for you.
+If you want to disable cookies, you can do it by accessing the settings of your internet browser. (Provide links for cookie settings for major internet browsers).
+Links to Other Websites
+Our website contains links that lead to other websites. If you click on these links Tech Wizard is not held responsible for your data and privacy protection. Visiting those websites is not governed by this privacy policy agreement. Make sure to read the privacy policy documentation of the website you go to from our website.
+Restricting the Collection of your Personal Data
+At some point, you might wish to restrict the use and collection of your personal data. You can achieve this by doing the following:
+When you are filling the forms on the website, make sure to check if there is a box which you can leave unchecked, if you don't want to disclose your personal information.
+If you have already agreed to share your information with us, feel free to contact us via email and we will be more than happy to change this for you.
+Tech Wizard will not lease, sell or distribute your personal information to any third parties, unless we have your permission. We might do so if the law forces us. Your personal information will be used when we need to send you promotional materials if you agree to this privacy policy.`,
       locationPopup: false,
-      locationContent: "Lorem Ipsum",
+      locationContent: "We will store your location to display employers a map of candidate user locations. You can revert your decision anytime by editing your profile.",
       confirmLocationCapture: false
     };
   },
   methods: {
+    // Saves the users current location in the database. Wrapped as promise
     saveLocation() {
       return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -241,6 +265,8 @@ export default {
     redirectToHome() {
       this.$router.push({ name: "Home" });
     },
+
+    // Submit form data -> save data in database, trigger saveLocation method if the user opted-in
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
@@ -292,9 +318,11 @@ export default {
     }
   },
   computed: {
+    // Format date
     formattedDate() {
       return this.due ? format(parseISO(this.due), "do MMM yyyy") : "";
     },
+    // Check if form is valid/refilled out
     formIsValid() {
       return (
         this.firstName &&

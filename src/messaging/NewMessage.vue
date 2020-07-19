@@ -1,4 +1,4 @@
-<!--template>
+<template>
     <div class="new-message">
         <v-form @submit.prevent="addMessage">
 
@@ -12,7 +12,7 @@
 
 <script>
 import db from '@/firebase/init'
-import firebase from 'firebase'
+//import firebase from 'firebase'
 export default {
     name: 'NewMessage', 
     props: ['name'],
@@ -41,4 +41,4 @@ export default {
         }
     }
 }
-</script-->
+</script>

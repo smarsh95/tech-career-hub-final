@@ -1,5 +1,10 @@
 <template>
   <div class="candidateList">
+    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+      <span>{{ snackbarMessageToDisplay }}</span>
+      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
+
     <v-container class="my-5">
 
       <v-col cols="12" sm="6" md="3" class="pt-0 pb-0">
@@ -57,13 +62,23 @@
                 <v-icon @click="addTofavouriteCandidates(candidateUser.id)" dark>mdi-star</v-icon>
               </v-btn>
                <v-btn fab dark small color="blue">
-                <v-icon dark>mdi-message</v-icon>
+                <v-icon dark @click="displayEmail(candidateUser.user_id)">mdi-message</v-icon>
               </v-btn>
             </div>
           </v-col>
         </v-row>
         <v-divider></v-divider>
       </v-card>
+      <v-dialog v-model="emailPopup" width="70%">
+          <v-card>
+            <v-card-title class="title">Contact this Candidate</v-card-title>
+            <v-card-text>To get in touch with this candidate please contact the candidate via email: {{ candidateEmail }}</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="blue" @click="emailPopup = false">Ok</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-container>
   </div>
 </template>
@@ -86,9 +101,20 @@ export default {
       favouriteCandidates: [],
       snackbar: false,
       snackbarMessageToDisplay: '',
+      candidateEmail: '',
+      emailPopup: false,
     };
   },
   methods: {
+    displayEmail(user_id){
+      let getEmail = firebase.functions().httpsCallable("GetUserEmail");
+      getEmail({ uid: user_id }).then(result => {
+        if(result.data.email) {
+          this.candidateEmail = result.data.email;
+          this.emailPopup = true;
+        }
+      })
+    },
     sortBy(prop) {
       console.log(this.candidateUsers)
       this.candidateUsers.sort((a, b) => (a[prop].toUpperCase() < b[prop].toUpperCase() ? -1 : 1));

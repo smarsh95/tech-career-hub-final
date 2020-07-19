@@ -12,7 +12,7 @@
 
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn small text color="light-grey" @click="sortBy('favouriteJob.jobTitle')" v-on="on">
+          <v-btn small text color="light-grey" @click="sortBy('jobTitle')" v-on="on">
             <v-icon left small>mdi-folder</v-icon>
             <span class="caption text-lowercase">By Job Title</span>
           </v-btn>
@@ -31,7 +31,7 @@
       </v-tooltip>
 
       <v-card
-        v-for="favouriteJob in favouriteJobs"
+        v-for="favouriteJob in filteredJobs"
         :key="favouriteJob.jobTitle"
         class="my-4 mx-2"
         color="#2F4858"

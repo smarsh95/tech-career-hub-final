@@ -48,6 +48,26 @@ exports.AddCandidateRole = functions.https.onCall((data, context) => {
   })
 })
 
+exports.DeleteUser = functions.https.onCall((data, context) => {
+  return admin.auth().deleteUser(data.uid)
+  .then(function() {
+    return { message: 'Successfully deleted user' , success: true};
+  })
+  .catch(function(error) {
+    return { message: 'Error deleting user' , success: false};
+  });
+})
+
+exports.GetUserEmail = functions.https.onCall((data, context) => {
+  return admin.auth().getUser(data.uid)
+  .then(userRecord => {
+    return { email: userRecord.email }
+  })
+  .catch(error => {
+    return {status: 'error', code: 500, error}
+  })
+})
+
 
 
 
