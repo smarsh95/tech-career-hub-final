@@ -1,24 +1,8 @@
-# tech-career-hub-final
+# Tech Career Hub - Final Year Project
 
 ## Project setup
-```
-npm install
-```
+Für mein Bachelorprojekt habe ich eine responsive, mobile-freundliche Full Stack Web Application (als Prototype Version) mit Vue.js und Firebase geschrieben. Die App soll IT Studenten mit Arbeitgebern vernetzten und Studenten auf die diversen Karrieremöglichkeiten im IT Bereich aufmerksam machen. Alle CRUD (create, read, update and delete) Funktionen wurden bereits in der Web App implementiert. Studenten und Arbeitgeber haben nach der Registrierung Zugriff auf unterschiedliche Funktionen und sehen nur dass was für die jeweilige Nutzergruppe relevant ist - dies habe ich mit Firebase Cloud Functions in Node.js implementiert. Beide Nutzergruppen können ein Profil erstellen, dass sie später problemlos bearbeiten können. Alle Daten werden in real-time in der Datenbank und im Client geupdated - ohne dass der Nutzer die Seite neu laden muss. Studenten können ihre Skills angeben, die dann in einer Donut Chart visualisiert werden. Um das möglich zu machen, habe ich mir das Javascript Framework D3.js beigebracht und in der Applikation integriert. Die Arbeitgeber können des weiteren ganz einfach ihre Job Angebote hinzufügen und nach passenden Kandidaten suchen. Alle Nutzerdaten werden in einer noSQL Datenbank gespeichert - dazu habe ich die relativ neue Cloud Firestore von Firebase verwendet. Diese hat den Vorteil, das Skalierungen mühelos sind und Sicherheits und Daten Validierungsregeln den permanenten Schutz der Daten gewährleisten. Während des gesamten Projektes habe ich in einem agilen Workflow gearbeitet und immer wieder Anforderungen und Prioritäten angepasst. Unten verlinke ich zur Website des Prototypen und zu einem YouTube Video in der ich die Funktionen der Web App zeige (da man muss sich für die App Nutzung registrieren muss). 
+https://tech-career-hub-final.web.app/
+https://www.youtube.com/watch?v=25gOpN1f4Og
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
