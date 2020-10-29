@@ -5,4 +5,5 @@ Für mein Bachelorprojekt habe ich eine responsive, mobile-freundliche Full Stac
 https://tech-career-hub-final.web.app/<br>
 https://www.youtube.com/watch?v=25gOpN1f4Og
 
-
+## Weitere Infos 
+Die meisten Components sind in dem src Ordner “pages” zu finden. In dem “components” Ordner ist nur die Navbar enthalten. 
